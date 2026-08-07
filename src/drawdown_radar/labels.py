@@ -114,7 +114,9 @@ def write_review_file(df: pd.DataFrame) -> Path:
     return out
 
 
-def build_labels(panel: pd.DataFrame, inst: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+def build_labels(
+    panel: pd.DataFrame, inst: pd.DataFrame, apply_manual_exclusions: bool = True
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Return (labelled rows, exclusion audit table).
 
     One row per (CERT, quarter T) carrying the T+1 outcome. Rows failing any exclusion are
@@ -193,7 +195,11 @@ def build_labels(panel: pd.DataFrame, inst: pd.DataFrame) -> tuple[pd.DataFrame,
         #     2022Q4, the single most informative genuine run in the panel.
         # So extreme declines are surfaced to reports/extreme_declines_review.csv and
         # adjudicated by hand into a small, version-controlled exception list.
-        "manually_adjudicated_structure_event": _manual_exclusion_mask(df),
+        "manually_adjudicated_structure_event": (
+            _manual_exclusion_mask(df)
+            if apply_manual_exclusions
+            else pd.Series(False, index=df.index)
+        ),
     }
     audit_rows, remaining = [], pd.Series(True, index=df.index)
     for name, mask in rules.items():

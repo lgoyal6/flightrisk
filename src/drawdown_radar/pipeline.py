@@ -1,0 +1,120 @@
+"""Orchestration for `backtest` and `scorecards`. Writes every artifact the README cites."""
+
+from __future__ import annotations
+
+import pandas as pd
+
+from . import ablation, audit, evaluate, figures, scorecards
+from . import backtest as bt
+from .backtest import Spec
+from .config import PROCESSED, REPORTS
+
+
+def _dataset() -> pd.DataFrame:
+    p = PROCESSED / "dataset.parquet"
+    if not p.exists():
+        raise FileNotFoundError("Run `drawdown-radar build` first.")
+    return pd.read_parquet(p)
+
+
+def run_backtest(skip_ablations: bool = False) -> None:
+    df = _dataset()
+    feats = bt.structured_features()
+    main = Spec("HistGB (structured)", "histgb", feats)
+
+    print("=== models and baselines (walk-forward, 28 quarters) ===")
+    rows, store = [], {}
+    for spec in bt.default_specs():
+        preds = bt.run_spec(df, spec)
+        s = evaluate.summarize(preds)
+        store[spec.name] = preds
+        rows.append({"model": spec.name, "is_baseline": spec.is_baseline, "note": spec.note, **s})
+        print(
+            f"  {spec.name:36s} prec@5% {s['precision_at_5pct']:.3f} "
+            f"lift {s['lift_at_5pct']:.2f}  AUC_wq {s['roc_auc_within_quarter']:.3f}"
+        )
+    results = pd.DataFrame(rows)
+    results.to_csv(REPORTS / "backtest_models.csv", index=False)
+    pd.to_pickle(store, PROCESSED / "preds.pkl")
+
+    print("\n=== leakage check: labels shuffled within quarter ===")
+    sh = bt.run_spec(audit.shuffled_label_check(df), main)
+    s_sh = evaluate.summarize(sh)
+    passed = s_sh["lift_at_5pct"] < 1.15 and abs(s_sh["roc_auc_within_quarter"] - 0.5) < 0.03
+    print(
+        f"  lift@5% {s_sh['lift_at_5pct']:.3f}  AUC_wq {s_sh['roc_auc_within_quarter']:.3f}  "
+        f"-> {'PASS' if passed else 'FAIL'}"
+    )
+    pd.DataFrame([s_sh]).to_csv(REPORTS / "shuffled_label_check.csv", index=False)
+    if not passed:
+        raise AssertionError("shuffled-label test did not collapse to baseline -- leakage")
+
+    print("\n=== out-of-time: trained on T<=2021Q3, predicting the SVB era ===")
+    oot_rows = []
+    for spec in [main, Spec("logit L1", "logit_l1", feats), *bt.default_specs()[1:4]]:
+        p = bt.out_of_time(df, spec)
+        if p.empty:
+            continue
+        s = evaluate.summarize(p)
+        oot_rows.append({"model": spec.name, **s})
+        print(
+            f"  {spec.name:36s} prec@5% {s['precision_at_5pct']:.3f} lift {s['lift_at_5pct']:.2f}"
+        )
+    pd.DataFrame(oot_rows).to_csv(REPORTS / "out_of_time.csv", index=False)
+
+    print("\n=== size-stratified precision@k ===")
+    strat = []
+    for nm in ["baseline: base rate (random rank)", "baseline: size only", "HistGB (structured)"]:
+        s = evaluate.stratified_summary(store[nm])
+        s["model"] = nm
+        strat.append(s)
+    strat_df = pd.concat(strat, ignore_index=True)
+    strat_df.to_csv(REPORTS / "stratified.csv", index=False)
+    print(
+        strat_df[strat_df.k_frac == 0.05][
+            ["model", "size_stratum", "mean_k", "precision", "lift"]
+        ].to_string(index=False)
+    )
+
+    print("\n=== severity tiers ===")
+    tiers = []
+    for lbl, tag in [("label", "primary <=-5%"), ("label_severe", "severe <=-10%")]:
+        p = bt.run_spec(df, main, label=lbl)
+        s = evaluate.summarize(p.rename(columns={lbl: "label"}), label="label")
+        tiers.append({"tier": tag, **s})
+    pd.DataFrame(tiers).to_csv(REPORTS / "severity_tiers.csv", index=False)
+
+    evaluate.calibration_table(store["HistGB (structured)"]).to_csv(
+        REPORTS / "calibration.csv", index=False
+    )
+    figures.model_comparison_figure(results)
+    figures.calibration_figure(evaluate.calibration_table(store["HistGB (structured)"]))
+    figures.per_quarter_figure(store)
+
+    if not skip_ablations:
+        print("\n=== ablations ===")
+        abl = ablation.run(df)
+        sev = ablation.standalone_severe(df, verbose=False)
+        abl.merge(sev, on="signal", how="left").to_csv(REPORTS / "ablations.csv", index=False)
+    run_scorecards()
+
+
+def run_scorecards() -> None:
+    path = REPORTS / "ablations.csv"
+    if not path.exists():
+        raise FileNotFoundError("Run `drawdown-radar backtest` first (it writes ablations.csv).")
+    abl = pd.read_csv(path)
+    cards = scorecards.apply_verdicts(abl)
+    headline = None
+    mp = REPORTS / "backtest_models.csv"
+    if mp.exists():
+        m = pd.read_csv(mp)
+        row = m[m["model"] == "HistGB (structured)"]
+        if len(row):
+            headline = row.iloc[0].to_dict()
+    scorecards.write_markdown(cards, headline)
+    if scorecards.write_readme_table(cards):
+        print("README signal table regenerated from the registry")
+    counts = cards["status"].value_counts().to_dict()
+    print(f"scorecards written: {counts}")
+    figures.signal_effect_figure(cards)

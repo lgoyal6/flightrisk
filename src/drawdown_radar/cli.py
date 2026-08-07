@@ -10,12 +10,6 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 
-_PENDING = {
-    "backtest": "phase 6 (walk-forward)",
-    "scorecards": "phase 9 (signal graduation)",
-    "score": "phase 10 (alert list)",
-}
-
 
 @app.command()
 def pull(refresh: bool = typer.Option(False, help="Re-fetch instead of using the parquet cache.")):
@@ -27,33 +21,42 @@ def pull(refresh: bool = typer.Option(False, help="Re-fetch instead of using the
 
 @app.command()
 def build():
-    """Construct labels, run exclusion audits, write base rates and figures."""
+    """Labels, exclusion audit, as-of audit, registry integrity, base rates, figures."""
     from .build import run
 
     run()
 
 
 @app.command()
-def backtest():
-    """Walk-forward backtest; writes metrics and figures."""
-    raise typer.Exit(_pending("backtest"))
+def backtest(
+    skip_ablations: bool = typer.Option(
+        False, help="Skip the per-signal ablations (the slow part) and only run the models."
+    ),
+):
+    """Walk-forward backtest: baselines, models, leakage checks, out-of-time stress test."""
+    from .pipeline import run_backtest
+
+    run_backtest(skip_ablations=skip_ablations)
 
 
 @app.command()
 def scorecards():
     """Regenerate signal graduation scorecards from the registry."""
-    raise typer.Exit(_pending("scorecards"))
+    from .pipeline import run_scorecards
+
+    run_scorecards()
 
 
 @app.command()
-def score(quarter: str = typer.Option(..., help="Quarter to score, e.g. 2026Q1")):
-    """Emit the ranked alert list as JSON + CSV."""
-    raise typer.Exit(_pending("score"))
+def score(quarter: str = typer.Option("2026Q1", help="Quarter to score, e.g. 2026Q1")):
+    """Emit the ranked alert list as JSON + CSV, stratified by bank size."""
+    from .score import build_alerts, write
 
-
-def _pending(name: str) -> int:
-    typer.echo(f"`{name}` is not implemented yet - {_PENDING[name]}. Run `pull` then `build`.")
-    return 1
+    alerts = build_alerts(quarter)
+    csv, js = write(alerts, quarter)
+    cols = ["bank", "size_stratum", "total_deposits_usd_m", "score", "percentile_in_stratum"]
+    typer.echo(alerts[cols].to_string(index=False))
+    typer.echo(f"\nwrote {csv}\nwrote {js}")
 
 
 if __name__ == "__main__":

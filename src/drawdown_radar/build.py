@@ -9,9 +9,12 @@ from __future__ import annotations
 import pandas as pd
 
 from . import figures
+from .audit import asof_audit, build_matrix
 from .config import PROCESSED, REPORTS, next_quarter
 from .data import load_institutions, load_panel
+from .evaluate import size_stratum
 from .labels import base_rates, build_labels, write_review_file
+from .registry import REGISTRY, check_integrity
 
 
 def _size_bucket(assets: pd.Series) -> pd.Series:
@@ -50,6 +53,18 @@ def run(verbose: bool = True) -> pd.DataFrame:
     )
     by_size["base_rate_pct"] = (100 * by_size["rate"]).round(2)
     by_size[["rows", "banks", "base_rate_pct"]].to_csv(REPORTS / "base_rate_by_size.csv")
+
+    # ---- registry integrity + as-of audit run on EVERY build, not on request ----
+    check_integrity()
+    print(f"registry integrity: OK ({len(REGISTRY)} signals)")
+    audit_report = asof_audit(panel)
+    audit_report.to_csv(REPORTS / "asof_audit.csv", index=False)
+
+    # ---- assemble the modelling dataset ----
+    matrix = build_matrix(panel)
+    dataset = labelled.merge(matrix.drop(columns=["quarter"]), on=["cert", "qidx"], how="left")
+    dataset["size_stratum"] = size_stratum(dataset["ASSET"])
+    dataset.to_parquet(PROCESSED / "dataset.parquet", index=False)
 
     if verbose:
         print(f"raw panel            : {len(panel):,} bank-quarters")
