@@ -63,9 +63,9 @@ Each quarter, this ranks ~4,350 US banks by their probability of a ≥5% deposit
 - The strongest signals are **deposit growth deceleration**, **loan-to-deposit level**, and
   **uninsured deposit share** — the last one available back to 2015, which is what makes
   "would this have flagged 2023 in advance?" answerable at all.
-- An LLM leg over 836 SEC 8-K press releases was built and **killed**. Two of four extracted
-  flags validate poorly, and the covered slice has 6 events, so the null is not separable from
-  a lack of power — the verdict rests on coverage geometry, and says so.
+- An LLM leg over 836 SEC 8-K press releases was built and **parked, not killed** — public
+  filings only cover the ~50 largest banks, exactly where structured data is richest and events
+  are rarest, so 6 events made it unmeasurable rather than null.
 
 Sample of the real output (`drawdown-radar score --quarter 2026Q1`):
 
@@ -296,6 +296,10 @@ removed.
 | `core_dep_share` | PARKED | 2.449 | 0.013 | 1.00 | 4.352 |
 | `unrealized_afs_loss_chg_4q` | PARKED | 1.528 | 0.009 | 0.86 | 1.747 |
 | `ltd_trend_4q` | PARKED | 2.578 | 0.004 | 0.96 | 4.972 |
+| `txt_deposit_pressure` | PARKED | 0.470 | 0.002 | — | — |
+| `txt_funding_tone` | PARKED | 0.920 | 0.002 | — | — |
+| `txt_outflow_language` | PARKED | 1.860 | 0.002 | — | — |
+| `txt_inflow_language` | PARKED | 0.940 | 0.002 | — | — |
 | `time_dep_share_chg_4q` | PARKED | 2.217 | -0.001 | 0.96 | 3.953 |
 | `prior_drawdown_1q` | PARKED | 1.701 | -0.013 | 0.89 | 2.049 |
 | `nim_compression_4q` | PARKED | 2.008 | -0.021 | 0.89 | 3.503 |
@@ -308,17 +312,13 @@ removed.
 | `brokered_share_chg_4q` | PARKED | 1.877 | -0.072 | 0.93 | 2.626 |
 | `noninterest_dep_share_chg_4q` | PARKED | 2.407 | -0.077 | 1.00 | 3.885 |
 | `state_identity` | PARKED | 1.754 | — | 1.00 | 2.662 |
-| `txt_deposit_pressure` | ~~KILLED~~ | 0.470 | 0.002 | — | — |
-| `txt_funding_tone` | ~~KILLED~~ | 0.920 | 0.002 | — | — |
-| `txt_outflow_language` | ~~KILLED~~ | 1.860 | 0.002 | — | — |
-| `txt_inflow_language` | ~~KILLED~~ | 0.940 | 0.002 | — | — |
 | `quarter_of_year` | ~~KILLED~~ | 0.988 | — | 0.54 | 0.805 |
 | `macro_agg_dep_growth` | ~~KILLED~~ | 0.988 | — | 0.54 | 0.805 |
 | `dumb_cert_parity` ⚠︎null | ~~KILLED~~ | 0.807 | — | 0.29 | 0.537 |
 | `dumb_asset_digit_sum` ⚠︎null | ~~KILLED~~ | 1.053 | — | 0.54 | 1.048 |
 | `dumb_row_noise` ⚠︎null | ~~KILLED~~ | 0.991 | — | 0.50 | 0.598 |
 
-8 graduated, 18 parked, 9 killed. Full reasoning: [`reports/signal_scorecards.md`](reports/signal_scorecards.md).
+8 graduated, 22 parked, 5 killed. Full reasoning: [`reports/signal_scorecards.md`](reports/signal_scorecards.md).
 
 <!-- END:signal-table -->
 
@@ -329,16 +329,18 @@ removed.
 
 ---
 
-8 signals graduated, 18 parked, 5 killed. The graduated set is `dep_growth_decel_4q`,
+8 signals graduated, 22 parked, 5 killed. The graduated set is `dep_growth_decel_4q`,
 `dep_growth_1q`, `dep_growth_vol_4q`, `prior_drawdown_count_4q`, `ltd_level`,
 `uninsured_dep_share`, `unrealized_afs_loss_to_eq`, and `log_assets` (the size control earns
 its place: +0.082 incremental). Both SVB mechanisms — uninsured share and unrealized AFS losses
 — graduated, and both rank the −10% tier too (severe lift 5.21 and 1.64).
 
 **All 5 kills are correct by construction:** the 3 null tripwires (0.81, 0.99, 1.05 standalone
-lift) and both macro covariates. Most of the 18 parks are *informative but redundant* — e.g.
-`asset_dep_divergence` has 2.54× standalone lift and **−0.03** incremental. Ranking candidates
-by standalone lift alone would have graduated a set of mutually-redundant funding-mix ratios.
+lift) and both macro covariates. Nothing is killed on weak evidence — 18 of the 22 parks are
+*informative but redundant* (e.g. `asset_dep_divergence`, 2.54× standalone lift and **−0.03**
+incremental), and the other 4 are the text signals, parked because they were never measurable
+here rather than measured and rejected. Ranking candidates by standalone lift alone would have
+graduated a set of mutually-redundant funding-mix ratios.
 
 ---
 
@@ -439,18 +441,23 @@ the gap closes.
 **Yes — the nonlinearity was the alpha.** Binning just the growth family recovers half the
 in-sample gap, so the U is worth about half the GBM's edge and the rest is nonlinearity elsewhere.
 
-**This corrects a claim an earlier version of this README made.** I had explained the linear
-model's SVB-era collapse as "a rate cycle broke its coefficients while ordinal tree splits held",
-which framed it as a model-class advantage. The out-of-time column says otherwise: binning growth
-alone closes **1.5%** of the out-of-time gap, but binning **every** signal closes **85%** of it.
-The mechanism is representational, not architectural — *continuous* coefficients are fragile under
-distribution shift and *binned ordinal* ones are robust, whichever model consumes them. A
-fully-binned logistic recovers most of the GBM's regime robustness while staying a readable linear
-model with signed per-bin weights, which is a useful thing for a signals team to know.
+> **Self-correction, left visible on purpose.**
+>
+> *An earlier version of this README claimed:* "the rate cycle broke the linear coefficients while
+> ordinal tree splits held" — framing regime robustness as a **model-class** advantage.
+>
+> *The binning experiment falsified my own framing.* A fully-binned logistic recovers **85%** of
+> the out-of-time gap (lift 3.492 vs HistGB's 3.843), while binning growth alone recovers just
+> **1.5%**. The fragility is **representational** — continuous coefficients under distribution
+> shift — **not architectural**.
+
+**Deployment corollary:** a fully-binned logit keeps most of the GBM's regime robustness while
+retaining readable, signed per-bin coefficients. That is the right trade whenever the field needs
+to see the weights behind an alert rather than accept a score.
 
 ---
 
-## The unstructured leg: SEC 8-K text — KILLED, on coverage power
+## The unstructured leg: SEC 8-K text — PARKED, untestable on public data
 
 A different modality, run through the identical registry, as-of audit, and graduation protocol.
 836 Item 2.02 earnings press releases (2022Q1–2025Q4) for the 50 largest FDIC banks that are SEC
@@ -481,7 +488,7 @@ decline attributed to seasonal tax payments, an SVB-era deposit-diversity disclo
 *strength*. Inter-rater reliability is the ceiling and there is one rater, so 0.46 is partly a
 statement about how fuzzy the construct is.
 
-### Step 2: the incremental test has no power, and that is the finding
+### Step 2: the incremental test has no power — so there is no verdict to draw from it
 
 | Arm | AUC within-q | precision@20% | lift@20% |
 |---|---|---|---|
@@ -491,10 +498,10 @@ statement about how fuzzy the construct is.
 
 Incremental AUC **+0.0022**, incremental lift **+0.000** — on **472 rows containing 6 events**.
 
-**That is not a clean KILL, and calling it one would be overclaiming.** With 6 events, this test
-cannot separate "text carries nothing the balance sheet lacks" from "the test has no power". It is
-the same trap as the 72-row first-appearance cohort in the unseen-entity experiment, and it gets
-the same treatment: reported as underpowered, not dressed up as a null.
+**This is unmeasurable, not null.** With 6 events the test cannot separate "text carries nothing
+the balance sheet lacks" from "the test has no power" — and those are different claims. It is the
+same situation as the 72-row first-appearance cohort in the unseen-entity experiment, so it gets
+the same treatment: **insufficient evidence, not negative evidence.**
 
 The power problem is **structural, not fixable by tuning**. Coverage is 50 of ~4,350 banks, all in
 the >$10B band — whose base rate is **1.27%** against the panel's 5.62%, because the largest banks
@@ -503,20 +510,27 @@ simultaneously the best-instrumented and the *least eventful* part of the panel.
 training-window minimum from 12 quarters to 6 (reported in the run output, not applied silently)
 took the event count from 3 to 6. There is no configuration that gets it to a number worth trusting.
 
-### Verdict: KILLED — and the reason inverts the usual argument
+### Verdict: PARKED — untestable on public data
 
-All four flags are **KILLED**, on coverage power rather than on a demonstrated null
-([`reports/text_verdicts.csv`](reports/text_verdicts.csv)).
+All four flags are **PARKED**, not killed
+([`reports/text_verdicts.csv`](reports/text_verdicts.csv)). KILL is reserved for *measured and
+found wanting*; this was never measurable here.
 
-The framing worth carrying: text's value is supposed to be **coverage where the structured data is
-blind**. On public filings the opposite holds — text exists precisely for the banks whose balance
-sheets are already richest and whose outcomes are rarest. Inside a bank, the asymmetry reverses:
-call transcripts and support tickets cover the accounts where warehouse detail is thinnest, and the
-same experiment would be worth re-running there. **The negative result is about the public-data
-coverage geometry, not about text as a modality.**
+> The extraction pipeline works (836 filings, 0 errors), but **coverage inverts the thesis**:
+> public filings exist only for the ~50 largest banks, precisely where structured data is richest
+> and events are rarest (base rate **1.27%** vs **5.62%** panel-wide). Incremental AUC **+0.0022**
+> on **472 rows / 6 events** is unmeasurable, not null. Testing whether text adds value *where
+> structured data is blind* requires proprietary transcripts covering the uninstrumented part of
+> the book.
 
-What did work and is reusable: a hashed, versioned prompt with full response caching; a timing
-guard that treats a text feature's date differently from a balance-sheet feature's (833 documents
+That asymmetry is the transferable point. Text is supposed to earn its place by covering what the
+warehouse cannot see. On public filings it does the opposite — it covers exactly the banks already
+best described by their balance sheets. Inside a bank the asymmetry reverses: call transcripts and
+support tickets reach the accounts where structured detail is thinnest, and this is the experiment
+worth re-running there, with the pipeline as-is.
+
+What is reusable regardless of the verdict: a hashed, versioned prompt with full response caching;
+a timing guard that dates a text feature differently from a balance-sheet feature (833 documents
 checked, 0 violations, 3 late-quarter filings dropped); and a validation step that caught two
 unreliable flags *before* anything downstream was built on them.
 
@@ -609,10 +623,15 @@ src/drawdown_radar/
   events** (median 3 banks per test quarter), because the 5-observation history requirement means
   almost no bank is genuinely new. Its 0.000 lift is a small-sample artifact, not evidence.
   A dataset with more de novo entry would test this properly.
-- **The unstructured leg is built and killed, but not cleanly.** See
-  [the text section](#the-unstructured-leg-sec-8-k-text--killed-on-coverage-power): two of four
-  extracted flags validate poorly, and the incremental test has 6 events, so "no lift" is not
-  separable from "no power". The verdict rests on coverage geometry, not on a demonstrated null.
+- **The unstructured leg is built but untestable here, so it is parked rather than killed.** See
+  [the text section](#the-unstructured-leg-sec-8-k-text--parked-untestable-on-public-data): the
+  incremental test has 6 events, which is insufficient evidence rather than negative evidence.
+  Resolving it needs proprietary text covering the part of the book public filings never reach.
+- **The extraction accuracy figures rest on a single rater's 30 labels.** Inter-rater reliability
+  is the ceiling on the low-precision flags, so the weak numbers there may reflect construct
+  ambiguity — "deposit pressure" is a genuinely fuzzy label, and I disagreed with the extractor on
+  cases a second careful reader might well have scored the extractor's way — rather than extractor
+  error. A second labeller on the same 30 documents would separate the two.
 - **What I would do differently with warehouse-grade data:** predict at the account level on a
   weekly horizon; use transaction-level flow features (payroll ceasing, a payment processor
   switching, inbound wire concentration) rather than balance-sheet ratios; and treat "which

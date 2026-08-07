@@ -396,3 +396,50 @@ Decision: report the accuracy prominently and **carry the caveat into the verdic
 this noisy, a null incremental result cannot distinguish "text carries no signal beyond the balance
 sheet" from "this extractor is too noisy to detect it." Reporting a clean KILL without that
 distinction would be overclaiming. The incremental test still runs — it is just not the last word.
+
+---
+
+## Phase 9 — closeout
+
+**2026-08-07 · Verdict change: the text signals go from KILLED to PARKED.**
+No new experiment — a re-reading of the evidence standard already applied elsewhere in this repo.
+
+KILL means *measured and found wanting*. The text incremental test produced +0.0022 AUC on **472
+rows containing 6 events**, which is not a measurement. In the unseen-entity experiment I refused to
+read a 72-row / 5-event cohort as evidence and said so in the README; applying a stricter standard
+to my own null result than to my own positive one would be inconsistent in the direction that
+flatters the writeup.
+
+The distinction is not pedantic — it changes what a reader should do next. "KILLED" says the
+modality was tested and does not work, and closes the question. "PARKED" says the question is still
+open and names what would answer it. Only the second is true here.
+
+Recorded verdict: *PARKED — untestable on public data. Extraction pipeline works (836 filings, 0
+errors), but coverage inverts the thesis: public filings exist only for the ~50 largest banks,
+precisely where structured data is richest and events are rarest (base rate 1.27% vs 5.62%
+panel-wide). Incremental AUC +0.0022 on 472 rows / 6 events is unmeasurable, not null. Testing
+whether text adds value where structured data is blind requires proprietary transcripts covering
+the uninstrumented part of the book.*
+
+Applied in three places, all of which regenerate from the registry rather than being hand-edited:
+`pipeline.apply_text_verdicts`, `reports/signal_scorecards.md`, and the README's generated table.
+
+**2026-08-07 · Structured ablations were about to ablate the text signals (bug, caught by the
+freeze run).** `ablation.standalone` iterated the whole registry, so a full `make all` would have
+fitted a model on all-NaN text columns (the base panel carries placeholders) and then handed
+structured verdicts to signals never measured on structured terms — colliding with the verdicts
+`run_text` sets on the covered subset. Fixed with an explicit `SKIP_FAMILIES` on the ablation pass
+plus a defensive de-duplication in the scorecard merge. 31 of 35 signals are ablatable; the 4 text
+signals are judged only where they have coverage.
+
+**2026-08-07 · Self-correction left visible in the README.** The binned-logit result falsified my
+own earlier explanation of the out-of-time collapse. Rather than quietly replacing the wrong
+sentence, the README now shows the original claim next to the result that refuted it, plus the
+deployment corollary: a fully-binned logit keeps most of the GBM's regime robustness while
+retaining readable signed coefficients — the right trade when the field has to see the weights.
+
+**2026-08-07 · Freeze checks.** `make all` end to end from the cached state (pull → build →
+backtest → falsify → scorecards → score → test); full pytest; ruff on src and tests; 21/21 numeric
+README claims re-verified against generated artifacts; 19/19 relative README paths resolve and all
+10 figures are tracked; `git ls-files data/` confirms only the 3 hand-authored inputs are committed
+(16 KB) against ~880 MB of correctly-ignored caches.
