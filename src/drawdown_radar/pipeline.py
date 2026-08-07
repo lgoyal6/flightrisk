@@ -127,6 +127,8 @@ def run_scorecards() -> None:
         )
         keep = [c for c in cards.columns if c in t.columns]
         cards = pd.concat([cards, t[keep]], ignore_index=True)
+        # Defensive: one row per signal even if an ablation pass ever emits a text row.
+        cards = cards.drop_duplicates(subset="signal", keep="last").reset_index(drop=True)
     headline = None
     mp = REPORTS / "backtest_models.csv"
     if mp.exists():
@@ -274,14 +276,16 @@ def run_text(verbose: bool = True) -> pd.DataFrame:
 def apply_text_verdicts(verbose: bool = True) -> pd.DataFrame:
     """Record the text signals' verdict and *why*, then persist it to the registry.
 
-    The verdict is KILL, but on a **coverage-power** argument rather than a demonstrated null,
-    and the distinction is the point. Two of the four flags validate poorly (precision 0.40 and
-    0.46 against 30 blind hand labels), and the evaluation window yields only **6 events** — the
-    covered banks are the 50 largest, whose base rate is 1.27% against the panel's 5.62%, so the
-    covered subset is simultaneously the best-instrumented and the least eventful slice of the
-    panel. An incremental-lift test on 6 events cannot separate "text carries nothing the balance
-    sheet lacks" from "this test has no power". Claiming a clean null here would be the same error
-    as reading the 72-row first-appearance cohort in the unseen-entity experiment as a result.
+    The verdict is **PARK, not KILL**. KILL is reserved for "measured and found wanting"; 472 rows
+    containing 6 events is *structurally unmeasurable on this panel* — insufficient evidence, not
+    negative evidence. That is the same standard applied to the 72-row first-appearance cohort in
+    the unseen-entity experiment, and applying it inconsistently would be the more interesting
+    result dressed up as the cleaner one.
+
+    Coverage inverts the thesis: public filings exist only for the ~50 largest banks, precisely
+    where structured data is richest and events are rarest (base rate 1.27% against 5.62%
+    panel-wide). Two of four flags also validate poorly (precision 0.40 / 0.46 against 30 blind
+    hand labels), which compounds the attenuation.
     """
     from .registry import REGISTRY, Status, save_evidence
 
@@ -306,7 +310,7 @@ def apply_text_verdicts(verbose: bool = True) -> pd.DataFrame:
             continue
         src = flag_for.get(name)
         prec = float(acc.loc[src, "precision"]) if src in acc.index else float("nan")
-        sig.status = Status.KILLED
+        sig.status = Status.PARKED
         sig.evidence = {
             "standalone_auc_within_q": float(solo.loc[name, "standalone_auc_within_q"])
             if name in solo.index
@@ -318,17 +322,24 @@ def apply_text_verdicts(verbose: bool = True) -> pd.DataFrame:
             "incremental_auc_full_set": d_auc,
             "n_events_in_test": n_events,
             "verdict_reason": (
-                f"KILLED on coverage power, not on a demonstrated null. Extraction precision "
-                f"{prec:.2f} against 30 blind hand labels, and the covered evaluation window has "
-                f"only {n_events} events (50 of ~4,350 banks, all >$10B, base rate 1.27% vs 5.62% "
-                f"panel-wide). Incremental AUC {d_auc:+.4f} is indistinguishable from zero at that "
-                f"n, so this test cannot separate redundancy from lack of power."
+                "PARKED — untestable on public data. The extraction pipeline works (836 filings, "
+                "0 errors), but coverage inverts the thesis: public filings exist only for the "
+                "~50 largest banks, precisely where structured data is richest and events are "
+                "rarest (base rate 1.27% vs 5.62% panel-wide). Incremental AUC "
+                f"{d_auc:+.4f} on {int(inc['n_rows'].iloc[0])} rows / {n_events} events is "
+                "unmeasurable, not null. "
+                f"Extraction precision for this flag is {prec:.2f} against 30 blind hand labels. "
+                "Testing whether text adds value where structured data is blind requires "
+                "proprietary transcripts covering the uninstrumented part of the book."
             ),
         }
-        rows.append({"signal": name, "status": "KILLED", **sig.evidence})
+        rows.append({"signal": name, "status": "PARKED", **sig.evidence})
     save_evidence()
     out = pd.DataFrame(rows)
     out.to_csv(REPORTS / "text_verdicts.csv", index=False)
     if verbose:
-        print(f"text verdicts: {len(out)} signals KILLED (coverage power, n_events={n_events})")
+        print(
+            f"text verdicts: {len(out)} signals PARKED "
+            f"(untestable on public data, n_events={n_events})"
+        )
     return out

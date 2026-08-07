@@ -29,11 +29,22 @@ from .registry import REGISTRY
 METRIC = "lift_at_5pct"
 SECONDARY = "precision_at_5pct"
 
+# Text signals are judged separately, in `pipeline.run_text`, on the covered >$10B subset. They
+# are all-NaN on the full panel (the base matrix has no text), so ablating them here would fit a
+# model on an empty column and then hand a structured verdict to a signal that was never measured
+# on structured terms.
+SKIP_FAMILIES = {"unstructured-text"}
+
+
+def _ablatable() -> list[str]:
+    return [n for n, s in REGISTRY.items() if s.family not in SKIP_FAMILIES]
+
 
 def standalone(data: pd.DataFrame, verbose: bool = True) -> pd.DataFrame:
     """Rank banks using one signal at a time."""
     rows = []
-    for name, sig in REGISTRY.items():
+    for name in _ablatable():
+        sig = REGISTRY[name]
         preds = run_spec(data, Spec(f"solo:{name}", "histgb", [name]))
         if preds.empty:
             continue
@@ -89,7 +100,7 @@ def standalone_severe(data: pd.DataFrame, verbose: bool = True) -> pd.DataFrame:
     read on funding fragility, which belongs in the scorecard's stability column.
     """
     rows = []
-    for name in REGISTRY:
+    for name in _ablatable():
         preds = run_spec(data, Spec(f"solo10:{name}", "histgb", [name]), label="label_severe")
         if preds.empty:
             continue
