@@ -1,0 +1,7 @@
+cert,quarter,name,reason,verified_by
+34069,2021Q4,WILMINGTON TRUST NA,"Intra-HC book transfer: M&T Bank Corp moved the deposit book to M&T Bank NA while the Wilmington Trust charter survived as a trust-only entity, so no exit record exists to catch it automatically. -99.9% is a bookkeeping move, not an outflow.",manual-review
+13718,2017Q3,WELLS FARGO BANK NW NA,"Intra-HC consolidation of the Northwest charter into Wells Fargo Bank NA (completed 2018); deposits transferred to an affiliate.",manual-review
+23702,2016Q2,CHASE BANK USA NATIONAL ASSN,"Intra-HC consolidation: JPMorgan folded its Delaware credit-card bank into JPMorgan Chase Bank NA.",manual-review
+33316,2022Q2,ANZ GUAM INC,"Divestiture: ANZ sold its Guam and Saipan retail operations to Bank of Hawaii in 2022. Sale of a book, not customer flight.",manual-review
+33316,2022Q4,ANZ GUAM INC,"Second leg of the same 2022 ANZ Guam divestiture.",manual-review
+35237,2018Q2,JOHN DEERE FINANCIAL FSB,"Captive-finance thrift: funding shifted to the parent's own debt issuance rather than depositor withdrawal.",manual-review
