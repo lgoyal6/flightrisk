@@ -254,13 +254,26 @@ Python 3.12 (pinned via `uv`; 3.14 is the system default but lacks some wheels),
    adding predictive power) but it is a caveat, and it will be stated in Limitations rather
    than buried.
 
-## 10. Phases
+## 10. Phases — all complete
 
 1. ✅ Verify API, fields, coverage → this document
-2. **Data pull + labels + base rates → show numbers before any model** ← next
-3. Sanity EDA · 4. Baselines · 5. Structured candidates · 6. Walk-forward
-7. EDGAR extraction + validation set · 8. Incremental test · 9. Scorecards
-10. CLI polish · 11. Report
+2. ✅ Data pull + labels + base rates (shown before any model was fitted)
+3. ✅ Sanity EDA · 4. ✅ Baselines · 5. ✅ Structured candidates · 6. ✅ Walk-forward
+7. ✅ EDGAR extraction + 30-doc validation set · 8. ✅ Incremental test · 9. ✅ Scorecards
+10. ✅ CLI polish · 11. ✅ Report
 
-Note: per standing preference, I will not run `git commit`/`push`. I'll keep the tree
-verified and hand over suggested commit boundaries for the small-and-often history.
+Two phases went differently than planned, and the differences are documented rather than
+smoothed over:
+
+* **§4's unstructured leg was built and KILLED** — but on *coverage power*, not on a
+  demonstrated null. Two of four extracted flags validate poorly (precision 0.40 / 0.46
+  against 30 blind hand labels), and the covered evaluation window contains 6 events, so
+  the null cannot be separated from a lack of power. See the README's text section.
+* **Two falsification experiments were added** beyond this plan (`drawdown-radar falsify`),
+  and one of them **corrected a claim an earlier draft of the README made** about why the
+  linear model collapses out-of-time. See EXPERIMENTS.md phase 7.
+
+Retrospective on this plan: §1's field verification and §9's open questions were the two
+highest-value sections. Every open question got a measured answer, and three of the five
+turned out to matter (seasonality was real but secondary; the size skew forced the
+stratified alert list; the merger-hindsight caveat survived into Limitations).
