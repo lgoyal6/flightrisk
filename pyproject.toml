@@ -1,0 +1,37 @@
+[project]
+name = "drawdown-radar"
+version = "0.1.0"
+description = "Leading indicators of quarterly bank deposit drawdown, with a signal graduation framework."
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.2",
+    "pyarrow>=15",
+    "requests>=2.31",
+    "scikit-learn>=1.4",
+    "matplotlib>=3.8",
+    "pyyaml>=6",
+    "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+drawdown-radar = "drawdown_radar.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
