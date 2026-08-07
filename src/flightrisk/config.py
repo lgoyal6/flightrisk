@@ -6,6 +6,7 @@ be >=99% populated across 2015Q1-2026Q1. See PLAN.md section 1.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 # ---------------------------------------------------------------- paths
@@ -25,8 +26,11 @@ FDIC_API = "https://api.fdic.gov/banks"
 FDIC_DICT_URL = "https://api.fdic.gov/banks/docs/risview_properties.yaml"
 SEC_SUBMISSIONS = "https://data.sec.gov/submissions"
 SEC_TICKERS = "https://www.sec.gov/files/company_tickers.json"
-# SEC requires a descriptive UA with contact info.
-SEC_UA = "flightrisk research (laksh.g@gmicloud.ai)"
+# SEC requires a descriptive User-Agent carrying a real contact address, and asks that you
+# identify yourself rather than reuse someone else's. Override it with FLIGHTRISK_CONTACT if
+# you clone this -- the default is only here so the pipeline runs out of the box.
+SEC_CONTACT = os.environ.get("FLIGHTRISK_CONTACT", "lakshgoyal06@gmail.com")
+SEC_UA = f"flightrisk research ({SEC_CONTACT})"
 
 API_PAGE_LIMIT = 10_000  # hard cap on both /financials and /institutions
 

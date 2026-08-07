@@ -94,6 +94,7 @@ is a much blunter instrument than a warehouse of daily balances. See
 
 ```bash
 make setup                      # venv + install
+export FLIGHTRISK_CONTACT=you@example.com   # SEC asks that you identify yourself in the UA
 flightrisk pull                 # fetch + cache FDIC data to data/raw/ (re-runs offline)
 flightrisk build                # labels, exclusion audit, as-of audit, base rates, figures
 flightrisk backtest             # baselines, models, leakage checks, out-of-time, ablations

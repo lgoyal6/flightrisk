@@ -18,7 +18,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import re
+import shutil
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from html.parser import HTMLParser
@@ -31,7 +33,10 @@ from ..config import RAW
 PROMPT_PATH = Path(__file__).parent / "prompt_v1.md"
 PROMPT_VERSION = "v1"
 EXTRACTION_MODEL = "haiku"  # resolves to claude-haiku-4-5 in the CLI
-CLAUDE_BIN = "/Users/lakshgoyal/.local/bin/claude"
+# Resolved from PATH, not hardcoded: an absolute path baked in here only exists on the machine
+# that wrote it, so a cloner running `flightrisk text` would crash on it. Override with
+# FLIGHTRISK_CLAUDE_BIN if the binary is somewhere unusual.
+CLAUDE_BIN = os.environ.get("FLIGHTRISK_CLAUDE_BIN") or shutil.which("claude") or "claude"
 LLM_CACHE = RAW / "llm"
 MAX_DOC_CHARS = 18_000  # press releases are long; deposit commentary is early and in the tables
 
