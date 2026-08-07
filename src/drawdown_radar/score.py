@@ -180,6 +180,13 @@ def build_alerts(quarter: str, top_n: dict | None = None) -> pd.DataFrame:
                     "score": round(float(r["score"]), 5),
                     "percentile_in_stratum": round(float(r["percentile_in_stratum"]), 1),
                     "top_signals": [c for c, _ in top3],
+                    # The raw feature values behind the reason string, so the artifact is
+                    # self-auditing: `tests/test_reasons.py` checks the directional wording
+                    # against these signs rather than trusting the prose.
+                    "top_signal_values": {
+                        c: (None if pd.isna(r.get(c)) else round(float(r.get(c)), 6))
+                        for c, _ in top3
+                    },
                     "reason": _reason(r, top3),
                 }
             )
