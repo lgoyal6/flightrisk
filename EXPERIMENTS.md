@@ -123,7 +123,7 @@ Test: rebuild every feature from a panel truncated at Q and require values at Q 
 bit-identical to the full-panel build. Behavioural, not a code review — a centered window, a
 negative shift, or a full-sample statistic all change when the future is removed.
 Result: 31 signals x 5 cutoffs, **764,398 row-comparisons, 0 mismatches**.
-Decision: wired into `drawdown-radar build`, so it runs on every execution rather than on
+Decision: wired into `flightrisk build`, so it runs on every execution rather than on
 request.
 
 **2026-08-06 · Lags via `groupby().shift()` vs an explicit quarter-index join.**

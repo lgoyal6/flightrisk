@@ -1,4 +1,4 @@
-"""drawdown-radar CLI. The pipeline is these commands, not a notebook."""
+"""flightrisk CLI. The pipeline is these commands, not a notebook."""
 
 from __future__ import annotations
 

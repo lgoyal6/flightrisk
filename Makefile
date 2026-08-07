@@ -1,5 +1,5 @@
 PY := .venv/bin/python
-CLI := $(PY) -m drawdown_radar.cli
+CLI := $(PY) -m flightrisk.cli
 
 .PHONY: help setup pull build backtest falsify text scorecards score test lint all
 
@@ -22,7 +22,10 @@ backtest:  ## walk-forward backtest, leakage checks, out-of-time, ablations
 falsify:  ## the two falsification experiments (recover-the-logit, unseen-entity)
 	$(CLI) falsify
 
-text:  ## SEC 8-K extraction + incremental-lift test over the graduated structured set
+# Deliberately NOT part of `all`: this fetches ~836 documents from SEC EDGAR and makes ~836
+# LLM calls. Both are cached, so a re-run is free, but a first run is not -- `all` should never
+# silently spend network and model budget. Run it explicitly.
+text:  ## SEC 8-K extraction + incremental-lift test (NOT in `all`: hits EDGAR + an LLM)
 	$(CLI) text
 
 scorecards:  ## regenerate signal graduation scorecards
@@ -38,4 +41,4 @@ lint:  ## ruff check + format check
 	$(PY) -m ruff check src tests
 	$(PY) -m ruff format --check src tests
 
-all: pull build backtest falsify scorecards score test  ## full pipeline from a cold start
+all: pull build backtest falsify scorecards score test  ## full pipeline (excludes `text`; see above)

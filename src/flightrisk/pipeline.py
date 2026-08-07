@@ -13,7 +13,7 @@ from .config import PROCESSED, REPORTS
 def _dataset() -> pd.DataFrame:
     p = PROCESSED / "dataset.parquet"
     if not p.exists():
-        raise FileNotFoundError("Run `drawdown-radar build` first.")
+        raise FileNotFoundError("Run `flightrisk build` first.")
     return pd.read_parquet(p)
 
 
@@ -102,7 +102,7 @@ def run_backtest(skip_ablations: bool = False) -> None:
 def run_scorecards() -> None:
     path = REPORTS / "ablations.csv"
     if not path.exists():
-        raise FileNotFoundError("Run `drawdown-radar backtest` first (it writes ablations.csv).")
+        raise FileNotFoundError("Run `flightrisk backtest` first (it writes ablations.csv).")
     abl = pd.read_csv(path)
     cards = scorecards.apply_verdicts(abl)
     # Text signals are judged by `run_text` (they have no structured ablation rows), so fold their

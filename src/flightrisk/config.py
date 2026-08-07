@@ -26,7 +26,7 @@ FDIC_DICT_URL = "https://api.fdic.gov/banks/docs/risview_properties.yaml"
 SEC_SUBMISSIONS = "https://data.sec.gov/submissions"
 SEC_TICKERS = "https://www.sec.gov/files/company_tickers.json"
 # SEC requires a descriptive UA with contact info.
-SEC_UA = "drawdown-radar research (laksh.g@gmicloud.ai)"
+SEC_UA = "flightrisk research (laksh.g@gmicloud.ai)"
 
 API_PAGE_LIMIT = 10_000  # hard cap on both /financials and /institutions
 

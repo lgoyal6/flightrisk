@@ -19,8 +19,8 @@ import re
 import pandas as pd
 import pytest
 
-from drawdown_radar.config import REPORTS
-from drawdown_radar.score import PHRASING, _reason
+from flightrisk.config import REPORTS
+from flightrisk.score import PHRASING, _reason
 
 DIRECTIONAL = {k: v for k, v in PHRASING.items() if isinstance(v, tuple)}
 
@@ -99,7 +99,7 @@ def test_the_bny_mellon_case_specifically():
 
 def test_every_signal_that_can_appear_in_an_alert_has_phrasing():
     """A signal with no template silently contributes nothing to the reason string."""
-    from drawdown_radar.backtest import structured_features
+    from flightrisk.backtest import structured_features
 
     missing = [f for f in structured_features() if f not in PHRASING]
     assert not missing, f"signals in the model with no reason-string template: {missing}"
@@ -113,7 +113,7 @@ def test_reason_falls_back_rather_than_crashing_on_missing_values():
 def _alerts() -> list[dict]:
     path = REPORTS / "alerts_2026Q1.json"
     if not path.exists():
-        pytest.skip("run `drawdown-radar score --quarter 2026Q1` first")
+        pytest.skip("run `flightrisk score --quarter 2026Q1` first")
     return json.loads(path.read_text())["alerts"]
 
 

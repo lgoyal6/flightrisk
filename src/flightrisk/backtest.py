@@ -245,7 +245,7 @@ def _score_fold(tr: pd.DataFrame, te: pd.DataFrame, spec: Spec, label: str) -> p
         if not spec.features:
             raise ValueError(
                 f"spec '{spec.name}' has an empty feature list -- the registry was probably "
-                f"not populated (import drawdown_radar.signals)"
+                f"not populated (import flightrisk.signals)"
             )
         model = make_model(spec.kind, features=spec.features)
         model.fit(tr[spec.features], tr[label])

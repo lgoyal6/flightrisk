@@ -5,14 +5,14 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from drawdown_radar.config import (
+from flightrisk.config import (
     next_quarter,
     quarter_index,
     quarter_range,
     quarter_to_repdte,
     repdte_to_quarter,
 )
-from drawdown_radar.labels import _clean_id, build_labels, merger_events
+from flightrisk.labels import _clean_id, build_labels, merger_events
 
 
 def _panel(rows: list[dict]) -> pd.DataFrame:

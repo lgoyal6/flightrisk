@@ -1,5 +1,5 @@
 [project]
-name = "drawdown-radar"
+name = "flightrisk"
 version = "0.1.0"
 description = "Leading indicators of quarterly bank deposit drawdown, with a signal graduation framework."
 requires-python = ">=3.11"
@@ -17,7 +17,7 @@ dependencies = [
 dev = ["pytest>=8", "ruff>=0.5"]
 
 [project.scripts]
-drawdown-radar = "drawdown_radar.cli:app"
+flightrisk = "flightrisk.cli:app"
 
 [build-system]
 requires = ["setuptools>=68"]

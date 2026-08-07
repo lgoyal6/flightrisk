@@ -1,4 +1,4 @@
-# drawdown-radar — PLAN
+# flightrisk — PLAN
 
 **Goal.** One quarter ahead, rank US banks by probability of a significant deposit
 drawdown, using only information observable as of the prior quarter. Public analog for
@@ -223,7 +223,7 @@ isn't moved to fit the outcome):
 ## 8. Repo layout
 
 ```
-src/drawdown_radar/{data,labels,registry,backtest,evaluate,cli}.py
+src/flightrisk/{data,labels,registry,backtest,evaluate,cli}.py
                    signals/      # one module per candidate
                    extraction/   # EDGAR fetch + versioned LLM prompts
 tests/            # labels, as-of, fold boundaries, mergers, registry, alert schema
@@ -269,7 +269,7 @@ smoothed over:
   demonstrated null. Two of four extracted flags validate poorly (precision 0.40 / 0.46
   against 30 blind hand labels), and the covered evaluation window contains 6 events, so
   the null cannot be separated from a lack of power. See the README's text section.
-* **Two falsification experiments were added** beyond this plan (`drawdown-radar falsify`),
+* **Two falsification experiments were added** beyond this plan (`flightrisk falsify`),
   and one of them **corrected a claim an earlier draft of the README made** about why the
   linear model collapses out-of-time. See EXPERIMENTS.md phase 7.
 

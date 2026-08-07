@@ -99,7 +99,7 @@ def check_integrity() -> None:
     # importing `signals` leaves REGISTRY empty and nothing complains. Fail loudly instead.
     if not REGISTRY:
         raise ValueError(
-            "registry is empty -- import drawdown_radar.signals before calling check_integrity(); "
+            "registry is empty -- import flightrisk.signals before calling check_integrity(); "
             "an empty registry makes every feature list silently empty"
         )
     for s in REGISTRY.values():

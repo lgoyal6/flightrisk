@@ -30,6 +30,10 @@ cutoff,signal,rows_compared,mismatches
 2018Q2,noninterest_dep_share_chg_4q,5610,0
 2018Q2,prior_drawdown_1q,5610,0
 2018Q2,prior_drawdown_count_4q,5610,0
+2018Q2,txt_deposit_pressure,5610,0
+2018Q2,txt_funding_tone,5610,0
+2018Q2,txt_outflow_language,5610,0
+2018Q2,txt_inflow_language,5610,0
 2020Q4,dep_growth_1q,5067,0
 2020Q4,dep_growth_decel_4q,5067,0
 2020Q4,dep_growth_vol_4q,5067,0
@@ -61,6 +65,10 @@ cutoff,signal,rows_compared,mismatches
 2020Q4,noninterest_dep_share_chg_4q,5067,0
 2020Q4,prior_drawdown_1q,5067,0
 2020Q4,prior_drawdown_count_4q,5067,0
+2020Q4,txt_deposit_pressure,5067,0
+2020Q4,txt_funding_tone,5067,0
+2020Q4,txt_outflow_language,5067,0
+2020Q4,txt_inflow_language,5067,0
 2022Q4,dep_growth_1q,4773,0
 2022Q4,dep_growth_decel_4q,4773,0
 2022Q4,dep_growth_vol_4q,4773,0
@@ -92,6 +100,10 @@ cutoff,signal,rows_compared,mismatches
 2022Q4,noninterest_dep_share_chg_4q,4773,0
 2022Q4,prior_drawdown_1q,4773,0
 2022Q4,prior_drawdown_count_4q,4773,0
+2022Q4,txt_deposit_pressure,4773,0
+2022Q4,txt_funding_tone,4773,0
+2022Q4,txt_outflow_language,4773,0
+2022Q4,txt_inflow_language,4773,0
 2023Q2,dep_growth_1q,4714,0
 2023Q2,dep_growth_decel_4q,4714,0
 2023Q2,dep_growth_vol_4q,4714,0
@@ -123,6 +135,10 @@ cutoff,signal,rows_compared,mismatches
 2023Q2,noninterest_dep_share_chg_4q,4714,0
 2023Q2,prior_drawdown_1q,4714,0
 2023Q2,prior_drawdown_count_4q,4714,0
+2023Q2,txt_deposit_pressure,4714,0
+2023Q2,txt_funding_tone,4714,0
+2023Q2,txt_outflow_language,4714,0
+2023Q2,txt_inflow_language,4714,0
 2025Q2,dep_growth_1q,4494,0
 2025Q2,dep_growth_decel_4q,4494,0
 2025Q2,dep_growth_vol_4q,4494,0
@@ -154,3 +170,7 @@ cutoff,signal,rows_compared,mismatches
 2025Q2,noninterest_dep_share_chg_4q,4494,0
 2025Q2,prior_drawdown_1q,4494,0
 2025Q2,prior_drawdown_count_4q,4494,0
+2025Q2,txt_deposit_pressure,4494,0
+2025Q2,txt_funding_tone,4494,0
+2025Q2,txt_outflow_language,4494,0
+2025Q2,txt_inflow_language,4494,0

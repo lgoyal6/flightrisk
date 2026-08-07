@@ -10,9 +10,9 @@ from __future__ import annotations
 import pandas as pd
 import pytest
 
-from drawdown_radar.config import quarter_index
-from drawdown_radar.extraction import extract, timing
-from drawdown_radar.extraction.edgar import narrative_score
+from flightrisk.config import quarter_index
+from flightrisk.extraction import extract, timing
+from flightrisk.extraction.edgar import narrative_score
 
 
 def _filings(rows: list[dict]) -> pd.DataFrame:

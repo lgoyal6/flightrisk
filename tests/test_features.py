@@ -6,9 +6,9 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from drawdown_radar.features import add_lags, macro_deposit_growth, prepare
-from drawdown_radar.registry import Status
-from drawdown_radar.scorecards import _verdict
+from flightrisk.features import add_lags, macro_deposit_growth, prepare
+from flightrisk.registry import Status
+from flightrisk.scorecards import _verdict
 
 
 # --------------------------------------------------------------- lags

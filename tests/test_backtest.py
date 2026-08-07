@@ -6,10 +6,10 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from drawdown_radar import evaluate
-from drawdown_radar.backtest import MIN_TRAIN_QUARTERS, Spec, _folds, structured_features
-from drawdown_radar.config import quarter_index, quarter_range
-from drawdown_radar.registry import REGISTRY, Status, check_integrity
+from flightrisk import evaluate
+from flightrisk.backtest import MIN_TRAIN_QUARTERS, Spec, _folds, structured_features
+from flightrisk.config import quarter_index, quarter_range
+from flightrisk.registry import REGISTRY, Status, check_integrity
 
 
 # --------------------------------------------------------------- fold boundaries
@@ -72,7 +72,7 @@ def test_structured_feature_set_excludes_dumb_and_macro():
 
 def test_spec_with_no_features_is_rejected_loudly():
     """An empty feature list means the registry was not imported -- fail, don't fit on nothing."""
-    from drawdown_radar.backtest import _score_fold
+    from flightrisk.backtest import _score_fold
 
     df = pd.DataFrame(
         {
@@ -138,7 +138,7 @@ def test_size_stratum_boundaries():
 
 def test_shuffled_labels_preserve_the_per_quarter_base_rate():
     """Shuffling globally would also destroy the regime structure and make the test too easy."""
-    from drawdown_radar.audit import shuffled_label_check
+    from flightrisk.audit import shuffled_label_check
 
     rng = np.random.default_rng(1)
     df = pd.DataFrame(

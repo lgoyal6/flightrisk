@@ -197,12 +197,12 @@ def pull_all(refresh: bool = False) -> tuple[pd.DataFrame, pd.DataFrame]:
 def load_panel() -> pd.DataFrame:
     p = RAW / "financials_panel.parquet"
     if not p.exists():
-        raise FileNotFoundError("Run `drawdown-radar pull` first.")
+        raise FileNotFoundError("Run `flightrisk pull` first.")
     return pd.read_parquet(p)
 
 
 def load_institutions() -> pd.DataFrame:
     p = RAW / "institutions.parquet"
     if not p.exists():
-        raise FileNotFoundError("Run `drawdown-radar pull` first.")
+        raise FileNotFoundError("Run `flightrisk pull` first.")
     return pd.read_parquet(p)
