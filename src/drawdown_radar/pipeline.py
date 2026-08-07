@@ -118,3 +118,114 @@ def run_scorecards() -> None:
     counts = cards["status"].value_counts().to_dict()
     print(f"scorecards written: {counts}")
     figures.signal_effect_figure(cards)
+
+
+def run_text(verbose: bool = True) -> pd.DataFrame:
+    """Does the text modality add INCREMENTAL lift over the graduated structured set?
+
+    Evaluated inside the >$10B stratum on the **covered subset only**. Both arms are fitted and
+    scored on identical rows, so the comparison isolates the text features rather than the
+    difference between two populations -- the mistake that would make text look good simply
+    because covered banks are larger.
+
+    Coverage is 50 banks of ~4,350, so within-quarter top-k is thin (k=20% is ~10 alerts). The
+    headline here is within-quarter AUC, which is stable at n=50/quarter; lift@20% is reported
+    alongside and read with that caveat.
+    """
+    from .backtest import Spec, run_spec
+    from .extraction import timing, validate
+    from .registry import REGISTRY, Status
+
+    df = _dataset()
+    ext = validate.load_extractions()
+    if "error" in ext:
+        ext = ext[ext["error"].isna()]
+
+    text_rows = timing.to_feature_rows(ext)
+    if text_rows.empty:
+        raise RuntimeError("no eligible text rows survived the timing guard")
+
+    # `build_matrix` emits all-NaN placeholders for the text signals (the base panel has no
+    # text), so drop them before merging the real values in under the same names -- otherwise
+    # pandas suffixes both sides to _x/_y and the model silently trains on the empty copy.
+    placeholders = [c for c in text_rows.columns if c in df.columns and c not in ("cert", "qidx")]
+    df = df.drop(columns=placeholders)
+    merged = df.merge(text_rows, on=["cert", "qidx"], how="left")
+    covered = merged[merged["n_docs"].notna() & (merged["size_stratum"] == ">$10B")].copy()
+    if verbose:
+        print(
+            f"text feature rows: {len(text_rows)} | covered bank-quarters in >$10B: {len(covered)}"
+            f" across {covered['cert'].nunique()} banks, {covered['quarter'].nunique()} quarters"
+        )
+        print(f"  base rate on the covered subset: {100 * covered['label'].mean():.2f}%")
+
+    graduated = [
+        s.name for s in REGISTRY.values() if s.status is Status.GRADUATED and s.in_model
+    ] or bt.structured_features()
+    text_feats = [s.name for s in REGISTRY.values() if s.family == "unstructured-text"]
+
+    first_test = (
+        sorted(covered["quarter"].unique())[1] if covered["quarter"].nunique() > 1 else None
+    )
+    arms = {
+        "graduated structured only": graduated,
+        "structured + text": graduated + text_feats,
+        "text only": text_feats,
+    }
+    rows = []
+    for name, feats in arms.items():
+        preds = run_spec(covered, Spec(name, "histgb", feats), first_test=first_test)
+        if preds.empty:
+            continue
+        s = evaluate.summarize(preds)
+        per_q = evaluate.within_quarter_at_k(preds, k_frac=0.20)
+        rows.append(
+            {
+                "arm": name,
+                "n_features": len(feats),
+                "roc_auc_within_quarter": s["roc_auc_within_quarter"],
+                "precision_at_20pct": per_q["precision"].mean() if len(per_q) else float("nan"),
+                "lift_at_20pct": per_q["lift"].mean() if len(per_q) else float("nan"),
+                "base_rate": s["base_rate"],
+                "n_rows": s["n_rows"],
+                "n_events": s["n_events"],
+            }
+        )
+        if verbose:
+            print(
+                f"  {name:28s} AUC_wq {rows[-1]['roc_auc_within_quarter']:.4f}  "
+                f"lift@20% {rows[-1]['lift_at_20pct']:.3f}"
+            )
+    out = pd.DataFrame(rows)
+    if len(out) >= 2:
+        base = out[out["arm"] == "graduated structured only"].iloc[0]
+        both = out[out["arm"] == "structured + text"].iloc[0]
+        out.attrs["incremental_auc"] = (
+            both["roc_auc_within_quarter"] - base["roc_auc_within_quarter"]
+        )
+        out.attrs["incremental_lift"] = both["lift_at_20pct"] - base["lift_at_20pct"]
+        if verbose:
+            print(
+                "\n  INCREMENTAL over graduated structured set: "
+                f"AUC {out.attrs['incremental_auc']:+.4f}, "
+                f"lift@20% {out.attrs['incremental_lift']:+.3f}"
+            )
+    out.to_csv(REPORTS / "text_incremental.csv", index=False)
+
+    # Standalone lift per text flag, same protocol as every other candidate.
+    solo = []
+    for f in text_feats:
+        preds = run_spec(covered, Spec(f"solo:{f}", "histgb", [f]), first_test=first_test)
+        if preds.empty:
+            continue
+        s = evaluate.summarize(preds)
+        per_q = evaluate.within_quarter_at_k(preds, k_frac=0.20)
+        solo.append(
+            {
+                "signal": f,
+                "standalone_auc_within_q": s["roc_auc_within_quarter"],
+                "standalone_lift_20pct": per_q["lift"].mean() if len(per_q) else float("nan"),
+            }
+        )
+    pd.DataFrame(solo).to_csv(REPORTS / "text_standalone.csv", index=False)
+    return out

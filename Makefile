@@ -1,7 +1,7 @@
 PY := .venv/bin/python
 CLI := $(PY) -m drawdown_radar.cli
 
-.PHONY: help setup pull build backtest scorecards score test lint all
+.PHONY: help setup pull build backtest falsify text scorecards score test lint all
 
 help:
 	@grep -E '^[a-z-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-12s\033[0m %s\n",$$1,$$2}'
@@ -16,8 +16,14 @@ pull:  ## fetch + cache FDIC data (idempotent; re-runs hit the parquet cache)
 build:  ## labels, exclusion audit, base rates, figures
 	$(CLI) build
 
-backtest:  ## walk-forward backtest
+backtest:  ## walk-forward backtest, leakage checks, out-of-time, ablations
 	$(CLI) backtest
+
+falsify:  ## the two falsification experiments (recover-the-logit, unseen-entity)
+	$(CLI) falsify
+
+text:  ## SEC 8-K extraction + incremental-lift test over the graduated structured set
+	$(CLI) text
 
 scorecards:  ## regenerate signal graduation scorecards
 	$(CLI) scorecards
@@ -32,4 +38,4 @@ lint:  ## ruff check + format check
 	$(PY) -m ruff check src tests
 	$(PY) -m ruff format --check src tests
 
-all: pull build test  ## full pipeline from a cold start
+all: pull build backtest falsify scorecards score test  ## full pipeline from a cold start
