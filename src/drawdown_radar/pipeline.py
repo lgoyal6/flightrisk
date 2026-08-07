@@ -105,6 +105,28 @@ def run_scorecards() -> None:
         raise FileNotFoundError("Run `drawdown-radar backtest` first (it writes ablations.csv).")
     abl = pd.read_csv(path)
     cards = scorecards.apply_verdicts(abl)
+    # Text signals are judged by `run_text` (they have no structured ablation rows), so fold their
+    # verdicts in here. Order matters: `apply_verdicts` calls save_evidence(), which serialises
+    # EVERY registry entry -- so re-applying the text verdicts afterwards (and re-saving) is what
+    # keeps them from being silently reset to CANDIDATE in registry_evidence.json.
+    tv = REPORTS / "text_verdicts.csv"
+    if tv.exists():
+        apply_text_verdicts(verbose=False)
+        from .registry import REGISTRY
+
+        t = pd.read_csv(tv)
+        t = t.assign(
+            family="unstructured-text",
+            rationale=[REGISTRY[n].rationale if n in REGISTRY else "" for n in t["signal"]],
+            dumb=False,
+            standalone_lift_5pct=t["standalone_lift_20pct"],
+            incremental_lift_5pct=t["incremental_auc_full_set"],
+            stability_frac_folds=float("nan"),
+            severe_tier_lift_5pct=float("nan"),
+            reason=t["verdict_reason"],
+        )
+        keep = [c for c in cards.columns if c in t.columns]
+        cards = pd.concat([cards, t[keep]], ignore_index=True)
     headline = None
     mp = REPORTS / "backtest_models.csv"
     if mp.exists():
@@ -158,15 +180,22 @@ def run_text(verbose: bool = True) -> pd.DataFrame:
             f" across {covered['cert'].nunique()} banks, {covered['quarter'].nunique()} quarters"
         )
         print(f"  base rate on the covered subset: {100 * covered['label'].mean():.2f}%")
+        print(
+            "  training minimum relaxed 12 -> 6 quarters: the default is tuned for the "
+            "40-quarter panel and leaves only 3 events here"
+        )
 
     graduated = [
         s.name for s in REGISTRY.values() if s.status is Status.GRADUATED and s.in_model
     ] or bt.structured_features()
     text_feats = [s.name for s in REGISTRY.values() if s.family == "unstructured-text"]
 
-    first_test = (
-        sorted(covered["quarter"].unique())[1] if covered["quarter"].nunique() > 1 else None
-    )
+    # The default 12-quarter training minimum is tuned for the 40-quarter panel; on this
+    # 16-quarter coverage window it leaves 4 test quarters and 3 events. Relaxed to 6 and
+    # reported, because a null verdict from 3 events would be worthless.
+    TEXT_MIN_TRAIN = 6
+    quarters = sorted(covered["quarter"].unique())
+    first_test = quarters[TEXT_MIN_TRAIN] if len(quarters) > TEXT_MIN_TRAIN else quarters[-1]
     arms = {
         "graduated structured only": graduated,
         "structured + text": graduated + text_feats,
@@ -174,7 +203,12 @@ def run_text(verbose: bool = True) -> pd.DataFrame:
     }
     rows = []
     for name, feats in arms.items():
-        preds = run_spec(covered, Spec(name, "histgb", feats), first_test=first_test)
+        preds = run_spec(
+            covered,
+            Spec(name, "histgb", feats),
+            first_test=first_test,
+            min_train_quarters=TEXT_MIN_TRAIN,
+        )
         if preds.empty:
             continue
         s = evaluate.summarize(preds)
@@ -215,7 +249,12 @@ def run_text(verbose: bool = True) -> pd.DataFrame:
     # Standalone lift per text flag, same protocol as every other candidate.
     solo = []
     for f in text_feats:
-        preds = run_spec(covered, Spec(f"solo:{f}", "histgb", [f]), first_test=first_test)
+        preds = run_spec(
+            covered,
+            Spec(f"solo:{f}", "histgb", [f]),
+            first_test=first_test,
+            min_train_quarters=TEXT_MIN_TRAIN,
+        )
         if preds.empty:
             continue
         s = evaluate.summarize(preds)
@@ -228,4 +267,68 @@ def run_text(verbose: bool = True) -> pd.DataFrame:
             }
         )
     pd.DataFrame(solo).to_csv(REPORTS / "text_standalone.csv", index=False)
+    apply_text_verdicts(verbose=verbose)
+    return out
+
+
+def apply_text_verdicts(verbose: bool = True) -> pd.DataFrame:
+    """Record the text signals' verdict and *why*, then persist it to the registry.
+
+    The verdict is KILL, but on a **coverage-power** argument rather than a demonstrated null,
+    and the distinction is the point. Two of the four flags validate poorly (precision 0.40 and
+    0.46 against 30 blind hand labels), and the evaluation window yields only **6 events** — the
+    covered banks are the 50 largest, whose base rate is 1.27% against the panel's 5.62%, so the
+    covered subset is simultaneously the best-instrumented and the least eventful slice of the
+    panel. An incremental-lift test on 6 events cannot separate "text carries nothing the balance
+    sheet lacks" from "this test has no power". Claiming a clean null here would be the same error
+    as reading the 72-row first-appearance cohort in the unseen-entity experiment as a result.
+    """
+    from .registry import REGISTRY, Status, save_evidence
+
+    inc = pd.read_csv(REPORTS / "text_incremental.csv")
+    solo = pd.read_csv(REPORTS / "text_standalone.csv").set_index("signal")
+    acc = pd.read_csv(REPORTS / "extraction_accuracy.csv").set_index("flag")
+    n_events = int(inc["n_events"].iloc[0])
+    d_auc = float(
+        inc.loc[inc.arm == "structured + text", "roc_auc_within_quarter"].iloc[0]
+        - inc.loc[inc.arm == "graduated structured only", "roc_auc_within_quarter"].iloc[0]
+    )
+
+    flag_for = {
+        "txt_deposit_pressure": "deposit_pressure_mentioned",
+        "txt_outflow_language": "explicit_outflow_language",
+        "txt_inflow_language": "explicit_inflow_language",
+        "txt_funding_tone": "funding_concern_tone",
+    }
+    rows = []
+    for name, sig in REGISTRY.items():
+        if sig.family != "unstructured-text":
+            continue
+        src = flag_for.get(name)
+        prec = float(acc.loc[src, "precision"]) if src in acc.index else float("nan")
+        sig.status = Status.KILLED
+        sig.evidence = {
+            "standalone_auc_within_q": float(solo.loc[name, "standalone_auc_within_q"])
+            if name in solo.index
+            else None,
+            "standalone_lift_20pct": float(solo.loc[name, "standalone_lift_20pct"])
+            if name in solo.index
+            else None,
+            "extraction_precision": None if pd.isna(prec) else prec,
+            "incremental_auc_full_set": d_auc,
+            "n_events_in_test": n_events,
+            "verdict_reason": (
+                f"KILLED on coverage power, not on a demonstrated null. Extraction precision "
+                f"{prec:.2f} against 30 blind hand labels, and the covered evaluation window has "
+                f"only {n_events} events (50 of ~4,350 banks, all >$10B, base rate 1.27% vs 5.62% "
+                f"panel-wide). Incremental AUC {d_auc:+.4f} is indistinguishable from zero at that "
+                f"n, so this test cannot separate redundancy from lack of power."
+            ),
+        }
+        rows.append({"signal": name, "status": "KILLED", **sig.evidence})
+    save_evidence()
+    out = pd.DataFrame(rows)
+    out.to_csv(REPORTS / "text_verdicts.csv", index=False)
+    if verbose:
+        print(f"text verdicts: {len(out)} signals KILLED (coverage power, n_events={n_events})")
     return out

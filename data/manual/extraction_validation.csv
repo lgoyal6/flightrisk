@@ -1,0 +1,31 @@
+cert,bank,filing_date,accession,cik,label_deposit_pressure_mentioned,label_explicit_outflow_language,label_explicit_inflow_language,label_funding_concern_tone,labeller,note
+33893,RAYMOND JAMES BANK,2024-07-24,72000524000047,720005,False,False,False,0,manual-blind-read,
+913,NORTHERN TRUST CO,2022-01-20,7312422000017,73124,False,False,True,0,manual-blind-read,
+8273,UMB BANK NATIONAL ASSN,2025-07-29,95017025099619,101382,False,False,False,0,manual-blind-read,
+4297,CAPITAL ONE NATIONAL ASSN,2022-10-27,92762822000291,927628,True,False,True,1,manual-blind-read,
+4297,CAPITAL ONE NATIONAL ASSN,2024-01-25,92762824000008,927628,True,False,True,1,manual-blind-read,
+27471,AMERICAN EXPRESS NB,2024-07-19,496224000051,4962,False,False,False,0,manual-blind-read,"forward-looking-statements boilerplate about deposit levels, not quarter commentary"
+5510,FROST BANK,2024-04-25,3926324000036,39263,True,True,True,2,manual-blind-read,
+17534,KEYBANK NATIONAL ASSN,2022-07-21,9157622000100,91576,False,False,False,0,manual-blind-read,
+8273,UMB BANK NATIONAL ASSN,2023-04-03,156459023005223,101382,True,False,True,2,manual-blind-read,
+9846,TRUIST BANK,2025-10-17,9223025000150,92230,False,False,False,0,manual-blind-read,forward-looking-statements boilerplate ('retaining and growing client deposits')
+913,NORTHERN TRUST CO,2023-07-19,7312423000155,73124,False,False,False,0,manual-blind-read,"inflows/outflows here are ASSET (AUM) flows, not deposits"
+913,NORTHERN TRUST CO,2023-04-25,7312423000099,73124,False,False,False,0,manual-blind-read,asset outflows are AUM; deposit commentary is positive (clients sought liquidity)
+34968,BANCO POPULAR DE PUERTO RICO,2024-07-24,119312524183299,763901,False,False,True,0,manual-blind-read,
+4297,CAPITAL ONE NATIONAL ASSN,2024-10-24,92762824000296,927628,True,False,True,1,manual-blind-read,
+33555,SOUTHSTATE BANK NA,2025-04-24,155837025005410,764038,False,False,True,0,manual-blind-read,
+17266,COLUMBIA BANK,2024-01-24,88734324000024,887343,True,False,True,2,manual-blind-read,
+33124,GOLDMAN SACHS BANK USA,2022-07-18,119312522195706,886982,False,False,True,0,manual-blind-read,
+33124,GOLDMAN SACHS BANK USA,2024-04-15,119312524095511,886982,True,False,False,1,manual-blind-read,
+5510,FROST BANK,2023-07-27,3926323000063,39263,True,True,False,2,manual-blind-read,
+34968,BANCO POPULAR DE PUERTO RICO,2025-10-23,119312525247648,763901,False,True,True,1,manual-blind-read,
+32992,MORGAN STANLEY BANK NA,2022-10-14,115752322001315,895421,False,False,False,0,manual-blind-read,"metrics table only, incl. rising cost of deposits, but no narrative commentary"
+34968,BANCO POPULAR DE PUERTO RICO,2023-04-26,119312523116885,763901,True,True,False,2,manual-blind-read,
+9846,TRUIST BANK,2024-04-22,9223024000016,92230,True,True,False,2,manual-blind-read,
+9846,TRUIST BANK,2023-07-20,9223023000064,92230,False,True,False,1,manual-blind-read,"deposit decline attributed to seasonal client tax payments, not competition or cost"
+628,JPMORGAN CHASE BANK NA,2023-10-13,1961723000508,19617,False,False,False,0,manual-blind-read,"XBRL cover-page tags only ('Depositary Shares'), no deposit content"
+8273,UMB BANK NATIONAL ASSN,2023-04-25,156459023006195,101382,False,False,True,1,manual-blind-read,"SVB-era deposit-diversity disclosure framed as strength, not difficulty"
+588,MANUFACTURERS&TRADERS TR CO,2022-10-19,95017022019702,36270,False,False,False,0,manual-blind-read,
+913,NORTHERN TRUST CO,2022-04-26,7312422000113,73124,False,False,False,0,manual-blind-read,"'interest-bearing deposits WITH banks' is an asset, not deposit funding"
+8273,UMB BANK NATIONAL ASSN,2023-03-27,156459023004344,101382,True,False,False,2,manual-blind-read,mid-quarter Item 7.01 furnishing deposit-diversity data during the SVB window
+32992,MORGAN STANLEY BANK NA,2022-01-19,115752322000068,895421,False,False,True,0,manual-blind-read,

@@ -42,23 +42,62 @@ def build_worksheet(extractions: pd.DataFrame, n: int = 30, seed: int = 7) -> pd
         + df[TONE].clip(0, 3).astype(str)
     )
     per = max(1, n // max(df["stratum"].nunique(), 1))
-    sample = (
-        df.groupby("stratum", group_keys=False)
-        .apply(lambda g: g.sample(min(len(g), per), random_state=seed), include_groups=True)
-        .head(n)
-    )
+    parts = [
+        g.sample(min(len(g), per), random_state=seed) for _, g in df.groupby("stratum", sort=True)
+    ]
+    sample = pd.concat(parts).head(n) if parts else df.head(0)
     if len(sample) < n:  # top up if some strata were thin
         extra = df[~df["accession"].isin(sample["accession"])].sample(
             min(n - len(sample), len(df) - len(sample)), random_state=seed
         )
         sample = pd.concat([sample, extra])
-    cols = ["cert", "bank", "filing_date", "accession", "cik", "evidence_quote", "stratum"]
+    # The worksheet deliberately shows the DOCUMENT and withholds the extractor's own answer.
+    # Including `evidence_quote` or the predicted `stratum` would anchor the labeller on the
+    # prediction being graded, and the resulting "agreement" would measure nothing. Stratum is
+    # used to *select* the sample and then dropped.
+    cols = ["cert", "bank", "filing_date", "accession", "cik"]
     out = sample[[c for c in cols if c in sample.columns]].copy()
+    out["accession"] = _norm_accession(out["accession"])
+    out["document_passages"] = [_passages(r) for _, r in sample.iterrows()]
     for f in BOOL_FLAGS:
         out[f"label_{f}"] = ""
     out[f"label_{TONE}"] = ""
     out.to_csv(WORKSHEET, index=False)
     return out
+
+
+def _passages(row: pd.Series, width: int = 320, limit: int = 6) -> str:
+    """Deposit/funding passages from the raw document, for blind hand labelling."""
+    import re
+
+    from ..config import RAW
+    from .extract import html_to_text
+
+    path = RAW / "edgar" / "docs" / f"{int(row['cik'])}_{row['accession']}.html"
+    if not path.exists():
+        return ""
+    text = html_to_text(path.read_text())
+    pat = re.compile(r"(deposit|funding|liquidity|outflow|inflow)", re.IGNORECASE)
+    seen, out = set(), []
+    for m in pat.finditer(text):
+        s = max(0, m.start() - width // 2)
+        chunk = text[s : s + width]
+        key = chunk[:60]
+        if key in seen:
+            continue
+        seen.add(key)
+        # Skip passages that are mostly digits -- those are table rows, not commentary.
+        if sum(c.isdigit() for c in chunk) / max(len(chunk), 1) > 0.25:
+            continue
+        out.append(chunk.strip())
+        if len(out) >= limit:
+            break
+    return " ||| ".join(out)
+
+
+def _norm_accession(s: pd.Series) -> pd.Series:
+    """18-digit zero-padded accession, whichever way the value survived serialisation."""
+    return s.astype(str).str.replace(r"\D", "", regex=True).str.zfill(18)
 
 
 def _as_bool(s: pd.Series) -> pd.Series:
@@ -87,7 +126,14 @@ def score(extractions: pd.DataFrame) -> pd.DataFrame:
         raise FileNotFoundError(f"missing hand labels at {LABELS}")
     lab = pd.read_csv(LABELS)
     pred = extractions.copy()
+    # EDGAR accession numbers are 18-digit zero-padded strings. A CSV round-trip parses them as
+    # int64 and silently eats the leading zeros ("000003696622000005" -> 3696622000005), so a
+    # naive astype(str) merge matches nothing. Normalise both sides to 18-char zero-padded.
+    lab["accession"] = _norm_accession(lab["accession"])
+    pred["accession"] = _norm_accession(pred["accession"])
     m = lab.merge(pred, on="accession", how="inner", suffixes=("_lab", ""))
+    if m.empty:
+        raise ValueError("no hand-labelled documents matched the extractions")
     rows = []
     for f in BOOL_FLAGS:
         y = _as_bool(m[f"label_{f}"])

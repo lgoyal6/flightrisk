@@ -268,3 +268,131 @@ Decision: every directional template is now a `(negative, positive)` pair select
 corrected wording is also the more informative one, since a large inflow genuinely is the risk
 signal (see the U-shape). The explanation layer is the one part of the system no metric checks,
 which makes it the easiest place for a bug to survive.
+
+---
+
+## Phase 7 — falsification
+
+**2026-08-06 · Recover the logit: was the nonlinearity the alpha?**
+Hypothesis: logit L1's collapse (in-sample 4.15x vs HistGB 5.91x; out-of-time 1.56x vs 3.84x) is a
+*representation* failure, not a model-class failure — it cannot encode the U-shaped deposit-growth
+relationship. Test: quantile-bin the growth family into 9 one-hot bins (edges fitted inside each
+training fold only), plus a cubic-spline variant, plus a bin-everything variant. Same folds,
+nothing else changed.
+
+Result — **yes, but not in the way the hypothesis framed it:**
+
+| model | lift@5% | AUC_wq | OOT lift | gap closed: lift / AUC / OOT |
+|---|---|---|---|---|
+| logit L1 (linear) | 4.147 | 0.7250 | 1.563 | 0% / 0% / 0% |
+| + binned growth (9 bins) | 5.020 | 0.7591 | 1.598 | **50% / 43% / 1.5%** |
+| + spline growth | 4.714 | 0.7562 | 1.598 | 32% / 39% / 1.5% |
+| + binned, ALL signals | 5.325 | 0.7850 | **3.492** | **67% / 75% / 85%** |
+| HistGB (ceiling) | 5.908 | 0.8051 | 3.843 | 100% |
+
+Two distinct findings. (a) Binning *just* the growth family closes about half the in-sample gap —
+so the U-shape is worth roughly half the GBM's in-sample edge, and the rest is nonlinearity
+elsewhere. (b) Binning growth closes only **1.5%** of the out-of-time gap, but binning **every**
+signal closes **85%** of it.
+
+Decision: **the nonlinearity was the alpha** — write that into the README. It also **corrects an
+earlier claim**: I had explained the linear model's SVB-era collapse as "a rate cycle broke its
+coefficients while ordinal tree splits held", implying a model-class advantage. The real mechanism
+is representational — *continuous* linear coefficients are fragile under distribution shift and
+*binned ordinal* ones are robust, whichever model consumes them. A fully-binned logistic recovers
+most of the GBM's regime robustness while staying a readable linear model with signed
+per-bin weights, which is a genuinely useful thing to know for a signals team.
+
+**2026-08-06 · Unseen-entity falsification: structure or roster?**
+Hypothesis to attack: HistGB partially memorises entity-level base rates through combinations of
+quasi-stable per-bank ratios — the generalised version of the state-code lesson. Test: split each
+test quarter's banks by whether the model had ever seen that CERT in training, and separately by
+whether it had ever seen that CERT have a positive label. Scores converted to within-quarter
+percentile before pooling, so per-quarter ranking discipline survives the pooling.
+
+Result:
+
+| cut | cohort | n | events | lift@5% | AUC |
+|---|---|---|---|---|---|
+| entity never in training | yes | **72** | **5** | 0.000 | 0.418 |
+| entity never in training | no | 129,604 | 7,361 | 5.224 | 0.784 |
+| no prior positive label | yes | 63,175 | 1,551 | **4.539** | **0.731** |
+| no prior positive label | no | 66,501 | 5,815 | 4.126 | 0.750 |
+
+The first-appearance cohort is **too thin to be conclusive** — 72 rows and 5 events, a median of 3
+banks per test quarter (the 5-observation history requirement means almost nobody is genuinely new).
+Its lift of 0.000 is a small-sample artifact, not a finding, and is reported as such rather than as
+evidence either way.
+
+The secondary cut has power, and it **refutes the hypothesis**: on 63,175 bank-quarters where the
+bank had never once had a positive label in training, lift is **4.54x** — slightly *higher* than on
+banks with a prior positive (4.13x), with AUC essentially flat (0.731 vs 0.750).
+Decision: the signal is structural, not a roster. Recorded in the README limitations with the
+first-appearance caveat stated plainly, so the thin cohort is not mistaken for a clean result.
+
+---
+
+## Phase 8 — unstructured leg (SEC 8-K Item 2.02)
+
+**2026-08-06 · Are earnings-call transcripts obtainable?**
+Result: paywalled behind vendors. Decision: take the 8-K Item 2.02 fallback immediately rather
+than fight it. Item 2.02 *is* the earnings press release — free, complete, timestamped, and filed
+by every US bank holding company.
+
+**2026-08-06 · Universe.** 50 largest FDIC banks that are SEC filers, matched CERT → NAMEHCR →
+`company_tickers.json` → CIK, SIC verified via the submissions API, hand-checked into
+`data/manual/edgar_crosswalk.csv`. Every one is **>$10B in assets** — deliberately the stratum
+where structured lift is already highest (7.21x) and where filings exist. 836 Item 2.02 filings,
+2022Q1–2025Q4. Six foreign private issuers (TD, HSBC, UBS, RBC, Barclays) correctly showed **zero**
+Item 2.02 filings — they file 6-K/20-F — and were dropped.
+
+**2026-08-06 · Sample construction: search or enumerate?**
+EDGAR full-text search for "deposit outflows" returns 1,089 hits *because those documents mention
+it* — conditioning the sample on the outcome. Decision: enumerate every Item 2.02 filing for the
+fixed panel and let the extractor decide.
+
+**2026-08-06 · Document selection was measuring nothing (bug).**
+Taking the first `ex99` exhibit alphabetically handed the extractor JPMorgan's **financial
+supplement**: 26 mentions of "deposit", every one inside a numeric table row, 30% digits, zero
+sentences. The extractor correctly returned all-false. **Had this stood, the run would have
+concluded "text has no incremental lift" for an entirely wrong reason** — a measurement artifact
+dressed as a result.
+Decision: score each candidate document for *prose* deposit commentary (a deposit mention inside a
+run of letters, i.e. an actual sentence) and keep the most narrative one; write the choice next to
+each cached document so selection is auditable. Northern Trust then yields pressure=True, tone=2,
+outflow=True with a verbatim supporting quote.
+
+**2026-08-06 · SEC rate limit was being violated 6x over (bug).**
+`time.sleep(0.12)` inside the request function is per-thread, so 8 workers hit ~66 req/s against a
+published 10 req/s ceiling. Decision: lock-guarded global token bucket. Also split fetch from
+extraction — interleaving made every LLM call queue behind a rate-limited HTTP fetch, projecting
+~98 minutes for 836 filings.
+
+**2026-08-06 · Extraction accuracy vs 30 blind hand labels. THE DECISIVE RESULT.**
+Labels were recorded by reading the document passages with the extractor's own answer and predicted
+stratum **withheld** — including them would anchor the labeller on the prediction being graded and
+the resulting "agreement" would measure nothing.
+
+| flag | positives / 30 | precision | recall | accuracy |
+|---|---|---|---|---|
+| `explicit_inflow_language` | 13 | **0.81** | **1.00** | **0.90** |
+| `explicit_outflow_language` | 6 | 0.40 | **1.00** | 0.70 |
+| `deposit_pressure_mentioned` | 11 | **0.46** | 0.55 | 0.60 |
+| `funding_concern_tone` | 14 | — | — | 0.53 exact, **0.87 within-1**, MAE 0.60 |
+
+Result: **two of four flags are unreliable.** `explicit_inflow_language` is trustworthy.
+`explicit_outflow_language` catches every real one (recall 1.00) but over-triggers badly (9 false
+positives). `deposit_pressure_mentioned` is close to a coin flip on a 37%-positive base. Tone is
+noisy exactly but usable ordinally (87% within one level).
+
+Diagnosis of the disagreements — 7 over-triggers, 5 misses — and the notes column says most sit on
+genuine **construct** ambiguity, not model error: a metrics table showing rising cost of deposits
+with no commentary; a deposit decline attributed to seasonal client tax payments; an SVB-era
+deposit-diversity disclosure framed as *strength*. A careful second human would plausibly disagree
+with me on several. Inter-rater reliability is the ceiling here and I have one rater, so 0.46
+precision is partly a statement about the construct's fuzziness.
+
+Decision: report the accuracy prominently and **carry the caveat into the verdict**. With two flags
+this noisy, a null incremental result cannot distinguish "text carries no signal beyond the balance
+sheet" from "this extractor is too noisy to detect it." Reporting a clean KILL without that
+distinction would be overclaiming. The incremental test still runs — it is just not the last word.

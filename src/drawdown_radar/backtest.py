@@ -184,8 +184,16 @@ class Spec:
     note: str = ""
 
 
-def _folds(quarters: list[str], first_test: str) -> list[tuple[str, list[str]]]:
-    """(test_quarter, train_quarters) with the label-revelation gap enforced."""
+def _folds(
+    quarters: list[str], first_test: str, min_train_quarters: int = MIN_TRAIN_QUARTERS
+) -> list[tuple[str, list[str]]]:
+    """(test_quarter, train_quarters) with the label-revelation gap enforced.
+
+    `min_train_quarters` is overridable because the default (12) is calibrated for the full
+    40-quarter panel. Applied to a 16-quarter subset -- the text-coverage window -- it discards
+    almost every fold and leaves an evaluation set with 3 events, which is not enough to conclude
+    anything. Any override is reported alongside the result rather than applied silently.
+    """
     qs = sorted(set(quarters), key=quarter_index)
     out = []
     for t in qs:
@@ -193,7 +201,7 @@ def _folds(quarters: list[str], first_test: str) -> list[tuple[str, list[str]]]:
         if quarter_index(t) < quarter_index(first_test):
             continue
         train = [q for q in qs if quarter_index(q) <= ti - 1]
-        if len(train) < MIN_TRAIN_QUARTERS:
+        if len(train) < min_train_quarters:
             continue
         out.append((t, train))
     return out
@@ -204,10 +212,11 @@ def run_spec(
     spec: Spec,
     first_test: str = FIRST_TEST_QUARTER,
     label: str = "label",
+    min_train_quarters: int = MIN_TRAIN_QUARTERS,
 ) -> pd.DataFrame:
     """Walk forward, returning one scored row per (bank, test quarter)."""
     preds = []
-    for test_q, train_qs in _folds(data["quarter"].tolist(), first_test):
+    for test_q, train_qs in _folds(data["quarter"].tolist(), first_test, min_train_quarters):
         tr = data[data["quarter"].isin(train_qs)]
         te = data[data["quarter"] == test_q]
         if te.empty or tr[label].nunique() < 2:

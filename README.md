@@ -12,6 +12,41 @@ FDIC Call Report data for every US bank, 2015Q1–2026Q1.
 
 ---
 
+## The headline finding: deposit-flow risk is U-shaped
+
+**Banks that just took in a large inflow are almost as likely to have a drawdown next quarter as
+banks that just lost deposits.**
+
+| This quarter's deposit growth | Next-quarter drawdown rate | vs base |
+|---|---|---|
+| < −10% | 18.55% | 3.30× |
+| −10% to −5% | 8.86% | 1.58× |
+| −2% to 0% | 3.68% | 0.66× |
+| **0% to +2%** | **3.24%** | **0.58×** ← safest |
+| +2% to +5% | 4.36% | 0.78× |
+| +5% to +10% | 8.00% | 1.42× |
+| **> +10%** | **16.86%** | **3.00×** |
+
+The mechanism is one sentence: **lumpy money is transient money.** A large inflow is usually one
+depositor parking a balance that will move again — a municipality, a title company, a corporate
+treasury after a raise. It arrives as growth and leaves as a drawdown.
+
+The read-across to a startup banking platform is direct and counterintuitive: **an account that
+just received a funding round is a drawdown risk, not a safe one.**
+
+Three things follow, and they shape the whole project:
+
+1. It explains an anomaly that looks like a bug. Ranking by last quarter's decline gives
+   within-quarter AUC **0.406** — worse than random — while its top 1% has **3.49×** lift. Both
+   are correct, because the relationship inverts across the middle of the distribution.
+2. It is most of the reason gradient boosting beats the linear model. Handing the U to an L1
+   logistic via fold-local quantile bins closes ~half the gap — see
+   [Was the nonlinearity the alpha?](#was-the-nonlinearity-the-alpha).
+3. It holds in every size band, so it is not a small-bank artifact
+   ([`notebooks/01_u_shape_exploration.ipynb`](notebooks/01_u_shape_exploration.ipynb)).
+
+---
+
 ## The 10-line version
 
 Each quarter, this ranks ~4,350 US banks by their probability of a ≥5% deposit decline in the
@@ -28,6 +63,9 @@ Each quarter, this ranks ~4,350 US banks by their probability of a ≥5% deposit
 - The strongest signals are **deposit growth deceleration**, **loan-to-deposit level**, and
   **uninsured deposit share** — the last one available back to 2015, which is what makes
   "would this have flagged 2023 in advance?" answerable at all.
+- An LLM leg over 836 SEC 8-K press releases was built and **killed**. Two of four extracted
+  flags validate poorly, and the covered slice has 6 events, so the null is not separable from
+  a lack of power — the verdict rests on coverage geometry, and says so.
 
 Sample of the real output (`drawdown-radar score --quarter 2026Q1`):
 
@@ -57,6 +95,8 @@ make setup                      # venv + install
 drawdown-radar pull             # fetch + cache FDIC data to data/raw/ (re-runs offline)
 drawdown-radar build            # labels, exclusion audit, as-of audit, base rates, figures
 drawdown-radar backtest         # baselines, models, leakage checks, out-of-time, ablations
+drawdown-radar falsify          # recover-the-logit + unseen-entity falsification experiments
+drawdown-radar text             # SEC 8-K extraction + incremental-lift test
 drawdown-radar scorecards       # regenerate graduation scorecards from the registry
 drawdown-radar score --quarter 2026Q1
 ```
@@ -197,8 +237,13 @@ Base rate in that window is 9.90%.
 
 Honest read: HistGB degrades (AUC 0.805 → 0.734, lift 5.91 → 3.84) but still clears every
 baseline by a wide margin. **The linear model does not survive the regime change at all** —
-lift 1.56, *worse than the size-only baseline*. A rate cycle it had never seen broke its
-coefficients; the tree-based model's ordinal splits held.
+lift 1.56, *worse than the size-only baseline*.
+
+The obvious explanation — "a rate cycle broke the linear coefficients while ordinal tree splits
+held" — is **wrong**, and [the falsification experiment below](#was-the-nonlinearity-the-alpha)
+shows why: an L1 logistic with every signal quantile-binned recovers **85%** of the out-of-time
+gap (lift 3.49 vs HistGB's 3.84). The fragility is in the *continuous* representation, not the
+model class.
 
 ### Severity tiers
 
@@ -263,13 +308,17 @@ removed.
 | `brokered_share_chg_4q` | PARKED | 1.877 | -0.072 | 0.93 | 2.626 |
 | `noninterest_dep_share_chg_4q` | PARKED | 2.407 | -0.077 | 1.00 | 3.885 |
 | `state_identity` | PARKED | 1.754 | — | 1.00 | 2.662 |
+| `txt_deposit_pressure` | ~~KILLED~~ | 0.470 | 0.002 | — | — |
+| `txt_funding_tone` | ~~KILLED~~ | 0.920 | 0.002 | — | — |
+| `txt_outflow_language` | ~~KILLED~~ | 1.860 | 0.002 | — | — |
+| `txt_inflow_language` | ~~KILLED~~ | 0.940 | 0.002 | — | — |
 | `quarter_of_year` | ~~KILLED~~ | 0.988 | — | 0.54 | 0.805 |
 | `macro_agg_dep_growth` | ~~KILLED~~ | 0.988 | — | 0.54 | 0.805 |
 | `dumb_cert_parity` ⚠︎null | ~~KILLED~~ | 0.807 | — | 0.29 | 0.537 |
 | `dumb_asset_digit_sum` ⚠︎null | ~~KILLED~~ | 1.053 | — | 0.54 | 1.048 |
 | `dumb_row_noise` ⚠︎null | ~~KILLED~~ | 0.991 | — | 0.50 | 0.598 |
 
-8 graduated, 18 parked, 5 killed. Full reasoning: [`reports/signal_scorecards.md`](reports/signal_scorecards.md).
+8 graduated, 18 parked, 9 killed. Full reasoning: [`reports/signal_scorecards.md`](reports/signal_scorecards.md).
 
 <!-- END:signal-table -->
 
@@ -371,32 +420,105 @@ risk signal, so the right sentence explains the model instead of contradicting i
 plain-English explanation layer is a place bugs hide in plain sight — it is the one part of the
 system no metric checks.
 
-### The relationship is U-shaped, which is why the linear model loses
+### Was the nonlinearity the alpha?
 
-The naive persistence baseline has within-quarter AUC **0.406** — *worse than random* — while
-its top 1% has lift 3.49. Both are true, because next-quarter drawdown risk against this
-quarter's deposit growth is a U:
+The U-shape at the top of this README is most of the answer to "why does gradient boosting beat
+the linear model". `drawdown-radar falsify` tests it directly: hand the shape to the L1 logistic
+as fold-local quantile bins (edges fitted **inside** each training window — computing them on the
+full panel would leak the test quarter's distribution into the encoding) and measure how much of
+the gap closes.
 
-| This quarter's deposit growth | Next-quarter drawdown rate | vs base |
-|---|---|---|
-| < −10% | 18.55% | 3.30× |
-| −10% to −5% | 8.86% | 1.58× |
-| −2% to 0% | 3.68% | 0.66× |
-| 0% to +2% | **3.24%** | **0.58×** |
-| +2% to +5% | 4.36% | 0.78× |
-| +5% to +10% | 8.00% | 1.42× |
-| > +10% | 16.86% | 3.00× |
+| Model | lift@5% | AUC within-q | out-of-time lift | gap closed: lift / AUC / OOT |
+|---|---|---|---|---|
+| logit L1 (linear) | 4.147 | 0.7250 | 1.563 | — |
+| + binned growth (9 bins) | 5.020 | 0.7591 | 1.598 | **50% / 43% / 1.5%** |
+| + spline growth | 4.714 | 0.7562 | 1.598 | 32% / 39% / 1.5% |
+| + binned, **all** signals | 5.325 | 0.7850 | **3.492** | **67% / 75% / 85%** |
+| HistGB (ceiling) | 5.908 | 0.8051 | 3.843 | 100% |
 
-Banks that just took in **large inflows** are nearly as likely to have a drawdown as banks that
-just lost deposits — lumpy money is transient money. Ranking by decline alone therefore inverts
-across the middle of the distribution, which is why AUC lands below 0.5 while top-k precision
-stays strong. It is also precisely the structure an L1 logistic cannot represent, and the
-cleanest explanation for the GBM's margin.
+**Yes — the nonlinearity was the alpha.** Binning just the growth family recovers half the
+in-sample gap, so the U is worth about half the GBM's edge and the rest is nonlinearity elsewhere.
 
-The read-across to a startup banking platform is direct: an account that just received a
-funding round is a drawdown risk, not a safe one.
+**This corrects a claim an earlier version of this README made.** I had explained the linear
+model's SVB-era collapse as "a rate cycle broke its coefficients while ordinal tree splits held",
+which framed it as a model-class advantage. The out-of-time column says otherwise: binning growth
+alone closes **1.5%** of the out-of-time gap, but binning **every** signal closes **85%** of it.
+The mechanism is representational, not architectural — *continuous* coefficients are fragile under
+distribution shift and *binned ordinal* ones are robust, whichever model consumes them. A
+fully-binned logistic recovers most of the GBM's regime robustness while staying a readable linear
+model with signed per-bin weights, which is a useful thing for a signals team to know.
 
 ---
+
+## The unstructured leg: SEC 8-K text — KILLED, on coverage power
+
+A different modality, run through the identical registry, as-of audit, and graduation protocol.
+836 Item 2.02 earnings press releases (2022Q1–2025Q4) for the 50 largest FDIC banks that are SEC
+filers, LLM-extracted into four flags with a fixed, hashed prompt
+([`extraction/prompt_v1.md`](src/drawdown_radar/extraction/prompt_v1.md)). Every raw response is
+cached, so a re-run is a disk read and the extraction is auditable after the fact.
+
+**Every covered bank is >$10B in assets** — deliberately the stratum where structured lift is
+already highest (7.21×) and where filings exist. That overlap turns out to be the whole story.
+
+### Step 1: measure the extractor before trusting it
+
+Against **30 blind hand labels** (the worksheet withholds the extractor's own answer and its
+predicted class — showing either would anchor the labeller on the prediction being graded):
+
+| Flag | precision | recall | accuracy |
+|---|---|---|---|
+| `explicit_inflow_language` | **0.81** | 1.00 | **0.90** |
+| `explicit_outflow_language` | 0.40 | **1.00** | 0.70 |
+| `deposit_pressure_mentioned` | **0.46** | 0.55 | 0.60 |
+| `funding_concern_tone` | — | — | 0.53 exact, **0.87 within-1** |
+
+**Two of four flags are unreliable.** Inflow language is trustworthy; outflow language catches
+every real instance but over-triggers badly; deposit-pressure is near a coin flip. Inspecting the
+12 disagreements (7 over-triggers, 5 misses), most sit on genuine **construct** ambiguity rather
+than model error — a metrics table showing rising cost of deposits with no commentary, a deposit
+decline attributed to seasonal tax payments, an SVB-era deposit-diversity disclosure framed as
+*strength*. Inter-rater reliability is the ceiling and there is one rater, so 0.46 is partly a
+statement about how fuzzy the construct is.
+
+### Step 2: the incremental test has no power, and that is the finding
+
+| Arm | AUC within-q | precision@20% | lift@20% |
+|---|---|---|---|
+| graduated structured only | 0.8668 | 0.1022 | 4.290 |
+| structured + text | 0.8690 | 0.1022 | 4.290 |
+| text only | 0.3480 | 0.0400 | 0.940 |
+
+Incremental AUC **+0.0022**, incremental lift **+0.000** — on **472 rows containing 6 events**.
+
+**That is not a clean KILL, and calling it one would be overclaiming.** With 6 events, this test
+cannot separate "text carries nothing the balance sheet lacks" from "the test has no power". It is
+the same trap as the 72-row first-appearance cohort in the unseen-entity experiment, and it gets
+the same treatment: reported as underpowered, not dressed up as a null.
+
+The power problem is **structural, not fixable by tuning**. Coverage is 50 of ~4,350 banks, all in
+the >$10B band — whose base rate is **1.27%** against the panel's 5.62%, because the largest banks
+have the most diversified and most stable deposit franchises. So the only slice with text is
+simultaneously the best-instrumented and the *least eventful* part of the panel. Relaxing the
+training-window minimum from 12 quarters to 6 (reported in the run output, not applied silently)
+took the event count from 3 to 6. There is no configuration that gets it to a number worth trusting.
+
+### Verdict: KILLED — and the reason inverts the usual argument
+
+All four flags are **KILLED**, on coverage power rather than on a demonstrated null
+([`reports/text_verdicts.csv`](reports/text_verdicts.csv)).
+
+The framing worth carrying: text's value is supposed to be **coverage where the structured data is
+blind**. On public filings the opposite holds — text exists precisely for the banks whose balance
+sheets are already richest and whose outcomes are rarest. Inside a bank, the asymmetry reverses:
+call transcripts and support tickets cover the accounts where warehouse detail is thinnest, and the
+same experiment would be worth re-running there. **The negative result is about the public-data
+coverage geometry, not about text as a modality.**
+
+What did work and is reusable: a hashed, versioned prompt with full response caching; a timing
+guard that treats a text feature's date differently from a balance-sheet feature's (833 documents
+checked, 0 violations, 3 late-quarter filings dropped); and a validation step that caught two
+unreliable flags *before* anything downstream was built on them.
 
 ## Leakage and skepticism checks
 
@@ -429,6 +551,8 @@ src/drawdown_radar/
   evaluate.py   within-quarter precision@k, strata, calibration
   ablation.py   standalone + leave-one-out
   scorecards.py graduation verdicts -> reports/ and this README's table
+  falsification.py  recover-the-logit + unseen-entity experiments
+  extraction/   SEC EDGAR fetch, hashed prompt, timing guard, accuracy validation
   score.py      the stratified alert list
 ```
 
@@ -476,9 +600,19 @@ src/drawdown_radar/
   book. The ratio is arithmetically correct and the bank is genuinely fragile, but the
   denominator makes the feature heavy-tailed, and year-over-year *changes* in it can reach
   hundreds of percent from equity moves alone rather than mark moves.
-- **No unstructured leg yet.** The planned SEC EDGAR 8-K Item 2.02 extraction is designed
-  (`PLAN.md` §4) and not built, so nothing here claims text adds incremental lift. Coverage
-  would be ~200–400 of 4,350 banks, biased toward large public holding companies.
+- **Tested for entity memorisation; the decisive cut passed, the cleanest cut is underpowered.**
+  Quasi-stable per-bank ratios could in principle let the model memorise entity-level base rates
+  rather than read funding structure — the generalised form of the state-code lesson. On 63,175
+  bank-quarters where the bank had **never** had a positive label in training, lift is **4.54×**,
+  slightly *higher* than on banks with a prior positive (4.13×), so the signal is structural.
+  But the cleanest test — banks the model has never ranked at all — has only **72 rows and 5
+  events** (median 3 banks per test quarter), because the 5-observation history requirement means
+  almost no bank is genuinely new. Its 0.000 lift is a small-sample artifact, not evidence.
+  A dataset with more de novo entry would test this properly.
+- **The unstructured leg is built and killed, but not cleanly.** See
+  [the text section](#the-unstructured-leg-sec-8-k-text--killed-on-coverage-power): two of four
+  extracted flags validate poorly, and the incremental test has 6 events, so "no lift" is not
+  separable from "no power". The verdict rests on coverage geometry, not on a demonstrated null.
 - **What I would do differently with warehouse-grade data:** predict at the account level on a
   weekly horizon; use transaction-level flow features (payroll ceasing, a payment processor
   switching, inbound wire concentration) rather than balance-sheet ratios; and treat "which
@@ -487,7 +621,7 @@ src/drawdown_radar/
 
 ## Reproducibility
 
-Python 3.12, `ruff`, `pytest` (40 tests). Raw pulls cached to `data/raw/` as parquet so the
+Python 3.12, `ruff`, `pytest` (116 tests). Raw pulls cached to `data/raw/` as parquet so the
 whole pipeline re-runs offline; `data/` is gitignored except the hand-adjudicated exclusion
 list. Every number in this README is generated into `reports/` by the CLI —
 [`EXPERIMENTS.md`](EXPERIMENTS.md) logs each experiment with its hypothesis, result, and

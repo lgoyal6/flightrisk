@@ -401,5 +401,49 @@
    "standalone_lift_5pct_severe": 5.033517040900987,
    "verdict_reason": "Removing it costs 0.09 lift@5%, and it beats random ranking in 100% of walk-forward folds."
   }
+ },
+ "txt_deposit_pressure": {
+  "status": "KILLED",
+  "evidence": {
+   "standalone_auc_within_q": 0.4732875470710809,
+   "standalone_lift_20pct": 0.47,
+   "extraction_precision": 0.4615384615384615,
+   "incremental_auc_full_set": 0.0022222222222224586,
+   "n_events_in_test": 6,
+   "verdict_reason": "KILLED on coverage power, not on a demonstrated null. Extraction precision 0.46 against 30 blind hand labels, and the covered evaluation window has only 6 events (50 of ~4,350 banks, all >$10B, base rate 1.27% vs 5.62% panel-wide). Incremental AUC +0.0022 is indistinguishable from zero at that n, so this test cannot separate redundancy from lack of power."
+  }
+ },
+ "txt_funding_tone": {
+  "status": "KILLED",
+  "evidence": {
+   "standalone_auc_within_q": 0.3459383847727973,
+   "standalone_lift_20pct": 0.9200000000000002,
+   "extraction_precision": null,
+   "incremental_auc_full_set": 0.0022222222222224586,
+   "n_events_in_test": 6,
+   "verdict_reason": "KILLED on coverage power, not on a demonstrated null. Extraction precision nan against 30 blind hand labels, and the covered evaluation window has only 6 events (50 of ~4,350 banks, all >$10B, base rate 1.27% vs 5.62% panel-wide). Incremental AUC +0.0022 is indistinguishable from zero at that n, so this test cannot separate redundancy from lack of power."
+  }
+ },
+ "txt_outflow_language": {
+  "status": "KILLED",
+  "evidence": {
+   "standalone_auc_within_q": 0.4859880488511385,
+   "standalone_lift_20pct": 1.86,
+   "extraction_precision": 0.4,
+   "incremental_auc_full_set": 0.0022222222222224586,
+   "n_events_in_test": 6,
+   "verdict_reason": "KILLED on coverage power, not on a demonstrated null. Extraction precision 0.40 against 30 blind hand labels, and the covered evaluation window has only 6 events (50 of ~4,350 banks, all >$10B, base rate 1.27% vs 5.62% panel-wide). Incremental AUC +0.0022 is indistinguishable from zero at that n, so this test cannot separate redundancy from lack of power."
+  }
+ },
+ "txt_inflow_language": {
+  "status": "KILLED",
+  "evidence": {
+   "standalone_auc_within_q": 0.4776824675992113,
+   "standalone_lift_20pct": 0.94,
+   "extraction_precision": 0.8125,
+   "incremental_auc_full_set": 0.0022222222222224586,
+   "n_events_in_test": 6,
+   "verdict_reason": "KILLED on coverage power, not on a demonstrated null. Extraction precision 0.81 against 30 blind hand labels, and the covered evaluation window has only 6 events (50 of ~4,350 banks, all >$10B, base rate 1.27% vs 5.62% panel-wide). Incremental AUC +0.0022 is indistinguishable from zero at that n, so this test cannot separate redundancy from lack of power."
+  }
  }
 }

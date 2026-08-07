@@ -27,6 +27,11 @@
     "core_dep_share_chg_4q",
     "eq_assets_chg_4q"
    ],
+   "top_signal_values": {
+    "uninsured_dep_share_chg_4q": 0.549516,
+    "core_dep_share_chg_4q": 0.329289,
+    "eq_assets_chg_4q": 0.118949
+   },
    "reason": "Flagged because uninsured share rose 55.0% over the year; core deposit share rose 32.9% over the year; capital ratio rose 11.9% over the year."
   },
   {
@@ -42,6 +47,11 @@
     "dep_growth_1q",
     "unrealized_afs_loss_to_eq"
    ],
+   "top_signal_values": {
+    "core_dep_share": 0.614748,
+    "dep_growth_1q": -0.082083,
+    "unrealized_afs_loss_to_eq": -0.083912
+   },
    "reason": "Flagged because core deposits are only 61.5% of the book; deposits already fell 8.2% last quarter; unrealized securities losses equal 8.4% of equity."
   },
   {
@@ -57,6 +67,11 @@
     "dep_growth_1q",
     "dep_growth_decel_4q"
    ],
+   "top_signal_values": {
+    "dep_growth_vol_4q": 0.462056,
+    "dep_growth_1q": 0.721371,
+    "dep_growth_decel_4q": 0.672473
+   },
    "reason": "Flagged because deposit balances are unusually volatile (\u03c3 46.2% over 4 quarters); deposits jumped 72.1% last quarter, and lumpy inflows tend to leave again; deposit growth accelerated 67.2% versus its own trailing year."
   },
   {
@@ -72,6 +87,11 @@
     "unrealized_afs_loss_chg_4q",
     "dep_growth_1q"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_to_eq": -0.405073,
+    "unrealized_afs_loss_chg_4q": 0.348125,
+    "dep_growth_1q": 0.249447
+   },
    "reason": "Flagged because unrealized securities losses equal 40.5% of equity; the securities mark improved by 34.8% of equity over the year; deposits jumped 24.9% last quarter, and lumpy inflows tend to leave again."
   },
   {
@@ -87,6 +107,11 @@
     "ltd_level",
     "unrealized_afs_loss_to_eq"
    ],
+   "top_signal_values": {
+    "uninsured_dep_share": 0.907565,
+    "ltd_level": 0.0,
+    "unrealized_afs_loss_to_eq": -0.123159
+   },
    "reason": "Flagged because uninsured deposits are 90.8% of the book; loan-to-deposit ratio is 0%; unrealized securities losses equal 12.3% of equity."
   },
   {
@@ -102,6 +127,11 @@
     "dep_growth_1q",
     "eq_assets"
    ],
+   "top_signal_values": {
+    "eq_assets_chg_4q": 0.116656,
+    "dep_growth_1q": -0.295042,
+    "eq_assets": 0.286524
+   },
    "reason": "Flagged because capital ratio rose 11.7% over the year; deposits already fell 29.5% last quarter; equity is 28.7% of assets."
   },
   {
@@ -117,6 +147,11 @@
     "dep_growth_vol_4q",
     "uninsured_dep_share"
    ],
+   "top_signal_values": {
+    "noninterest_dep_share": 0.807062,
+    "dep_growth_vol_4q": 0.147432,
+    "uninsured_dep_share": 0.755104
+   },
    "reason": "Flagged because noninterest-bearing (operational) deposits are 80.7%; deposit balances are unusually volatile (\u03c3 14.7% over 4 quarters); uninsured deposits are 75.5% of the book."
   },
   {
@@ -132,6 +167,11 @@
     "core_dep_share",
     "dep_growth_decel_4q"
    ],
+   "top_signal_values": {
+    "nim_level": 15.37852,
+    "core_dep_share": 0.220193,
+    "dep_growth_decel_4q": -0.29882
+   },
    "reason": "Flagged because net interest margin is 15.38%; core deposits are only 22.0% of the book; deposit growth decelerated 29.9% versus its own trailing year."
   },
   {
@@ -147,6 +187,11 @@
     "noninterest_dep_share",
     "uninsured_dep_share_chg_4q"
    ],
+   "top_signal_values": {
+    "uninsured_dep_share": 0.903456,
+    "noninterest_dep_share": 0.740435,
+    "uninsured_dep_share_chg_4q": 0.124771
+   },
    "reason": "Flagged because uninsured deposits are 90.3% of the book; noninterest-bearing (operational) deposits are 74.0%; uninsured share rose 12.5% over the year."
   },
   {
@@ -162,6 +207,11 @@
     "dep_growth_1q",
     "core_dep_share"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_to_eq": -0.188893,
+    "dep_growth_1q": 0.209944,
+    "core_dep_share": 0.629005
+   },
    "reason": "Flagged because unrealized securities losses equal 18.9% of equity; deposits jumped 21.0% last quarter, and lumpy inflows tend to leave again; core deposits are only 62.9% of the book."
   },
   {
@@ -177,6 +227,11 @@
     "core_dep_share_chg_4q",
     "ltd_trend_4q"
    ],
+   "top_signal_values": {
+    "core_dep_share": 0.632349,
+    "core_dep_share_chg_4q": -0.093442,
+    "ltd_trend_4q": -0.202149
+   },
    "reason": "Flagged because core deposits are only 63.2% of the book; core deposit share fell 9.3% over the year; loan-to-deposit ratio fell 20.2% over the year."
   },
   {
@@ -192,6 +247,11 @@
     "dep_growth_decel_4q",
     "unrealized_afs_loss_chg_4q"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_to_eq": -0.209872,
+    "dep_growth_decel_4q": 0.110459,
+    "unrealized_afs_loss_chg_4q": 0.070513
+   },
    "reason": "Flagged because unrealized securities losses equal 21.0% of equity; deposit growth accelerated 11.0% versus its own trailing year; the securities mark improved by 7.1% of equity over the year."
   },
   {
@@ -207,6 +267,11 @@
     "dep_growth_decel_4q",
     "uninsured_dep_share"
    ],
+   "top_signal_values": {
+    "dep_growth_vol_4q": 0.383781,
+    "dep_growth_decel_4q": -0.364987,
+    "uninsured_dep_share": 0.828634
+   },
    "reason": "Flagged because deposit balances are unusually volatile (\u03c3 38.4% over 4 quarters); deposit growth decelerated 36.5% versus its own trailing year; uninsured deposits are 82.9% of the book."
   },
   {
@@ -222,6 +287,11 @@
     "eq_assets",
     "dep_growth_vol_4q"
    ],
+   "top_signal_values": {
+    "eq_assets_chg_4q": 0.095409,
+    "eq_assets": 0.285135,
+    "dep_growth_vol_4q": 0.184973
+   },
    "reason": "Flagged because capital ratio rose 9.5% over the year; equity is 28.5% of assets; deposit balances are unusually volatile (\u03c3 18.5% over 4 quarters)."
   },
   {
@@ -237,6 +307,11 @@
     "nim_compression_4q",
     "time_dep_share"
    ],
+   "top_signal_values": {
+    "core_dep_share": 0.039296,
+    "nim_compression_4q": -1.425181,
+    "time_dep_share": 0.974153
+   },
    "reason": "Flagged because core deposits are only 3.9% of the book; net interest margin compressed 1.43pp over the year; time deposits are 97.4% of funding."
   },
   {
@@ -252,6 +327,11 @@
     "dep_growth_decel_4q",
     "dep_growth_1q"
    ],
+   "top_signal_values": {
+    "noninterest_dep_share_chg_4q": 0.48547,
+    "dep_growth_decel_4q": 0.404744,
+    "dep_growth_1q": 0.330174
+   },
    "reason": "Flagged because operational balances grew 48.5% as a share of the book over the year; deposit growth accelerated 40.5% versus its own trailing year; deposits jumped 33.0% last quarter, and lumpy inflows tend to leave again."
   },
   {
@@ -267,6 +347,11 @@
     "unrealized_afs_loss_to_eq",
     "asset_dep_divergence"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_chg_4q": 7.465573,
+    "unrealized_afs_loss_to_eq": -1.970358,
+    "asset_dep_divergence": -0.140784
+   },
    "reason": "Flagged because the securities mark improved by 746.6% of equity over the year; unrealized securities losses equal 197.0% of equity; deposits grew 14.1% faster than assets."
   },
   {
@@ -282,6 +367,11 @@
     "dep_growth_1q",
     "dep_growth_vol_4q"
    ],
+   "top_signal_values": {
+    "dep_growth_decel_4q": 0.455081,
+    "dep_growth_1q": 0.380264,
+    "dep_growth_vol_4q": 0.232309
+   },
    "reason": "Flagged because deposit growth accelerated 45.5% versus its own trailing year; deposits jumped 38.0% last quarter, and lumpy inflows tend to leave again; deposit balances are unusually volatile (\u03c3 23.2% over 4 quarters)."
   },
   {
@@ -297,6 +387,11 @@
     "dep_growth_decel_4q",
     "dep_growth_1q"
    ],
+   "top_signal_values": {
+    "dep_growth_vol_4q": 0.236867,
+    "dep_growth_decel_4q": 0.380929,
+    "dep_growth_1q": 0.312443
+   },
    "reason": "Flagged because deposit balances are unusually volatile (\u03c3 23.7% over 4 quarters); deposit growth accelerated 38.1% versus its own trailing year; deposits jumped 31.2% last quarter, and lumpy inflows tend to leave again."
   },
   {
@@ -312,6 +407,11 @@
     "unrealized_afs_loss_chg_4q",
     "dep_growth_1q"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_to_eq": -0.840058,
+    "unrealized_afs_loss_chg_4q": 0.549076,
+    "dep_growth_1q": 0.240465
+   },
    "reason": "Flagged because unrealized securities losses equal 84.0% of equity; the securities mark improved by 54.9% of equity over the year; deposits jumped 24.0% last quarter, and lumpy inflows tend to leave again."
   },
   {
@@ -327,6 +427,11 @@
     "dep_growth_vol_4q",
     "dep_growth_1q"
    ],
+   "top_signal_values": {
+    "dep_growth_decel_4q": 0.298918,
+    "dep_growth_vol_4q": 0.18674,
+    "dep_growth_1q": 0.253106
+   },
    "reason": "Flagged because deposit growth accelerated 29.9% versus its own trailing year; deposit balances are unusually volatile (\u03c3 18.7% over 4 quarters); deposits jumped 25.3% last quarter, and lumpy inflows tend to leave again."
   },
   {
@@ -342,6 +447,11 @@
     "dep_growth_1q",
     "dep_growth_vol_4q"
    ],
+   "top_signal_values": {
+    "uninsured_dep_share": 0.650504,
+    "dep_growth_1q": 0.135723,
+    "dep_growth_vol_4q": 0.097347
+   },
    "reason": "Flagged because uninsured deposits are 65.1% of the book; deposits jumped 13.6% last quarter, and lumpy inflows tend to leave again; deposit balances are unusually volatile (\u03c3 9.7% over 4 quarters)."
   },
   {
@@ -357,6 +467,11 @@
     "uninsured_dep_share_chg_4q",
     "dep_growth_decel_4q"
    ],
+   "top_signal_values": {
+    "dep_growth_vol_4q": 0.142416,
+    "uninsured_dep_share_chg_4q": -0.106558,
+    "dep_growth_decel_4q": 0.156746
+   },
    "reason": "Flagged because deposit balances are unusually volatile (\u03c3 14.2% over 4 quarters); uninsured share fell 10.7% over the year; deposit growth accelerated 15.7% versus its own trailing year."
   },
   {
@@ -372,6 +487,11 @@
     "dep_growth_1q",
     "dep_growth_decel_4q"
    ],
+   "top_signal_values": {
+    "dep_growth_vol_4q": 0.133231,
+    "dep_growth_1q": 0.10852,
+    "dep_growth_decel_4q": 0.110366
+   },
    "reason": "Flagged because deposit balances are unusually volatile (\u03c3 13.3% over 4 quarters); deposits jumped 10.9% last quarter, and lumpy inflows tend to leave again; deposit growth accelerated 11.0% versus its own trailing year."
   },
   {
@@ -387,6 +507,11 @@
     "noninterest_dep_share_chg_4q",
     "dep_growth_vol_4q"
    ],
+   "top_signal_values": {
+    "dep_growth_1q": 0.201721,
+    "noninterest_dep_share_chg_4q": 0.118239,
+    "dep_growth_vol_4q": 0.140003
+   },
    "reason": "Flagged because deposits jumped 20.2% last quarter, and lumpy inflows tend to leave again; operational balances grew 11.8% as a share of the book over the year; deposit balances are unusually volatile (\u03c3 14.0% over 4 quarters)."
   },
   {
@@ -402,6 +527,11 @@
     "time_dep_share_chg_4q",
     "eq_assets_chg_4q"
    ],
+   "top_signal_values": {
+    "asset_dep_divergence": -0.095168,
+    "time_dep_share_chg_4q": 0.232992,
+    "eq_assets_chg_4q": -0.057258
+   },
    "reason": "Flagged because deposits grew 9.5% faster than assets; funding shifted 23.3% into time deposits over the year; capital ratio fell 5.7% over the year."
   },
   {
@@ -417,6 +547,11 @@
     "dep_growth_vol_4q",
     "unrealized_afs_loss_chg_4q"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_to_eq": -0.31501,
+    "dep_growth_vol_4q": 0.165561,
+    "unrealized_afs_loss_chg_4q": 0.187091
+   },
    "reason": "Flagged because unrealized securities losses equal 31.5% of equity; deposit balances are unusually volatile (\u03c3 16.6% over 4 quarters); the securities mark improved by 18.7% of equity over the year."
   },
   {
@@ -432,6 +567,11 @@
     "dep_growth_1q",
     "dep_growth_vol_4q"
    ],
+   "top_signal_values": {
+    "dep_growth_decel_4q": 0.215923,
+    "dep_growth_1q": 0.185899,
+    "dep_growth_vol_4q": 0.119552
+   },
    "reason": "Flagged because deposit growth accelerated 21.6% versus its own trailing year; deposits jumped 18.6% last quarter, and lumpy inflows tend to leave again; deposit balances are unusually volatile (\u03c3 12.0% over 4 quarters)."
   },
   {
@@ -447,6 +587,11 @@
     "dep_growth_decel_4q",
     "asset_dep_divergence"
    ],
+   "top_signal_values": {
+    "dep_growth_1q": 0.545185,
+    "dep_growth_decel_4q": 0.533903,
+    "asset_dep_divergence": -0.138839
+   },
    "reason": "Flagged because deposits jumped 54.5% last quarter, and lumpy inflows tend to leave again; deposit growth accelerated 53.4% versus its own trailing year; deposits grew 13.9% faster than assets."
   },
   {
@@ -462,6 +607,11 @@
     "dep_growth_decel_4q",
     "unrealized_afs_loss_chg_4q"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_to_eq": -0.187802,
+    "dep_growth_decel_4q": 0.185242,
+    "unrealized_afs_loss_chg_4q": 0.136854
+   },
    "reason": "Flagged because unrealized securities losses equal 18.8% of equity; deposit growth accelerated 18.5% versus its own trailing year; the securities mark improved by 13.7% of equity over the year."
   },
   {
@@ -477,6 +627,11 @@
     "dep_growth_decel_4q",
     "dep_growth_1q"
    ],
+   "top_signal_values": {
+    "asset_dep_divergence": -0.117889,
+    "dep_growth_decel_4q": 0.210123,
+    "dep_growth_1q": 0.190086
+   },
    "reason": "Flagged because deposits grew 11.8% faster than assets; deposit growth accelerated 21.0% versus its own trailing year; deposits jumped 19.0% last quarter, and lumpy inflows tend to leave again."
   },
   {
@@ -492,6 +647,11 @@
     "dep_growth_1q",
     "dep_growth_vol_4q"
    ],
+   "top_signal_values": {
+    "dep_growth_decel_4q": 0.227865,
+    "dep_growth_1q": 0.19226,
+    "dep_growth_vol_4q": 0.137706
+   },
    "reason": "Flagged because deposit growth accelerated 22.8% versus its own trailing year; deposits jumped 19.2% last quarter, and lumpy inflows tend to leave again; deposit balances are unusually volatile (\u03c3 13.8% over 4 quarters)."
   },
   {
@@ -507,6 +667,11 @@
     "dep_growth_decel_4q",
     "dep_growth_1q"
    ],
+   "top_signal_values": {
+    "dep_growth_vol_4q": 0.114086,
+    "dep_growth_decel_4q": 0.124062,
+    "dep_growth_1q": 0.10349
+   },
    "reason": "Flagged because deposit balances are unusually volatile (\u03c3 11.4% over 4 quarters); deposit growth accelerated 12.4% versus its own trailing year; deposits jumped 10.3% last quarter, and lumpy inflows tend to leave again."
   },
   {
@@ -522,6 +687,11 @@
     "unrealized_afs_loss_chg_4q",
     "dep_growth_decel_4q"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_to_eq": -0.284471,
+    "unrealized_afs_loss_chg_4q": 0.174441,
+    "dep_growth_decel_4q": 0.135334
+   },
    "reason": "Flagged because unrealized securities losses equal 28.4% of equity; the securities mark improved by 17.4% of equity over the year; deposit growth accelerated 13.5% versus its own trailing year."
   },
   {
@@ -537,6 +707,11 @@
     "dep_growth_decel_4q",
     "dep_growth_vol_4q"
    ],
+   "top_signal_values": {
+    "asset_dep_divergence": -0.215362,
+    "dep_growth_decel_4q": 0.319462,
+    "dep_growth_vol_4q": 0.186341
+   },
    "reason": "Flagged because deposits grew 21.5% faster than assets; deposit growth accelerated 31.9% versus its own trailing year; deposit balances are unusually volatile (\u03c3 18.6% over 4 quarters)."
   },
   {
@@ -552,6 +727,11 @@
     "core_dep_share_chg_4q",
     "dep_growth_decel_4q"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_to_eq": -0.57864,
+    "core_dep_share_chg_4q": 0.078891,
+    "dep_growth_decel_4q": 0.147735
+   },
    "reason": "Flagged because unrealized securities losses equal 57.9% of equity; core deposit share rose 7.9% over the year; deposit growth accelerated 14.8% versus its own trailing year."
   },
   {
@@ -567,6 +747,11 @@
     "dep_growth_decel_4q",
     "dep_growth_vol_4q"
    ],
+   "top_signal_values": {
+    "dep_growth_1q": 0.153675,
+    "dep_growth_decel_4q": 0.155256,
+    "dep_growth_vol_4q": 0.103432
+   },
    "reason": "Flagged because deposits jumped 15.4% last quarter, and lumpy inflows tend to leave again; deposit growth accelerated 15.5% versus its own trailing year; deposit balances are unusually volatile (\u03c3 10.3% over 4 quarters)."
   },
   {
@@ -582,6 +767,11 @@
     "core_dep_share_chg_4q",
     "dep_growth_1q"
    ],
+   "top_signal_values": {
+    "asset_dep_divergence": -0.136723,
+    "core_dep_share_chg_4q": 0.114136,
+    "dep_growth_1q": 0.223143
+   },
    "reason": "Flagged because deposits grew 13.7% faster than assets; core deposit share rose 11.4% over the year; deposits jumped 22.3% last quarter, and lumpy inflows tend to leave again."
   },
   {
@@ -597,6 +787,11 @@
     "dep_growth_decel_4q",
     "noninterest_dep_share_chg_4q"
    ],
+   "top_signal_values": {
+    "unrealized_afs_loss_to_eq": -0.259129,
+    "dep_growth_decel_4q": 0.257585,
+    "noninterest_dep_share_chg_4q": -0.12381
+   },
    "reason": "Flagged because unrealized securities losses equal 25.9% of equity; deposit growth accelerated 25.8% versus its own trailing year; operational balances shrank 12.4% as a share of the book over the year."
   },
   {
@@ -612,6 +807,11 @@
     "dep_growth_decel_4q",
     "uninsured_dep_share_chg_4q"
    ],
+   "top_signal_values": {
+    "core_dep_share_chg_4q": 0.075423,
+    "dep_growth_decel_4q": 0.105817,
+    "uninsured_dep_share_chg_4q": -0.057632
+   },
    "reason": "Flagged because core deposit share rose 7.5% over the year; deposit growth accelerated 10.6% versus its own trailing year; uninsured share fell 5.8% over the year."
   },
   {
@@ -627,6 +827,11 @@
     "log_assets",
     "noninterest_dep_share_chg_4q"
    ],
+   "top_signal_values": {
+    "dep_growth_1q": 0.262582,
+    "log_assets": 19.962587,
+    "noninterest_dep_share_chg_4q": 0.133525
+   },
    "reason": "Flagged because deposits jumped 26.3% last quarter, and lumpy inflows tend to leave again; the bank holds about $467.3B in assets; operational balances grew 13.4% as a share of the book over the year."
   },
   {
@@ -642,6 +847,11 @@
     "asset_dep_divergence",
     "ltd_trend_4q"
    ],
+   "top_signal_values": {
+    "core_dep_share": 0.194363,
+    "asset_dep_divergence": -0.136287,
+    "ltd_trend_4q": 0.71895
+   },
    "reason": "Flagged because core deposits are only 19.4% of the book; deposits grew 13.6% faster than assets; loan-to-deposit ratio rose 71.9% over the year."
   },
   {
@@ -657,6 +867,11 @@
     "ltd_trend_4q",
     "nim_level"
    ],
+   "top_signal_values": {
+    "core_dep_share": 0.652106,
+    "ltd_trend_4q": -0.204723,
+    "nim_level": 1.235849
+   },
    "reason": "Flagged because core deposits are only 65.2% of the book; loan-to-deposit ratio fell 20.5% over the year; net interest margin is 1.24%."
   },
   {
@@ -672,6 +887,11 @@
     "dep_growth_1q",
     "log_assets"
    ],
+   "top_signal_values": {
+    "asset_dep_divergence": 0.304705,
+    "dep_growth_1q": 0.23983,
+    "log_assets": 19.784998
+   },
    "reason": "Flagged because assets grew 30.5% faster than deposits; deposits jumped 24.0% last quarter, and lumpy inflows tend to leave again; the bank holds about $391.3B in assets."
   },
   {
@@ -687,6 +907,11 @@
     "core_dep_share_chg_4q",
     "nim_level"
    ],
+   "top_signal_values": {
+    "log_assets": 16.531926,
+    "core_dep_share_chg_4q": 0.055149,
+    "nim_level": 1.785363
+   },
    "reason": "Flagged because the bank holds about $15.1B in assets; core deposit share rose 5.5% over the year; net interest margin is 1.79%."
   },
   {
@@ -702,6 +927,11 @@
     "core_dep_share_chg_4q",
     "core_dep_share"
    ],
+   "top_signal_values": {
+    "log_assets": 18.282898,
+    "core_dep_share_chg_4q": 0.055056,
+    "core_dep_share": 0.79116
+   },
    "reason": "Flagged because the bank holds about $87.1B in assets; core deposit share rose 5.5% over the year; core deposits are only 79.1% of the book."
   },
   {
@@ -717,6 +947,11 @@
     "uninsured_dep_share",
     "core_dep_share"
    ],
+   "top_signal_values": {
+    "log_assets": 19.772761,
+    "uninsured_dep_share": 0.732184,
+    "core_dep_share": 0.673114
+   },
    "reason": "Flagged because the bank holds about $386.5B in assets; uninsured deposits are 73.2% of the book; core deposits are only 67.3% of the book."
   },
   {
@@ -732,6 +967,11 @@
     "core_dep_share",
     "dep_growth_1q"
    ],
+   "top_signal_values": {
+    "log_assets": 20.437949,
+    "core_dep_share": 0.682318,
+    "dep_growth_1q": 0.151694
+   },
    "reason": "Flagged because the bank holds about $751.8B in assets; core deposits are only 68.2% of the book; deposits jumped 15.2% last quarter, and lumpy inflows tend to leave again."
   },
   {
@@ -747,6 +987,11 @@
     "eq_assets",
     "log_assets"
    ],
+   "top_signal_values": {
+    "uninsured_dep_share": 0.930105,
+    "eq_assets": 0.248132,
+    "log_assets": 17.497995
+   },
    "reason": "Flagged because uninsured deposits are 93.0% of the book; equity is 24.8% of assets; the bank holds about $39.7B in assets."
   },
   {
@@ -762,6 +1007,11 @@
     "noninterest_dep_share",
     "time_dep_share"
    ],
+   "top_signal_values": {
+    "log_assets": 16.814375,
+    "noninterest_dep_share": 0.002538,
+    "time_dep_share": 0.0
+   },
    "reason": "Flagged because the bank holds about $20.1B in assets; noninterest-bearing (operational) deposits are 0.3%; time deposits are 0.0% of funding."
   }
  ]

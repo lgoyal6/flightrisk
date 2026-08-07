@@ -94,6 +94,14 @@ def signal_names(include_dumb: bool = True, include_macro: bool = True) -> list[
 def check_integrity() -> None:
     """Registry invariants. Wired into `build` so a malformed entry fails the pipeline."""
     problems = []
+    # An empty registry passes every per-signal check vacuously, which is exactly the failure
+    # mode that silently emptied the model's feature list earlier: importing `registry` without
+    # importing `signals` leaves REGISTRY empty and nothing complains. Fail loudly instead.
+    if not REGISTRY:
+        raise ValueError(
+            "registry is empty -- import drawdown_radar.signals before calling check_integrity(); "
+            "an empty registry makes every feature list silently empty"
+        )
     for s in REGISTRY.values():
         if not s.rationale or len(s.rationale.strip()) < 15:
             problems.append(f"{s.name}: rationale missing or too short to be a rationale")
