@@ -443,3 +443,22 @@ backtest → falsify → scorecards → score → test); full pytest; ruff on sr
 README claims re-verified against generated artifacts; 19/19 relative README paths resolve and all
 10 figures are tracked; `git ls-files data/` confirms only the 3 hand-authored inputs are committed
 (16 KB) against ~880 MB of correctly-ignored caches.
+
+**2026-08-07 · Freeze run under the new name, and one reproducibility wart it caught.**
+`make all` completed end to end as `flightrisk` (pull → build → backtest → falsify →
+scorecards → score → test). All 21 numeric README claims reproduce from the freshly generated
+artifacts, so the rename moved no number — as expected, since it touched only the package and
+project name and never the domain term (67 uses of "drawdown" as banking vocabulary preserved,
+0 project-name references remaining).
+
+The run did surface a genuine defect: the generated scorecard table was **not byte-stable across
+runs**. Signals with no incremental evidence share a NaN sort key, and with no deterministic
+tie-break their row order flipped between runs — `dumb_asset_digit_sum` and `dumb_row_noise`
+swapped places, producing a diff with identical verdicts and identical numbers. Cosmetic in
+effect, but corrosive in a repo whose central claim is that every artifact regenerates: a
+spurious diff trains a reader to stop trusting real ones.
+Decision: `signal` is now the final sort key in both generators, with `kind="mergesort"` and
+`na_position="last"`. Verified by regenerating twice and comparing MD5s of README.md and
+signal_scorecards.md — identical.
+
+Repo frozen at this state.

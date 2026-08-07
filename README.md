@@ -300,8 +300,8 @@ removed.
 | `ltd_trend_4q` | PARKED | 2.578 | 0.004 | 0.96 | 4.972 |
 | `txt_deposit_pressure` | PARKED | 0.470 | 0.002 | — | — |
 | `txt_funding_tone` | PARKED | 0.920 | 0.002 | — | — |
-| `txt_outflow_language` | PARKED | 1.860 | 0.002 | — | — |
 | `txt_inflow_language` | PARKED | 0.940 | 0.002 | — | — |
+| `txt_outflow_language` | PARKED | 1.860 | 0.002 | — | — |
 | `time_dep_share_chg_4q` | PARKED | 2.217 | -0.001 | 0.96 | 3.953 |
 | `prior_drawdown_1q` | PARKED | 1.701 | -0.013 | 0.89 | 2.049 |
 | `nim_compression_4q` | PARKED | 2.008 | -0.021 | 0.89 | 3.503 |
@@ -314,11 +314,11 @@ removed.
 | `brokered_share_chg_4q` | PARKED | 1.877 | -0.072 | 0.93 | 2.626 |
 | `noninterest_dep_share_chg_4q` | PARKED | 2.407 | -0.077 | 1.00 | 3.885 |
 | `state_identity` | PARKED | 1.754 | — | 1.00 | 2.662 |
-| `quarter_of_year` | ~~KILLED~~ | 0.988 | — | 0.54 | 0.805 |
-| `macro_agg_dep_growth` | ~~KILLED~~ | 0.988 | — | 0.54 | 0.805 |
-| `dumb_cert_parity` ⚠︎null | ~~KILLED~~ | 0.807 | — | 0.29 | 0.537 |
 | `dumb_asset_digit_sum` ⚠︎null | ~~KILLED~~ | 1.053 | — | 0.54 | 1.048 |
+| `dumb_cert_parity` ⚠︎null | ~~KILLED~~ | 0.807 | — | 0.29 | 0.537 |
 | `dumb_row_noise` ⚠︎null | ~~KILLED~~ | 0.991 | — | 0.50 | 0.598 |
+| `macro_agg_dep_growth` | ~~KILLED~~ | 0.988 | — | 0.54 | 0.805 |
+| `quarter_of_year` | ~~KILLED~~ | 0.988 | — | 0.54 | 0.805 |
 
 8 graduated, 22 parked, 5 killed. Full reasoning: [`reports/signal_scorecards.md`](reports/signal_scorecards.md).
 

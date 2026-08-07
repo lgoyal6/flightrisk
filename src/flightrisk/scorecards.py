@@ -111,10 +111,16 @@ def _fmt(v, nd=3) -> str:
 
 
 def write_markdown(cards: pd.DataFrame, headline: dict | None = None) -> str:
+    # `signal` is the final tiebreaker on purpose: signals with no incremental evidence share a
+    # NaN sort key, and without a deterministic tie-break their row order flips between runs --
+    # a regenerated table then shows a spurious diff, which is corrosive in a repo whose claim is
+    # that every artifact reproduces.
     order = {"GRADUATED": 0, "PARKED": 1, "KILLED": 2, "CANDIDATE": 3}
-    c = cards.sort_values(
-        ["status", "incremental_lift_5pct"],
-        key=lambda s: s.map(order) if s.name == "status" else -s.fillna(-99),
+    c = cards.assign(_o=cards["status"].map(order)).sort_values(
+        ["_o", "incremental_lift_5pct", "signal"],
+        ascending=[True, False, True],
+        na_position="last",
+        kind="mergesort",
     )
     lines = [
         "# Signal graduation scorecards",
@@ -208,10 +214,16 @@ def write_readme_table(cards: pd.DataFrame) -> bool:
     if README_BEGIN not in text or README_END not in text:
         return False
 
+    # Same deterministic tie-break as write_markdown -- see the note there.
     order = {"GRADUATED": 0, "PARKED": 1, "KILLED": 2, "CANDIDATE": 3}
     c = cards.copy()
     c["_o"] = c["status"].map(order)
-    c = c.sort_values(["_o", "incremental_lift_5pct"], ascending=[True, False])
+    c = c.sort_values(
+        ["_o", "incremental_lift_5pct", "signal"],
+        ascending=[True, False, True],
+        na_position="last",
+        kind="mergesort",
+    )
 
     rows = [
         README_BEGIN,
