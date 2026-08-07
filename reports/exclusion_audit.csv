@@ -1,0 +1,11 @@
+rule,rows_removed
+foreign_branch_charter (BKCLASS in NC/OI),3119
+no_next_quarter_row (bank exited or panel end),6497
+degenerate_base (deposits < $10M at T),1887
+terminal_winddown (deposits < $10M at T+1),64
+intra_hc_consolidation (affiliate absorbs charter <=5q out),1670
+insufficient_history (<5 quarterly obs),24693
+de_novo (<8 quarters old at T),262
+absorbed_another_bank_in_T+1 (inorganic jump),1668
+manually_adjudicated_structure_event,6
+RETAINED,196150
