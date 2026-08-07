@@ -1,0 +1,768 @@
+{
+ "quarter": "2026Q1",
+ "generated_from": "HistGB on the graduated structured signal set",
+ "stratified": true,
+ "note": "Ranked within size stratum. Scores are probabilities of a >=5% deposit decline in the following quarter; see reports/calibration.csv for reliability.",
+ "graduated_signals": [
+  "dep_growth_1q",
+  "dep_growth_decel_4q",
+  "dep_growth_vol_4q",
+  "ltd_level",
+  "unrealized_afs_loss_to_eq",
+  "log_assets",
+  "uninsured_dep_share",
+  "prior_drawdown_count_4q"
+ ],
+ "alerts": [
+  {
+   "quarter": "2026Q1",
+   "cert": 32574,
+   "bank": "MONET BANK",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 947.3,
+   "score": 0.66589,
+   "percentile_in_stratum": 100.0,
+   "top_signals": [
+    "uninsured_dep_share_chg_4q",
+    "core_dep_share_chg_4q",
+    "eq_assets_chg_4q"
+   ],
+   "reason": "Flagged because uninsured share rose 55.0% over the year; core deposit share rose 32.9% over the year; capital ratio rose 11.9% over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 58088,
+   "bank": "SOUTHPOINT BANK",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 1318.7,
+   "score": 0.59735,
+   "percentile_in_stratum": 99.9,
+   "top_signals": [
+    "core_dep_share",
+    "dep_growth_1q",
+    "unrealized_afs_loss_to_eq"
+   ],
+   "reason": "Flagged because core deposits are only 61.5% of the book; deposits already fell 8.2% last quarter; unrealized securities losses equal 8.4% of equity."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 58224,
+   "bank": "COLUMN NATIONAL ASSN",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 1184.6,
+   "score": 0.54786,
+   "percentile_in_stratum": 99.8,
+   "top_signals": [
+    "dep_growth_vol_4q",
+    "dep_growth_1q",
+    "dep_growth_decel_4q"
+   ],
+   "reason": "Flagged because deposit balances are unusually volatile (\u03c3 46.2% over 4 quarters); deposits jumped 72.1% last quarter, and lumpy inflows tend to leave again; deposit growth accelerated 67.2% versus its own trailing year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 26312,
+   "bank": "FIRST AMERICAN TRUST FSB",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 7801.4,
+   "score": 0.54297,
+   "percentile_in_stratum": 99.7,
+   "top_signals": [
+    "unrealized_afs_loss_to_eq",
+    "unrealized_afs_loss_chg_4q",
+    "dep_growth_1q"
+   ],
+   "reason": "Flagged because unrealized securities losses equal 40.5% of equity; the securities mark improved by 34.8% of equity over the year; deposits jumped 24.9% last quarter, and lumpy inflows tend to leave again."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 57710,
+   "bank": "GREENE CNTY COMMERCIAL BANK",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 1289.5,
+   "score": 0.53141,
+   "percentile_in_stratum": 99.6,
+   "top_signals": [
+    "uninsured_dep_share",
+    "ltd_level",
+    "unrealized_afs_loss_to_eq"
+   ],
+   "reason": "Flagged because uninsured deposits are 90.8% of the book; loan-to-deposit ratio is 0%; unrealized securities losses equal 12.3% of equity."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 21843,
+   "bank": "MIZUHO BANK USA",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 2826.5,
+   "score": 0.49095,
+   "percentile_in_stratum": 99.4,
+   "top_signals": [
+    "eq_assets_chg_4q",
+    "dep_growth_1q",
+    "eq_assets"
+   ],
+   "reason": "Flagged because capital ratio rose 11.7% over the year; deposits already fell 29.5% last quarter; equity is 28.7% of assets."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 58595,
+   "bank": "CHAIN BRIDGE BANK NA",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 1741.4,
+   "score": 0.36542,
+   "percentile_in_stratum": 99.3,
+   "top_signals": [
+    "noninterest_dep_share",
+    "dep_growth_vol_4q",
+    "uninsured_dep_share"
+   ],
+   "reason": "Flagged because noninterest-bearing (operational) deposits are 80.7%; deposit balances are unusually volatile (\u03c3 14.7% over 4 quarters); uninsured deposits are 75.5% of the book."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 34404,
+   "bank": "WEBBANK",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 2016.9,
+   "score": 0.35829,
+   "percentile_in_stratum": 99.2,
+   "top_signals": [
+    "nim_level",
+    "core_dep_share",
+    "dep_growth_decel_4q"
+   ],
+   "reason": "Flagged because net interest margin is 15.38%; core deposits are only 22.0% of the book; deposit growth decelerated 29.9% versus its own trailing year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 5962,
+   "bank": "SUTTON BANK",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 1450.9,
+   "score": 0.34447,
+   "percentile_in_stratum": 99.1,
+   "top_signals": [
+    "uninsured_dep_share",
+    "noninterest_dep_share",
+    "uninsured_dep_share_chg_4q"
+   ],
+   "reason": "Flagged because uninsured deposits are 90.3% of the book; noninterest-bearing (operational) deposits are 74.0%; uninsured share rose 12.5% over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 1497,
+   "bank": "SECURITY STATE BANK",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 1022.6,
+   "score": 0.33679,
+   "percentile_in_stratum": 99.0,
+   "top_signals": [
+    "unrealized_afs_loss_to_eq",
+    "dep_growth_1q",
+    "core_dep_share"
+   ],
+   "reason": "Flagged because unrealized securities losses equal 18.9% of equity; deposits jumped 21.0% last quarter, and lumpy inflows tend to leave again; core deposits are only 62.9% of the book."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 14028,
+   "bank": "FIRST GUARANTY BANK",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 3512.2,
+   "score": 0.33465,
+   "percentile_in_stratum": 98.9,
+   "top_signals": [
+    "core_dep_share",
+    "core_dep_share_chg_4q",
+    "ltd_trend_4q"
+   ],
+   "reason": "Flagged because core deposits are only 63.2% of the book; core deposit share fell 9.3% over the year; loan-to-deposit ratio fell 20.2% over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 28380,
+   "bank": "ADIRONDACK BANK",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 922.8,
+   "score": 0.31237,
+   "percentile_in_stratum": 98.8,
+   "top_signals": [
+    "unrealized_afs_loss_to_eq",
+    "dep_growth_decel_4q",
+    "unrealized_afs_loss_chg_4q"
+   ],
+   "reason": "Flagged because unrealized securities losses equal 21.0% of equity; deposit growth accelerated 11.0% versus its own trailing year; the securities mark improved by 7.1% of equity over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 21868,
+   "bank": "BESSEMER TRUST CO NA",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 4488.1,
+   "score": 0.29535,
+   "percentile_in_stratum": 98.7,
+   "top_signals": [
+    "dep_growth_vol_4q",
+    "dep_growth_decel_4q",
+    "uninsured_dep_share"
+   ],
+   "reason": "Flagged because deposit balances are unusually volatile (\u03c3 38.4% over 4 quarters); deposit growth decelerated 36.5% versus its own trailing year; uninsured deposits are 82.9% of the book."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 5146,
+   "bank": "WELLS FARGO BANK S CNTL NA",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 1786.1,
+   "score": 0.27979,
+   "percentile_in_stratum": 98.5,
+   "top_signals": [
+    "eq_assets_chg_4q",
+    "eq_assets",
+    "dep_growth_vol_4q"
+   ],
+   "reason": "Flagged because capital ratio rose 9.5% over the year; equity is 28.5% of assets; deposit balances are unusually volatile (\u03c3 18.5% over 4 quarters)."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 20099,
+   "bank": "TEXAS EXCHANGE BANK",
+   "size_stratum": "$1B-$10B",
+   "total_deposits_usd_m": 2582.2,
+   "score": 0.27808,
+   "percentile_in_stratum": 98.4,
+   "top_signals": [
+    "core_dep_share",
+    "nim_compression_4q",
+    "time_dep_share"
+   ],
+   "reason": "Flagged because core deposits are only 3.9% of the book; net interest margin compressed 1.43pp over the year; time deposits are 97.4% of funding."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 12225,
+   "bank": "FMB BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 49.5,
+   "score": 0.76591,
+   "percentile_in_stratum": 100.0,
+   "top_signals": [
+    "noninterest_dep_share_chg_4q",
+    "dep_growth_decel_4q",
+    "dep_growth_1q"
+   ],
+   "reason": "Flagged because operational balances grew 48.5% as a share of the book over the year; deposit growth accelerated 40.5% versus its own trailing year; deposits jumped 33.0% last quarter, and lumpy inflows tend to leave again."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 22381,
+   "bank": "ANAHUAC NATIONAL BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 284.5,
+   "score": 0.71923,
+   "percentile_in_stratum": 100.0,
+   "top_signals": [
+    "unrealized_afs_loss_chg_4q",
+    "unrealized_afs_loss_to_eq",
+    "asset_dep_divergence"
+   ],
+   "reason": "Flagged because the securities mark improved by 746.6% of equity over the year; unrealized securities losses equal 197.0% of equity; deposits grew 14.1% faster than assets."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 10635,
+   "bank": "BANK OF STEINAUER",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 23.5,
+   "score": 0.708,
+   "percentile_in_stratum": 99.9,
+   "top_signals": [
+    "dep_growth_decel_4q",
+    "dep_growth_1q",
+    "dep_growth_vol_4q"
+   ],
+   "reason": "Flagged because deposit growth accelerated 45.5% versus its own trailing year; deposits jumped 38.0% last quarter, and lumpy inflows tend to leave again; deposit balances are unusually volatile (\u03c3 23.2% over 4 quarters)."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 9406,
+   "bank": "BANK OF CATTARAUGUS",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 31.4,
+   "score": 0.68923,
+   "percentile_in_stratum": 99.9,
+   "top_signals": [
+    "dep_growth_vol_4q",
+    "dep_growth_decel_4q",
+    "dep_growth_1q"
+   ],
+   "reason": "Flagged because deposit balances are unusually volatile (\u03c3 23.7% over 4 quarters); deposit growth accelerated 38.1% versus its own trailing year; deposits jumped 31.2% last quarter, and lumpy inflows tend to leave again."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 8507,
+   "bank": "SLOAN STATE BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 81.6,
+   "score": 0.65383,
+   "percentile_in_stratum": 99.9,
+   "top_signals": [
+    "unrealized_afs_loss_to_eq",
+    "unrealized_afs_loss_chg_4q",
+    "dep_growth_1q"
+   ],
+   "reason": "Flagged because unrealized securities losses equal 84.0% of equity; the securities mark improved by 54.9% of equity over the year; deposits jumped 24.0% last quarter, and lumpy inflows tend to leave again."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 58482,
+   "bank": "BANK OF MONTANA",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 318.9,
+   "score": 0.6456,
+   "percentile_in_stratum": 99.8,
+   "top_signals": [
+    "dep_growth_decel_4q",
+    "dep_growth_vol_4q",
+    "dep_growth_1q"
+   ],
+   "reason": "Flagged because deposit growth accelerated 29.9% versus its own trailing year; deposit balances are unusually volatile (\u03c3 18.7% over 4 quarters); deposits jumped 25.3% last quarter, and lumpy inflows tend to leave again."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 59098,
+   "bank": "INFINITY BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 343.7,
+   "score": 0.63855,
+   "percentile_in_stratum": 99.8,
+   "top_signals": [
+    "uninsured_dep_share",
+    "dep_growth_1q",
+    "dep_growth_vol_4q"
+   ],
+   "reason": "Flagged because uninsured deposits are 65.1% of the book; deposits jumped 13.6% last quarter, and lumpy inflows tend to leave again; deposit balances are unusually volatile (\u03c3 9.7% over 4 quarters)."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 8946,
+   "bank": "KINDRED STATE BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 43.4,
+   "score": 0.60995,
+   "percentile_in_stratum": 99.8,
+   "top_signals": [
+    "dep_growth_vol_4q",
+    "uninsured_dep_share_chg_4q",
+    "dep_growth_decel_4q"
+   ],
+   "reason": "Flagged because deposit balances are unusually volatile (\u03c3 14.2% over 4 quarters); uninsured share fell 10.7% over the year; deposit growth accelerated 15.7% versus its own trailing year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 5401,
+   "bank": "F&M BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 122.4,
+   "score": 0.60606,
+   "percentile_in_stratum": 99.7,
+   "top_signals": [
+    "dep_growth_vol_4q",
+    "dep_growth_1q",
+    "dep_growth_decel_4q"
+   ],
+   "reason": "Flagged because deposit balances are unusually volatile (\u03c3 13.3% over 4 quarters); deposits jumped 10.9% last quarter, and lumpy inflows tend to leave again; deposit growth accelerated 11.0% versus its own trailing year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 11681,
+   "bank": "ANCHOR STATE BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 67.2,
+   "score": 0.60559,
+   "percentile_in_stratum": 99.7,
+   "top_signals": [
+    "dep_growth_1q",
+    "noninterest_dep_share_chg_4q",
+    "dep_growth_vol_4q"
+   ],
+   "reason": "Flagged because deposits jumped 20.2% last quarter, and lumpy inflows tend to leave again; operational balances grew 11.8% as a share of the book over the year; deposit balances are unusually volatile (\u03c3 14.0% over 4 quarters)."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 58590,
+   "bank": "NANO BANC",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 789.7,
+   "score": 0.60487,
+   "percentile_in_stratum": 99.7,
+   "top_signals": [
+    "asset_dep_divergence",
+    "time_dep_share_chg_4q",
+    "eq_assets_chg_4q"
+   ],
+   "reason": "Flagged because deposits grew 9.5% faster than assets; funding shifted 23.3% into time deposits over the year; capital ratio fell 5.7% over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 33552,
+   "bank": "BOONE BANK&TRUST CO",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 160.2,
+   "score": 0.57092,
+   "percentile_in_stratum": 99.7,
+   "top_signals": [
+    "unrealized_afs_loss_to_eq",
+    "dep_growth_vol_4q",
+    "unrealized_afs_loss_chg_4q"
+   ],
+   "reason": "Flagged because unrealized securities losses equal 31.5% of equity; deposit balances are unusually volatile (\u03c3 16.6% over 4 quarters); the securities mark improved by 18.7% of equity over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 10528,
+   "bank": "EXCHANGE B&T NATCHITOCHES LA",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 200.5,
+   "score": 0.57057,
+   "percentile_in_stratum": 99.6,
+   "top_signals": [
+    "dep_growth_decel_4q",
+    "dep_growth_1q",
+    "dep_growth_vol_4q"
+   ],
+   "reason": "Flagged because deposit growth accelerated 21.6% versus its own trailing year; deposits jumped 18.6% last quarter, and lumpy inflows tend to leave again; deposit balances are unusually volatile (\u03c3 12.0% over 4 quarters)."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 35261,
+   "bank": "TWIN CITY BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 99.5,
+   "score": 0.56448,
+   "percentile_in_stratum": 99.6,
+   "top_signals": [
+    "dep_growth_1q",
+    "dep_growth_decel_4q",
+    "asset_dep_divergence"
+   ],
+   "reason": "Flagged because deposits jumped 54.5% last quarter, and lumpy inflows tend to leave again; deposit growth accelerated 53.4% versus its own trailing year; deposits grew 13.9% faster than assets."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 4232,
+   "bank": "STATE BANK OF WYNNEWOOD",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 98.6,
+   "score": 0.55179,
+   "percentile_in_stratum": 99.6,
+   "top_signals": [
+    "unrealized_afs_loss_to_eq",
+    "dep_growth_decel_4q",
+    "unrealized_afs_loss_chg_4q"
+   ],
+   "reason": "Flagged because unrealized securities losses equal 18.8% of equity; deposit growth accelerated 18.5% versus its own trailing year; the securities mark improved by 13.7% of equity over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 10647,
+   "bank": "AMERICAN EXCHANGE BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 67.2,
+   "score": 0.5355,
+   "percentile_in_stratum": 99.5,
+   "top_signals": [
+    "asset_dep_divergence",
+    "dep_growth_decel_4q",
+    "dep_growth_1q"
+   ],
+   "reason": "Flagged because deposits grew 11.8% faster than assets; deposit growth accelerated 21.0% versus its own trailing year; deposits jumped 19.0% last quarter, and lumpy inflows tend to leave again."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 59318,
+   "bank": "ZENITH BANK&TRUST",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 99.3,
+   "score": 0.53407,
+   "percentile_in_stratum": 99.5,
+   "top_signals": [
+    "dep_growth_decel_4q",
+    "dep_growth_1q",
+    "dep_growth_vol_4q"
+   ],
+   "reason": "Flagged because deposit growth accelerated 22.8% versus its own trailing year; deposits jumped 19.2% last quarter, and lumpy inflows tend to leave again; deposit balances are unusually volatile (\u03c3 13.8% over 4 quarters)."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 10125,
+   "bank": "CITIZENS SAVINGS BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 159.4,
+   "score": 0.5289,
+   "percentile_in_stratum": 99.5,
+   "top_signals": [
+    "dep_growth_vol_4q",
+    "dep_growth_decel_4q",
+    "dep_growth_1q"
+   ],
+   "reason": "Flagged because deposit balances are unusually volatile (\u03c3 11.4% over 4 quarters); deposit growth accelerated 12.4% versus its own trailing year; deposits jumped 10.3% last quarter, and lumpy inflows tend to leave again."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 9354,
+   "bank": "FARMERS STB OF HOFFMAN",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 34.4,
+   "score": 0.52614,
+   "percentile_in_stratum": 99.4,
+   "top_signals": [
+    "unrealized_afs_loss_to_eq",
+    "unrealized_afs_loss_chg_4q",
+    "dep_growth_decel_4q"
+   ],
+   "reason": "Flagged because unrealized securities losses equal 28.4% of equity; the securities mark improved by 17.4% of equity over the year; deposit growth accelerated 13.5% versus its own trailing year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 7274,
+   "bank": "WSB MUNICIPAL BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 120.2,
+   "score": 0.51629,
+   "percentile_in_stratum": 99.4,
+   "top_signals": [
+    "asset_dep_divergence",
+    "dep_growth_decel_4q",
+    "dep_growth_vol_4q"
+   ],
+   "reason": "Flagged because deposits grew 21.5% faster than assets; deposit growth accelerated 31.9% versus its own trailing year; deposit balances are unusually volatile (\u03c3 18.6% over 4 quarters)."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 420,
+   "bank": "BANK OF VICI",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 29.8,
+   "score": 0.50432,
+   "percentile_in_stratum": 99.4,
+   "top_signals": [
+    "unrealized_afs_loss_to_eq",
+    "core_dep_share_chg_4q",
+    "dep_growth_decel_4q"
+   ],
+   "reason": "Flagged because unrealized securities losses equal 57.9% of equity; core deposit share rose 7.9% over the year; deposit growth accelerated 14.8% versus its own trailing year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 59143,
+   "bank": "NEW VALLEY BANK&TRUST",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 317.0,
+   "score": 0.50396,
+   "percentile_in_stratum": 99.3,
+   "top_signals": [
+    "dep_growth_1q",
+    "dep_growth_decel_4q",
+    "dep_growth_vol_4q"
+   ],
+   "reason": "Flagged because deposits jumped 15.4% last quarter, and lumpy inflows tend to leave again; deposit growth accelerated 15.5% versus its own trailing year; deposit balances are unusually volatile (\u03c3 10.3% over 4 quarters)."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 3225,
+   "bank": "TITAN BANK N A",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 783.7,
+   "score": 0.49324,
+   "percentile_in_stratum": 99.3,
+   "top_signals": [
+    "asset_dep_divergence",
+    "core_dep_share_chg_4q",
+    "dep_growth_1q"
+   ],
+   "reason": "Flagged because deposits grew 13.7% faster than assets; core deposit share rose 11.4% over the year; deposits jumped 22.3% last quarter, and lumpy inflows tend to leave again."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 33026,
+   "bank": "SURETY BANK",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 200.4,
+   "score": 0.48874,
+   "percentile_in_stratum": 99.3,
+   "top_signals": [
+    "unrealized_afs_loss_to_eq",
+    "dep_growth_decel_4q",
+    "noninterest_dep_share_chg_4q"
+   ],
+   "reason": "Flagged because unrealized securities losses equal 25.9% of equity; deposit growth accelerated 25.8% versus its own trailing year; operational balances shrank 12.4% as a share of the book over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 9196,
+   "bank": "HOME BANKING CO",
+   "size_stratum": "<$1B",
+   "total_deposits_usd_m": 117.3,
+   "score": 0.48844,
+   "percentile_in_stratum": 99.2,
+   "top_signals": [
+    "core_dep_share_chg_4q",
+    "dep_growth_decel_4q",
+    "uninsured_dep_share_chg_4q"
+   ],
+   "reason": "Flagged because core deposit share rose 7.5% over the year; deposit growth accelerated 10.6% versus its own trailing year; uninsured share fell 5.8% over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 639,
+   "bank": "BANK OF NEW YORK MELLON",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 419724.0,
+   "score": 0.70946,
+   "percentile_in_stratum": 100.0,
+   "top_signals": [
+    "dep_growth_1q",
+    "log_assets",
+    "noninterest_dep_share_chg_4q"
+   ],
+   "reason": "Flagged because deposits jumped 26.3% last quarter, and lumpy inflows tend to leave again; the bank holds about $467.3B in assets; operational balances grew 13.4% as a share of the book over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 57833,
+   "bank": "BEAL BANK USA",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 3670.9,
+   "score": 0.28379,
+   "percentile_in_stratum": 99.4,
+   "top_signals": [
+    "core_dep_share",
+    "asset_dep_divergence",
+    "ltd_trend_4q"
+   ],
+   "reason": "Flagged because core deposits are only 19.4% of the book; deposits grew 13.6% faster than assets; loan-to-deposit ratio rose 71.9% over the year."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 58647,
+   "bank": "FIRST FOUNDATION BANK",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 8783.5,
+   "score": 0.27339,
+   "percentile_in_stratum": 98.7,
+   "top_signals": [
+    "core_dep_share",
+    "ltd_trend_4q",
+    "nim_level"
+   ],
+   "reason": "Flagged because core deposits are only 65.2% of the book; loan-to-deposit ratio fell 20.5% over the year; net interest margin is 1.24%."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 32992,
+   "bank": "MORGAN STANLEY BANK NA",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 254345.0,
+   "score": 0.25279,
+   "percentile_in_stratum": 98.1,
+   "top_signals": [
+    "asset_dep_divergence",
+    "dep_growth_1q",
+    "log_assets"
+   ],
+   "reason": "Flagged because assets grew 30.5% faster than deposits; deposits jumped 24.0% last quarter, and lumpy inflows tend to leave again; the bank holds about $391.3B in assets."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 25178,
+   "bank": "BANK OF AMERICA CA NA",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 12639.0,
+   "score": 0.17511,
+   "percentile_in_stratum": 97.4,
+   "top_signals": [
+    "log_assets",
+    "core_dep_share_chg_4q",
+    "nim_level"
+   ],
+   "reason": "Flagged because the bank holds about $15.1B in assets; core deposit share rose 5.5% over the year; net interest margin is 1.79%."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 32541,
+   "bank": "FLAGSTAR BANK NATIONAL ASSN",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 66832.2,
+   "score": 0.13615,
+   "percentile_in_stratum": 96.8,
+   "top_signals": [
+    "log_assets",
+    "core_dep_share_chg_4q",
+    "core_dep_share"
+   ],
+   "reason": "Flagged because the bank holds about $87.1B in assets; core deposit share rose 5.5% over the year; core deposits are only 79.1% of the book."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 14,
+   "bank": "STATE STREET BANK&TRUST CO",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 299560.0,
+   "score": 0.13587,
+   "percentile_in_stratum": 96.1,
+   "top_signals": [
+    "log_assets",
+    "uninsured_dep_share",
+    "core_dep_share"
+   ],
+   "reason": "Flagged because the bank holds about $386.5B in assets; uninsured deposits are 73.2% of the book; core deposits are only 67.3% of the book."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 33124,
+   "bank": "GOLDMAN SACHS BANK USA",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 504823.0,
+   "score": 0.1351,
+   "percentile_in_stratum": 95.5,
+   "top_signals": [
+    "log_assets",
+    "core_dep_share",
+    "dep_growth_1q"
+   ],
+   "reason": "Flagged because the bank holds about $751.8B in assets; core deposits are only 68.2% of the book; deposits jumped 15.2% last quarter, and lumpy inflows tend to leave again."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 623,
+   "bank": "DEUTSCHE BANK TR CO AMERICAS",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 27713.0,
+   "score": 0.13162,
+   "percentile_in_stratum": 94.8,
+   "top_signals": [
+    "uninsured_dep_share",
+    "eq_assets",
+    "log_assets"
+   ],
+   "reason": "Flagged because uninsured deposits are 93.0% of the book; equity is 24.8% of assets; the bank holds about $39.7B in assets."
+  },
+  {
+   "quarter": "2026Q1",
+   "cert": 57311,
+   "bank": "STIFEL BANK&TRUST",
+   "size_stratum": ">$10B",
+   "total_deposits_usd_m": 18396.6,
+   "score": 0.12432,
+   "percentile_in_stratum": 94.2,
+   "top_signals": [
+    "log_assets",
+    "noninterest_dep_share",
+    "time_dep_share"
+   ],
+   "reason": "Flagged because the bank holds about $20.1B in assets; noninterest-bearing (operational) deposits are 0.3%; time deposits are 0.0% of funding."
+  }
+ ]
+}

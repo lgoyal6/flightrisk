@@ -1,0 +1,405 @@
+{
+ "dep_growth_1q": {
+  "status": "GRADUATED",
+  "evidence": {
+   "standalone_lift_5pct": 4.107180240801656,
+   "standalone_precision_5pct": 0.2020377256281848,
+   "standalone_auc_within_q": 0.6668415051384541,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": 0.0500321365625859,
+   "incremental_precision_5pct": 0.0025386567793698,
+   "standalone_lift_5pct_severe": 7.912894505350622,
+   "verdict_reason": "Removing it costs 0.05 lift@5%, and it beats random ranking in 100% of walk-forward folds."
+  }
+ },
+ "dep_growth_decel_4q": {
+  "status": "GRADUATED",
+  "evidence": {
+   "standalone_lift_5pct": 4.3690854279908695,
+   "standalone_precision_5pct": 0.2205905493733782,
+   "standalone_auc_within_q": 0.6783313960283213,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": 0.1334133747713295,
+   "incremental_precision_5pct": 0.0068912659303424,
+   "standalone_lift_5pct_severe": 7.683608770538817,
+   "verdict_reason": "Removing it costs 0.13 lift@5%, and it beats random ranking in 100% of walk-forward folds."
+  }
+ },
+ "dep_growth_vol_4q": {
+  "status": "GRADUATED",
+  "evidence": {
+   "standalone_lift_5pct": 3.284791983987453,
+   "standalone_precision_5pct": 0.1673768206156095,
+   "standalone_auc_within_q": 0.713739034329314,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": 0.0990283771565536,
+   "incremental_precision_5pct": 0.0042290831929276,
+   "standalone_lift_5pct_severe": 7.542158866515834,
+   "verdict_reason": "Removing it costs 0.10 lift@5%, and it beats random ranking in 100% of walk-forward folds."
+  }
+ },
+ "asset_dep_divergence": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.53813577715502,
+   "standalone_precision_5pct": 0.1303758966724594,
+   "standalone_auc_within_q": 0.5971874906472532,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": -0.0299613002004308,
+   "incremental_precision_5pct": -0.00120467285374,
+   "standalone_lift_5pct_severe": 4.070419268686998,
+   "verdict_reason": "Carries real standalone information (lift 2.54) but is redundant once the graduated set is present (incremental -0.03)."
+  }
+ },
+ "ltd_level": {
+  "status": "GRADUATED",
+  "evidence": {
+   "standalone_lift_5pct": 2.5490022951629636,
+   "standalone_precision_5pct": 0.1383907017962923,
+   "standalone_auc_within_q": 0.619512418693709,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": 0.1588421013311896,
+   "incremental_precision_5pct": 0.0062857662330196,
+   "standalone_lift_5pct_severe": 4.5641387340293935,
+   "verdict_reason": "Removing it costs 0.16 lift@5%, and it beats random ranking in 100% of walk-forward folds."
+  }
+ },
+ "ltd_trend_4q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.5775390481743528,
+   "standalone_precision_5pct": 0.1292956163866246,
+   "standalone_auc_within_q": 0.584922377920941,
+   "standalone_lift_frac_folds_above_1": 0.9642857142857144,
+   "incremental_lift_5pct": 0.0041426508977799,
+   "incremental_precision_5pct": 0.0041025337672464,
+   "standalone_lift_5pct_severe": 4.97172105805902,
+   "verdict_reason": "Carries real standalone information (lift 2.58) but is redundant once the graduated set is present (incremental +0.00)."
+  }
+ },
+ "eq_assets": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.0194133778412735,
+   "standalone_precision_5pct": 0.0986677195567985,
+   "standalone_auc_within_q": 0.5483022708969706,
+   "standalone_lift_frac_folds_above_1": 0.8928571428571429,
+   "incremental_lift_5pct": -0.0301301578234012,
+   "incremental_precision_5pct": -0.0012479703311628,
+   "standalone_lift_5pct_severe": 2.9404571305540217,
+   "verdict_reason": "Carries real standalone information (lift 2.02) but is redundant once the graduated set is present (incremental -0.03)."
+  }
+ },
+ "eq_assets_chg_4q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.387522754600467,
+   "standalone_precision_5pct": 0.1130626413729876,
+   "standalone_auc_within_q": 0.5722945535366675,
+   "standalone_lift_frac_folds_above_1": 0.9285714285714286,
+   "incremental_lift_5pct": 0.0169003235193283,
+   "incremental_precision_5pct": 0.0006458270033847,
+   "standalone_lift_5pct_severe": 4.287240047782108,
+   "verdict_reason": "Carries real standalone information (lift 2.39) but is redundant once the graduated set is present (incremental +0.02)."
+  }
+ },
+ "unrealized_afs_loss_to_eq": {
+  "status": "GRADUATED",
+  "evidence": {
+   "standalone_lift_5pct": 1.433396219405341,
+   "standalone_precision_5pct": 0.0758810932561909,
+   "standalone_auc_within_q": 0.5245895166720935,
+   "standalone_lift_frac_folds_above_1": 0.8928571428571429,
+   "incremental_lift_5pct": 0.0716559822979494,
+   "incremental_precision_5pct": 0.0040024832584976,
+   "standalone_lift_5pct_severe": 1.6435213603358232,
+   "verdict_reason": "Removing it costs 0.07 lift@5%, and it beats random ranking in 89% of walk-forward folds."
+  }
+ },
+ "unrealized_afs_loss_chg_4q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 1.5284388673327824,
+   "standalone_precision_5pct": 0.0805467153598142,
+   "standalone_auc_within_q": 0.5407714881345883,
+   "standalone_lift_frac_folds_above_1": 0.8571428571428571,
+   "incremental_lift_5pct": 0.0094998598033946,
+   "incremental_precision_5pct": 0.0019643881449937,
+   "standalone_lift_5pct_severe": 1.7473043213255963,
+   "verdict_reason": "Carries real standalone information (lift 1.53) but is redundant once the graduated set is present (incremental +0.01)."
+  }
+ },
+ "nim_level": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.250023038371698,
+   "standalone_precision_5pct": 0.1105601652899836,
+   "standalone_auc_within_q": 0.566092444703975,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": -0.0506164940509776,
+   "incremental_precision_5pct": -0.0007278755306084,
+   "standalone_lift_5pct_severe": 3.935644411302434,
+   "verdict_reason": "Carries real standalone information (lift 2.25) but is redundant once the graduated set is present (incremental -0.05)."
+  }
+ },
+ "nim_compression_4q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.0075515218960014,
+   "standalone_precision_5pct": 0.1013440784409809,
+   "standalone_auc_within_q": 0.5569846543945781,
+   "standalone_lift_frac_folds_above_1": 0.8928571428571429,
+   "incremental_lift_5pct": -0.0205149161231874,
+   "incremental_precision_5pct": -0.0012077929456837,
+   "standalone_lift_5pct_severe": 3.5030616942460573,
+   "verdict_reason": "Carries real standalone information (lift 2.01) but is redundant once the graduated set is present (incremental -0.02)."
+  }
+ },
+ "log_assets": {
+  "status": "GRADUATED",
+  "evidence": {
+   "standalone_lift_5pct": 1.9739635044236827,
+   "standalone_precision_5pct": 0.1131877725715277,
+   "standalone_auc_within_q": 0.5755682805950494,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": 0.0818283283116398,
+   "incremental_precision_5pct": 0.0037475774100997,
+   "standalone_lift_5pct_severe": 1.8052692722775912,
+   "verdict_reason": "Removing it costs 0.08 lift@5%, and it beats random ranking in 100% of walk-forward folds."
+  }
+ },
+ "quarter_of_year": {
+  "status": "KILLED",
+  "evidence": {
+   "standalone_lift_5pct": 0.9884679945066552,
+   "standalone_precision_5pct": 0.0568624524019025,
+   "standalone_auc_within_q": 0.5,
+   "standalone_lift_frac_folds_above_1": 0.5357142857142857,
+   "incremental_lift_5pct": null,
+   "incremental_precision_5pct": null,
+   "standalone_lift_5pct_severe": 0.8054958118205823,
+   "verdict_reason": "Constant within a quarter, so it cannot rank banks inside the quarter an alert list is worked in; its apparent value is entirely pooled-metric inflation."
+  }
+ },
+ "macro_agg_dep_growth": {
+  "status": "KILLED",
+  "evidence": {
+   "standalone_lift_5pct": 0.9884679945066552,
+   "standalone_precision_5pct": 0.0568624524019025,
+   "standalone_auc_within_q": 0.5,
+   "standalone_lift_frac_folds_above_1": 0.5357142857142857,
+   "incremental_lift_5pct": null,
+   "incremental_precision_5pct": null,
+   "standalone_lift_5pct_severe": 0.8054958118205823,
+   "verdict_reason": "Constant within a quarter, so it cannot rank banks inside the quarter an alert list is worked in; its apparent value is entirely pooled-metric inflation."
+  }
+ },
+ "dumb_cert_parity": {
+  "status": "KILLED",
+  "evidence": {
+   "standalone_lift_5pct": 0.8074856328212389,
+   "standalone_precision_5pct": 0.0484711425048412,
+   "standalone_auc_within_q": 0.5042493316835778,
+   "standalone_lift_frac_folds_above_1": 0.2857142857142857,
+   "incremental_lift_5pct": null,
+   "incremental_precision_5pct": null,
+   "standalone_lift_5pct_severe": 0.5367171950582025,
+   "verdict_reason": "No standalone ranking power (lift 0.81) and no incremental contribution (+0.00)."
+  }
+ },
+ "state_identity": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 1.754195064001598,
+   "standalone_precision_5pct": 0.0942038251502136,
+   "standalone_auc_within_q": 0.6014734605989698,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": null,
+   "incremental_precision_5pct": null,
+   "standalone_lift_5pct_severe": 2.6623967862195057,
+   "verdict_reason": "Carries real standalone information (lift 1.75) but is redundant once the graduated set is present (incremental +0.00)."
+  }
+ },
+ "dumb_row_noise": {
+  "status": "KILLED",
+  "evidence": {
+   "standalone_lift_5pct": 0.9913448591748169,
+   "standalone_precision_5pct": 0.0563200057764632,
+   "standalone_auc_within_q": 0.4994426850269248,
+   "standalone_lift_frac_folds_above_1": 0.5,
+   "incremental_lift_5pct": null,
+   "incremental_precision_5pct": null,
+   "standalone_lift_5pct_severe": 0.5982591224628011,
+   "verdict_reason": "No standalone ranking power (lift 0.99) and no incremental contribution (+0.00)."
+  }
+ },
+ "dumb_asset_digit_sum": {
+  "status": "KILLED",
+  "evidence": {
+   "standalone_lift_5pct": 1.0533916842569822,
+   "standalone_precision_5pct": 0.0618722727572892,
+   "standalone_auc_within_q": 0.518473498355755,
+   "standalone_lift_frac_folds_above_1": 0.5357142857142857,
+   "incremental_lift_5pct": null,
+   "incremental_precision_5pct": null,
+   "standalone_lift_5pct_severe": 1.0479699020843154,
+   "verdict_reason": "Weak standalone (lift 1.05) and no incremental contribution (+0.00)."
+  }
+ },
+ "brokered_share": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 1.9245100642565305,
+   "standalone_precision_5pct": 0.0925445969834472,
+   "standalone_auc_within_q": 0.5469544864525496,
+   "standalone_lift_frac_folds_above_1": 0.9285714285714286,
+   "incremental_lift_5pct": -0.0466840387075873,
+   "incremental_precision_5pct": -0.0015832444848734,
+   "standalone_lift_5pct_severe": 2.789316474500485,
+   "verdict_reason": "Carries real standalone information (lift 1.92) but is redundant once the graduated set is present (incremental -0.05)."
+  }
+ },
+ "brokered_share_chg_4q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 1.8765381507660812,
+   "standalone_precision_5pct": 0.0939073910992983,
+   "standalone_auc_within_q": 0.5504679153859912,
+   "standalone_lift_frac_folds_above_1": 0.9285714285714286,
+   "incremental_lift_5pct": -0.0720099360422121,
+   "incremental_precision_5pct": -0.0033897397258454,
+   "standalone_lift_5pct_severe": 2.6260772776164387,
+   "verdict_reason": "Carries real standalone information (lift 1.88) but is redundant once the graduated set is present (incremental -0.07)."
+  }
+ },
+ "time_dep_share": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.3195491576087757,
+   "standalone_precision_5pct": 0.1232505642690994,
+   "standalone_auc_within_q": 0.573068075180274,
+   "standalone_lift_frac_folds_above_1": 0.9642857142857144,
+   "incremental_lift_5pct": 0.0407385595239082,
+   "incremental_precision_5pct": 0.0024731383430473,
+   "standalone_lift_5pct_severe": 4.536652091672553,
+   "verdict_reason": "Carries real standalone information (lift 2.32) but is redundant once the graduated set is present (incremental +0.04)."
+  }
+ },
+ "time_dep_share_chg_4q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.216746239968732,
+   "standalone_precision_5pct": 0.1118082790383644,
+   "standalone_auc_within_q": 0.5580364614905096,
+   "standalone_lift_frac_folds_above_1": 0.9642857142857144,
+   "incremental_lift_5pct": -0.0012305247996282,
+   "incremental_precision_5pct": 0.0008826768753089,
+   "standalone_lift_5pct_severe": 3.952651329516932,
+   "verdict_reason": "Carries real standalone information (lift 2.22) but is redundant once the graduated set is present (incremental -0.00)."
+  }
+ },
+ "core_dep_share": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.449267752254779,
+   "standalone_precision_5pct": 0.1257455100583996,
+   "standalone_auc_within_q": 0.5705531594043591,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": 0.0131280161718221,
+   "incremental_precision_5pct": 0.0003120576925063,
+   "standalone_lift_5pct_severe": 4.352286100869742,
+   "verdict_reason": "Carries real standalone information (lift 2.45) but is redundant once the graduated set is present (incremental +0.01)."
+  }
+ },
+ "core_dep_share_chg_4q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.2304807814058702,
+   "standalone_precision_5pct": 0.1156042813848968,
+   "standalone_auc_within_q": 0.5661012209511698,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": -0.0321869265983716,
+   "incremental_precision_5pct": -0.0017796825239014,
+   "standalone_lift_5pct_severe": 3.797130256021148,
+   "verdict_reason": "Carries real standalone information (lift 2.23) but is redundant once the graduated set is present (incremental -0.03)."
+  }
+ },
+ "uninsured_dep_share": {
+  "status": "GRADUATED",
+  "evidence": {
+   "standalone_lift_5pct": 2.4758699191338343,
+   "standalone_precision_5pct": 0.1307945049393396,
+   "standalone_auc_within_q": 0.6112553265640407,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": 0.0997265206960689,
+   "incremental_precision_5pct": 0.0057955633638521,
+   "standalone_lift_5pct_severe": 5.206888395462044,
+   "verdict_reason": "Removing it costs 0.10 lift@5%, and it beats random ranking in 100% of walk-forward folds."
+  }
+ },
+ "uninsured_dep_share_chg_4q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.8126267214786353,
+   "standalone_precision_5pct": 0.1401247887356173,
+   "standalone_auc_within_q": 0.6052994781353347,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": 0.0335350638475544,
+   "incremental_precision_5pct": 0.0017855062376099,
+   "standalone_lift_5pct_severe": 5.022392020443805,
+   "verdict_reason": "Carries real standalone information (lift 2.81) but is redundant once the graduated set is present (incremental +0.03)."
+  }
+ },
+ "noninterest_dep_share": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.4577195095373705,
+   "standalone_precision_5pct": 0.1298366390330003,
+   "standalone_auc_within_q": 0.5705433108611916,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": -0.0589628689019026,
+   "incremental_precision_5pct": -0.0019362318345653,
+   "standalone_lift_5pct_severe": 4.5324447013431115,
+   "verdict_reason": "Carries real standalone information (lift 2.46) but is redundant once the graduated set is present (incremental -0.06)."
+  }
+ },
+ "noninterest_dep_share_chg_4q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 2.407368176032254,
+   "standalone_precision_5pct": 0.1247593512073825,
+   "standalone_auc_within_q": 0.578505095084968,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": -0.0765558100280578,
+   "incremental_precision_5pct": -0.0032005005734814,
+   "standalone_lift_5pct_severe": 3.8846759791310506,
+   "verdict_reason": "Carries real standalone information (lift 2.41) but is redundant once the graduated set is present (incremental -0.08)."
+  }
+ },
+ "prior_drawdown_1q": {
+  "status": "PARKED",
+  "evidence": {
+   "standalone_lift_5pct": 1.700864726859885,
+   "standalone_precision_5pct": 0.0878445100374822,
+   "standalone_auc_within_q": 0.5264149237983184,
+   "standalone_lift_frac_folds_above_1": 0.8928571428571429,
+   "incremental_lift_5pct": -0.0131055131110215,
+   "incremental_precision_5pct": -0.0004782283483135,
+   "standalone_lift_5pct_severe": 2.048746548599749,
+   "verdict_reason": "Carries real standalone information (lift 1.70) but is redundant once the graduated set is present (incremental -0.01)."
+  }
+ },
+ "prior_drawdown_count_4q": {
+  "status": "GRADUATED",
+  "evidence": {
+   "standalone_lift_5pct": 3.1382531626568153,
+   "standalone_precision_5pct": 0.163050613890239,
+   "standalone_auc_within_q": 0.6358839908748346,
+   "standalone_lift_frac_folds_above_1": 1.0,
+   "incremental_lift_5pct": 0.0898199583841909,
+   "incremental_precision_5pct": 0.0036181576676055,
+   "standalone_lift_5pct_severe": 5.033517040900987,
+   "verdict_reason": "Removing it costs 0.09 lift@5%, and it beats random ranking in 100% of walk-forward folds."
+  }
+ }
+}
