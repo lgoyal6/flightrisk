@@ -40,6 +40,22 @@ def backtest(
 
 
 @app.command()
+def falsify():
+    """Run the two falsification experiments: recover-the-logit and unseen-entity."""
+    from .falsification import run
+
+    run()
+
+
+@app.command()
+def text():
+    """Fetch SEC 8-K filings, run LLM extraction, and test incremental lift over structured."""
+    from .pipeline import run_text
+
+    run_text()
+
+
+@app.command()
 def scorecards():
     """Regenerate signal graduation scorecards from the registry."""
     from .pipeline import run_scorecards

@@ -18,11 +18,12 @@ from dataclasses import dataclass
 
 import numpy as np
 import pandas as pd
+from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import KBinsDiscretizer, SplineTransformer, StandardScaler
 
 # Importing `signals` populates REGISTRY. Without it every feature list below silently comes
 # back empty and the models fit on nothing.
@@ -47,8 +48,94 @@ def structured_features() -> list[str]:
     return [s.name for s in REGISTRY.values() if s.in_model]
 
 
-def make_model(kind: str, seed: int = 0):
-    """Fold-local pipeline. Imputers/scalers are fitted per fold, never globally."""
+# The growth family, where the U-shaped relationship lives (see the README): next-quarter
+# drawdown risk is elevated at BOTH tails of this quarter's deposit growth. A linear model
+# cannot represent that with a single coefficient, which is the hypothesis the binned and
+# spline variants test.
+GROWTH_FAMILY = (
+    "dep_growth_1q",
+    "dep_growth_decel_4q",
+    "dep_growth_vol_4q",
+    "asset_dep_divergence",
+)
+N_GROWTH_BINS = 9
+
+
+def _binned_growth_pipeline(features: list[str], seed: int, bin_all: bool = False):
+    """Logit with quantile-binned one-hot growth features.
+
+    Bin EDGES are fitted by `KBinsDiscretizer` inside this pipeline, so they are estimated
+    from the training fold only. Computing quantile edges on the full panel would leak the
+    test quarter's distribution into the encoding -- subtly, and invisibly in the metrics.
+    """
+    growth = [f for f in features if bin_all or f in GROWTH_FAMILY]
+    linear = [f for f in features if f not in growth]
+    binner = Pipeline(
+        [
+            ("impute", SimpleImputer(strategy="median")),
+            (
+                "bin",
+                KBinsDiscretizer(
+                    n_bins=N_GROWTH_BINS,
+                    strategy="quantile",
+                    encode="onehot-dense",
+                    quantile_method="linear",
+                ),
+            ),
+        ]
+    )
+    scaler = Pipeline([("impute", SimpleImputer(strategy="median")), ("scale", StandardScaler())])
+    blocks = [("binned", binner, growth)]
+    if linear:
+        blocks.append(("linear", scaler, linear))
+    return Pipeline(
+        [
+            ("prep", ColumnTransformer(blocks)),
+            (
+                "clf",
+                LogisticRegression(
+                    l1_ratio=1.0, solver="liblinear", C=0.1, max_iter=3000, random_state=seed
+                ),
+            ),
+        ]
+    )
+
+
+def _spline_growth_pipeline(features: list[str], seed: int):
+    """Logit with a cubic B-spline basis on the growth family. Knots fitted per fold."""
+    growth = [f for f in features if f in GROWTH_FAMILY]
+    linear = [f for f in features if f not in growth]
+    spline = Pipeline(
+        [
+            ("impute", SimpleImputer(strategy="median")),
+            ("spline", SplineTransformer(n_knots=7, degree=3, knots="quantile")),
+        ]
+    )
+    scaler = Pipeline([("impute", SimpleImputer(strategy="median")), ("scale", StandardScaler())])
+    blocks = [("spline", spline, growth)]
+    if linear:
+        blocks.append(("linear", scaler, linear))
+    return Pipeline(
+        [
+            ("prep", ColumnTransformer(blocks)),
+            (
+                "clf",
+                LogisticRegression(
+                    l1_ratio=1.0, solver="liblinear", C=0.1, max_iter=3000, random_state=seed
+                ),
+            ),
+        ]
+    )
+
+
+def make_model(kind: str, seed: int = 0, features: list[str] | None = None):
+    """Fold-local pipeline. Imputers/scalers/bin-edges are fitted per fold, never globally."""
+    if kind == "logit_l1_binned_growth":
+        return _binned_growth_pipeline(features or [], seed)
+    if kind == "logit_l1_binned_all":
+        return _binned_growth_pipeline(features or [], seed, bin_all=True)
+    if kind == "logit_l1_spline_growth":
+        return _spline_growth_pipeline(features or [], seed)
     if kind == "logit_l1":
         return Pipeline(
             [
@@ -151,7 +238,7 @@ def _score_fold(tr: pd.DataFrame, te: pd.DataFrame, spec: Spec, label: str) -> p
                 f"spec '{spec.name}' has an empty feature list -- the registry was probably "
                 f"not populated (import drawdown_radar.signals)"
             )
-        model = make_model(spec.kind)
+        model = make_model(spec.kind, features=spec.features)
         model.fit(tr[spec.features], tr[label])
         out["score"] = model.predict_proba(te[spec.features])[:, 1]
     out["model"] = spec.name
