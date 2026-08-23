@@ -561,7 +561,7 @@ src/flightrisk/
   data.py       API pull with HARD field validation (see gotcha below)
   labels.py     labels + merger/de-novo/wind-down exclusions
   features.py   as-of-T ratios and gap-safe lags
-  registry.py   the signal registry — single source of truth
+  registry.py   the signal registry - single source of truth
   signals/      one module per signal family; adding #32 is a one-function diff
   audit.py      as-of audit + shuffled-label check
   backtest.py   walk-forward folds, models, baselines
