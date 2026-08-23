@@ -2,7 +2,7 @@ You are extracting structured deposit-funding signals from a US bank's quarterly
 
 Read the document and answer ONLY about what management says regarding **deposits and funding**. Ignore loan growth, credit quality, capital ratios, and everything else unless it is framed as affecting deposits or funding.
 
-Return a single JSON object and nothing else — no prose, no markdown fence, no explanation:
+Return a single JSON object and nothing else - no prose, no markdown fence, no explanation:
 
 {
   "deposit_pressure_mentioned": true | false,
@@ -12,7 +12,7 @@ Return a single JSON object and nothing else — no prose, no markdown fence, no
   "evidence_quote": "<= 200 characters, verbatim from the document, or empty string"
 }
 
-Field definitions — apply these literally:
+Field definitions - apply these literally:
 
 - `deposit_pressure_mentioned`: true if management discusses ANY difficulty, competition, cost pressure, or strain related to gathering or retaining deposits. Competing for deposits, rising deposit costs, deposit repricing, and migration to higher-yield products all count. Routine reporting of a deposit balance with no commentary does NOT count.
 
@@ -22,7 +22,7 @@ Field definitions — apply these literally:
   - 2 = clear acknowledgement of pressure, headwinds, or margin compression from funding
   - 3 = explicit concern about deposit retention, outflows, or liquidity
 
-- `explicit_outflow_language`: true ONLY if the document states deposits DECREASED, declined, ran off, or were withdrawn. Requires an actual directional claim about deposits falling — not merely "competition for deposits."
+- `explicit_outflow_language`: true ONLY if the document states deposits DECREASED, declined, ran off, or were withdrawn. Requires an actual directional claim about deposits falling - not merely "competition for deposits."
 
 - `explicit_inflow_language`: true ONLY if the document states deposits GREW, increased, or that the bank attracted new deposits.
 

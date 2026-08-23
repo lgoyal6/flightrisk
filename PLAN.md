@@ -1,4 +1,4 @@
-# flightrisk — PLAN
+# flightrisk - PLAN
 
 **Goal.** One quarter ahead, rank US banks by probability of a significant deposit
 drawdown, using only information observable as of the prior quarter. Public analog for
@@ -13,7 +13,7 @@ coverage claim below against the live APIs on 2026-08-06. Nothing here is assume
 
 ---
 
-## 1. Data source — VERIFIED, with corrections to the original brief
+## 1. Data source - VERIFIED, with corrections to the original brief
 
 ### 1.1 The host in the brief is stale
 
@@ -40,12 +40,12 @@ Data dictionary: `https://api.fdic.gov/banks/docs/risview_properties.yaml` (616 
    before the request, and asserts every requested column is present in the response.
    This is a hard failure, not a warning.
 2. **The default response is a 161-field subset of 2,378.** Fields the brief assumed
-   missing (`BRO`, `NTRTIME`, `SCAA`) do exist — they just aren't returned by default and
+   missing (`BRO`, `NTRTIME`, `SCAA`) do exist - they just aren't returned by default and
    must be named explicitly.
 3. **Both list endpoints cap at `limit=10000`.** `financials` fits in one request per
    quarter (max ~6.5k banks). `institutions` (23,582 total) requires `offset` pagination.
 
-### 1.4 Coverage check — all key fields ≥99% populated, 2015Q1→2026Q1
+### 1.4 Coverage check - all key fields ≥99% populated, 2015Q1→2026Q1
 
 Measured non-null share across all banks in 8 sampled quarters:
 
@@ -57,7 +57,7 @@ Measured non-null share across all banks in 8 sampled quarters:
 ```
 
 This matters: had `DEPUNINS` only existed post-SVB, any signal built on it would be a
-regime artifact rather than a signal. It doesn't — it goes back to 2015 at 100%.
+regime artifact rather than a signal. It doesn't - it goes back to 2015 at 100%.
 
 **Latest available quarter is 2026Q1** (`REPDTE=20260331`). 2026Q2 Call Reports are not
 yet published as of 2026-08-06, so the live `score` demo targets 2026Q1.
@@ -67,7 +67,7 @@ and mishandling it is the single largest correctness risk in this project (§3).
 
 ### 1.5 Exact fields pulled (all verified to exist and be populated)
 
-**Deposits / funding:** `DEP` (total deposits — the label numerator), `DEPDOM`,
+**Deposits / funding:** `DEP` (total deposits - the label numerator), `DEPDOM`,
 `DEPNI` (noninterest-bearing), `NTRTIME` (total time deposits), `BRO` (brokered),
 `COREDEP` (core), `DEPINS` (est. insured), `DEPUNINS` (est. uninsured).
 **Balance sheet:** `ASSET`, `EQ`, `LIAB`, `LNLSNET`, `SC`, `SCAF` (AFS at fair value),
@@ -107,19 +107,19 @@ as-of-T features and the T+1 outcome. Prediction target is always the next quart
 | Degenerate base | `DEP[i,T]` < \$10M | −5% on a \$2M book is rounding |
 
 `NEWCERT` is populated on 97% of inactive institutions (verified), and grouping by it
-identifies acquirers — e.g. CERT 22559 absorbed two banks in 2023–24. `/history` with its
+identifies acquirers - e.g. CERT 22559 absorbed two banks in 2023–24. `/history` with its
 `FAILED_*` / `UNASSIST_*` flags is the cross-check on failures vs. voluntary mergers.
 
 Every exclusion is **counted and reported** in `build` output and the README, so the reader
 can see exactly how many rows each rule removed.
 
 ### Base rate
-Reported per quarter, not just pooled — a rare-ish event whose rate moves with the rate
+Reported per quarter, not just pooled - a rare-ish event whose rate moves with the rate
 cycle. **These numbers are produced before any model is built** (next deliverable).
 
 ---
 
-## 3. Candidate signals — 13 total, all strictly as-of T
+## 3. Candidate signals - 13 total, all strictly as-of T
 
 Each is a registry entry: `name`, one-line `rationale`, `compute` fn, `status`, `evidence`.
 
@@ -130,10 +130,10 @@ Each is a registry entry: `name`, one-line `rationale`, `compute` fn, `status`, 
 | 3 | `time_dep_share_chg` | `NTRTIME`,`DEP` | Rate-sensitive funding reprices and walks at maturity |
 | 4 | `loan_to_dep_trend` | `LNLSNET`,`DEP` | High/rising LTD = funding already stretched, no cushion to absorb an outflow |
 | 5 | `equity_assets_chg` | `EQ`,`ASSET` | Thin//falling capital cushion invites depositor and regulator scrutiny |
-| 6 | `unrealized_afs_loss` | `SCAF`,`SCAA` | (fair − amortized)/equity: paper losses that become real if deposits force a sale — the SVB mechanism |
+| 6 | `unrealized_afs_loss` | `SCAF`,`SCAA` | (fair − amortized)/equity: paper losses that become real if deposits force a sale - the SVB mechanism |
 | 7 | `asset_dep_divergence` | `ASSET`,`DEP` | Assets growing faster than deposits = funding gap filled by borrowings |
 | 8 | `nim_compression` | `NIMY` | Margin squeeze signals the bank is losing the deposit-pricing fight |
-| 9 | `log_assets` | `ASSET` | Size — **expected confounder**, registered explicitly so it can be tested and controlled |
+| 9 | `log_assets` | `ASSET` | Size - **expected confounder**, registered explicitly so it can be tested and controlled |
 | 10 | `prior_drawdown` | `DEP` | Persistence: outflows arrive in runs, not single quarters |
 | 11 | `uninsured_dep_share` | `DEPUNINS`,`DEP` | Uninsured balances are the flight-risk tranche; the most-cited SVB metric |
 | 12 | `noninterest_dep_share_chg` | `DEPNI`,`DEP` | Operational (noninterest-bearing) balances are the stickiest; their decline is an early tell |
@@ -142,12 +142,12 @@ Each is a registry entry: `name`, one-line `rationale`, `compute` fn, `status`, 
 **Deliberately dumb candidates** (3, so graduation has something to kill):
 `cert_number_parity` (CERT is even), `state_alpha_rank` (alphabetical rank of `STALP`),
 `digit_sum_assets` (digit sum of `ASSET`). All three are semantically null. If any
-"graduates," the framework is broken — they are a live tripwire on the whole pipeline, not
+"graduates," the framework is broken - they are a live tripwire on the whole pipeline, not
 filler.
 
 ---
 
-## 4. Unstructured leg — SEC EDGAR 8-K Item 2.02
+## 4. Unstructured leg - SEC EDGAR 8-K Item 2.02
 
 Transcripts are paywalled; EDGAR is free, complete, and timestamped. Verified working.
 
@@ -155,7 +155,7 @@ Transcripts are paywalled; EDGAR is free, complete, and timestamped. Verified wo
   387 name-matched bank-ish candidates), filtered to SIC `6020/6022/6035/6712` via
   `data.sec.gov/submissions/CIK##########.json` (verified: returns `sic`, `sicDescription`,
   and full filing history with a per-filing `items` field).
-- **Documents.** 8-K filings whose `items` contain **`2.02`** (Results of Operations) —
+- **Documents.** 8-K filings whose `items` contain **`2.02`** (Results of Operations)  - 
   the quarterly earnings press release, usually `ex99-1.htm`. Enumerating *all* Item 2.02
   8-Ks for a fixed panel avoids the selection bias of full-text-searching for
   "deposit outflows" (which returns 1,089 hits precisely because they mention it).
@@ -168,7 +168,7 @@ Transcripts are paywalled; EDGAR is free, complete, and timestamped. Verified wo
   `competition_for_deposits` (y/n). All raw LLM responses cached to
   `data/raw/llm/{cik}_{accession}.json`; re-runs are cache hits, so results are reproducible.
 - **Validation before trust.** ~30 hand-labelled documents; report per-field agreement.
-  If extraction accuracy is poor, the signal is reported as unreliable and not graduated —
+  If extraction accuracy is poor, the signal is reported as unreliable and not graduated  - 
   measuring the measurement instrument comes before using it.
 - **Timing leakage guard.** `filingDate` must be **strictly after** quarter T's end and
   **on or before** the T+1 prediction point. Asserted in code, not assumed. A Q1 earnings
@@ -184,27 +184,27 @@ Transcripts are paywalled; EDGAR is free, complete, and timestamped. Verified wo
 
 - **Expanding-window walk-forward.** Train on all rows with quarter ≤ T, predict T+1, step.
   Never random K-fold. First train window ends 2017Q4 (≥12 quarters of history).
-- **All preprocessing fit inside the training window** — imputation, scaling, winsorization.
+- **All preprocessing fit inside the training window** - imputation, scaling, winsorization.
   Fold-local `sklearn` `Pipeline`, so a fold can't see its own future.
 - **Baselines, always shown beside the model:** (1) base rate / always-no,
   (2) naive persistence (flagged if drawdown last quarter), (3) logistic on size alone.
 - **Models:** L1 logistic (interpretable, signed weights) and `HistGradientBoosting`.
   If GBM barely beats logistic, that is the finding and it gets stated.
 - **Metrics, led by the alerting use case:** `precision@k` / `recall@k` for k = top 1% and
-  top 5% **per quarter** (~44 and ~220 alerts) — "if the team can work 50 alerts, what
+  top 5% **per quarter** (~44 and ~220 alerts) - "if the team can work 50 alerts, what
   share are real?" Then PR-AUC, ROC-AUC, calibration curve, and per-quarter stability.
 - **Out-of-time stress test:** hold out 2022Q4–2023Q4 entirely; train only on pre-2022 and
   report SVB-era performance. Expect degradation; the point is to quantify and discuss it.
 
 ## 6. Leakage & skepticism checks
 
-1. **Shuffled-label test** — permute labels within quarter; performance must collapse to
+1. **Shuffled-label test** - permute labels within quarter; performance must collapse to
    base rate. Anything above that is a pipeline bug.
-2. **Automated as-of audit** — wired into `build`, runs every time. For each feature, assert
+2. **Automated as-of audit** - wired into `build`, runs every time. For each feature, assert
    the computation touches no `REPDTE > T` row, by rebuilding features on a panel truncated
    at T and requiring bit-identical output.
-3. **Single-feature ablations** — standalone lift and incremental lift for every candidate.
-4. **Too-good-is-a-bug rule** — any fold PR-AUC implying near-perfect separation is
+3. **Single-feature ablations** - standalone lift and incremental lift for every candidate.
+4. **Too-good-is-a-bug rule** - any fold PR-AUC implying near-perfect separation is
    investigated as leakage before being reported as a result.
 5. **≥3 documented failures in the README.** Failures are content.
 
@@ -216,9 +216,9 @@ over the graduated set, stability across folds, verdict **GRADUATE / PARK / KILL
 sentence of reasoning. Preregistered thresholds (set before seeing results, so the bar
 isn't moved to fit the outcome):
 
-- **GRADUATE** — positive incremental precision@5% lift, same sign in ≥70% of folds.
-- **PARK** — sound rationale, inconclusive evidence, or unavailable/thin data.
-- **KILL** — no standalone lift and no incremental lift, or unstable sign across folds.
+- **GRADUATE** - positive incremental precision@5% lift, same sign in ≥70% of folds.
+- **PARK** - sound rationale, inconclusive evidence, or unavailable/thin data.
+- **KILL** - no standalone lift and no incremental lift, or unstable sign across folds.
 
 ## 8. Repo layout
 
@@ -250,11 +250,11 @@ Python 3.12 (pinned via `uv`; 3.14 is the system default but lacks some wheels),
    Cached, so no re-spend.
 5. **Merger detection is as-of-today, not as-of-T.** `institutions` reflects current status;
    a bank active at T that merged in 2025 is flagged inactive now. Using that to *exclude*
-   rows is mild hindsight — defensible for label hygiene (I'm removing non-events, not
+   rows is mild hindsight - defensible for label hygiene (I'm removing non-events, not
    adding predictive power) but it is a caveat, and it will be stated in Limitations rather
    than buried.
 
-## 10. Phases — all complete
+## 10. Phases - all complete
 
 1. ✅ Verify API, fields, coverage → this document
 2. ✅ Data pull + labels + base rates (shown before any model was fitted)
@@ -265,7 +265,7 @@ Python 3.12 (pinned via `uv`; 3.14 is the system default but lacks some wheels),
 Two phases went differently than planned, and the differences are documented rather than
 smoothed over:
 
-* **§4's unstructured leg was built and KILLED** — but on *coverage power*, not on a
+* **§4's unstructured leg was built and KILLED** - but on *coverage power*, not on a
   demonstrated null. Two of four extracted flags validate poorly (precision 0.40 / 0.46
   against 30 blind hand labels), and the covered evaluation window contains 6 events, so
   the null cannot be separated from a lack of power. See the README's text section.
