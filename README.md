@@ -61,7 +61,7 @@ Each quarter, this ranks ~4,350 US banks by their probability of a ≥5% deposit
 - Alerts are ranked **within size bands**, because an unstratified list is a small-bank list  - 
   3,287 of 4,352 banks are under $1B, and the names that matter would never surface.
 - Trained only on pre-2022 data and pointed at the SVB era it had never seen, precision@1%
-  was **53%** (3.8× lift). It degrades, and the degradation is quantified below.
+  was **53%** (5.8× lift). It degrades, and the degradation is quantified below.
 - The strongest signals are **deposit growth deceleration**, **loan-to-deposit level**, and
   **uninsured deposit share** - the last one available back to 2015, which is what makes
   "would this have flagged 2023 in advance?" answerable at all.
@@ -197,7 +197,7 @@ window: **5.68%**.
 
 **Gradient boosting beats the linear model decisively**, not marginally: 0.298 vs 0.209
 precision@5%, 0.805 vs 0.725 AUC. That is not a free lunch - [the U-shape
-below](#the-relationship-is-u-shaped-which-is-why-the-linear-model-loses) explains exactly
+below](#was-the-nonlinearity-the-alpha) explains exactly
 which structure the linear model cannot represent.
 
 **Knowing the macro regime adds almost nothing** once the book is in the model (6.03 vs 5.91
@@ -541,7 +541,7 @@ unreliable flags *before* anything downstream was built on them.
 
 | Check | Result |
 |---|---|
-| **As-of audit** - rebuild every feature from a panel truncated at Q; values at Q must be bit-identical | 31 signals × 5 cutoffs, **764,398 row-comparisons, 0 mismatches**. Runs on every `build`. |
+| **As-of audit** - rebuild every feature from a panel truncated at Q; values at Q must be bit-identical | 35 signals × 5 cutoffs, **863,030 row-comparisons, 0 mismatches**. Runs on every `build`. |
 | **Shuffled labels** - permuted *within* quarter, preserving each quarter's base rate | lift@5% **1.007**, AUC **0.503**. Collapses to baseline. Fails the pipeline if not. |
 | **Null tripwires** - 3 content-free features must be killed | All killed; adding them to the model changes lift by 0.02. |
 | **Training boundary** - a row at T reveals its label at T+1, so training stops at **T−1** | Pinned by `tests/test_backtest.py`. |
@@ -562,7 +562,7 @@ src/flightrisk/
   labels.py     labels + merger/de-novo/wind-down exclusions
   features.py   as-of-T ratios and gap-safe lags
   registry.py   the signal registry - single source of truth
-  signals/      one module per signal family; adding #32 is a one-function diff
+  signals/      one module per signal family; adding #36 is a one-function diff
   audit.py      as-of audit + shuffled-label check
   backtest.py   walk-forward folds, models, baselines
   evaluate.py   within-quarter precision@k, strata, calibration
@@ -627,7 +627,7 @@ src/flightrisk/
   almost no bank is genuinely new. Its 0.000 lift is a small-sample artifact, not evidence.
   A dataset with more de novo entry would test this properly.
 - **The unstructured leg is built but untestable here, so it is parked rather than killed.** See
-  [the text section](#the-unstructured-leg-sec-8-k-text--parked-untestable-on-public-data): the
+  [the text section](#the-unstructured-leg-sec-8-k-text---parked-untestable-on-public-data): the
   incremental test has 6 events, which is insufficient evidence rather than negative evidence.
   Resolving it needs proprietary text covering the part of the book public filings never reach.
 - **The extraction accuracy figures rest on a single rater's 30 labels.** Inter-rater reliability
