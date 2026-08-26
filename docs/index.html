@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>flightrisk - the money that just arrived is the money that leaves</title>
+<meta name="description" content="Deposit-flight risk is U-shaped. A bank that just took a large inflow is about as likely to have a drawdown next quarter as one that just lost deposits. Measured on every US bank, 2015 to 2026.">
+<meta property="og:title" content="flightrisk">
+<meta property="og:description" content="An account that just received a funding round is a drawdown risk, not a safe one. The U-shape, and whether a ranking built on it beats the obvious answers.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="gut">
+  <div>
+    <div class="eyebrow">lgoyal6 / flightrisk</div>
+    <h1>flightrisk<span class="dot">.</span></h1>
+    <p class="thesis">
+      Which banks lose a meaningful part of their deposits next quarter, ranked from
+      FDIC Call Report data covering every US bank from 2015 to 2026. The intuition
+      everyone starts with is that falling deposits predict falling deposits.
+    </p>
+    <p class="thesis">
+      <strong>Risk is U-shaped, and the right arm is the surprising one.</strong> A bank
+      that just took in a large inflow is about as likely to have a drawdown next quarter
+      as one that just bled. Lumpy money is transient money.
+    </p>
+  </div>
+  <dl class="facts">
+    <div class="fact"><dt>just grew over 10%</dt><dd>3.00x <small>more likely to drop next</small></dd></div>
+    <div class="fact"><dt>just fell over 10%</dt><dd>3.30x <small>about the same risk</small></dd></div>
+    <div class="fact"><dt>safest thing to be</dt><dd>0.58x <small>boring: 0 to +2%</small></dd></div>
+    <div class="fact"><dt>labels shuffled</dt><dd>0.97x <small>the control finds nothing</small></dd></div>
+  </dl>
+</header>
+
+<section class="gut">
+  <div class="eyebrow">Figure 1</div>
+  <h2>The shape nobody expects</h2>
+  <p class="lead">
+    Each bar is a group of banks sorted by what their deposits did this quarter. The
+    height is how often that group lost 5% or more of its deposits in the quarter
+    that followed. If the intuition were right, this would slope downward.
+  </p>
+
+  <div class="figure">
+    <div class="figcap">
+      <span id="cap-what">Loading</span>
+      <span id="cap-where">FDIC Call Reports, 2015Q1 to 2026Q1</span>
+    </div>
+    <div class="toolbar">
+      <span class="picklabel">Bank size</span>
+      <div class="pick" id="bands" role="group" aria-label="Bank size"></div>
+      <div class="scrub">
+        <span class="picklabel">Bucket</span>
+        <input type="range" id="scrub" min="0" max="7" value="7" step="1">
+      </div>
+    </div>
+    <canvas class="plot" id="plot-u" width="1200" height="440"></canvas>
+    <dl class="readout">
+      <div><dt>this quarter</dt><dd id="u-bucket">-</dd></div>
+      <div><dt>banks in it</dt><dd id="u-n">-</dd></div>
+      <div><dt>dropped next quarter</dt><dd id="u-rate">-</dd></div>
+      <div><dt>against base rate</dt><dd id="u-lift">-</dd></div>
+    </dl>
+    <div class="banner" id="u-banner">Loading.</div>
+  </div>
+
+  <div class="split">
+    <div>
+      <h3>Why growth predicts a fall</h3>
+      <p>
+        A large inflow is usually one depositor parking a balance that will move again:
+        a municipality, a title company, a corporate treasury after a raise. It arrives
+        as growth and leaves as a drawdown. <strong>The read-across is direct and
+        uncomfortable: an account that just received a funding round is a drawdown risk,
+        not a safe one.</strong>
+      </p>
+      <p>
+        It is not a small-bank artifact. Both ends stay elevated in every size band,
+        though the right arm flattens as banks get bigger, where a single depositor is
+        a smaller share of the book.
+      </p>
+    </div>
+    <dl class="takeaway">
+      <dt>the mechanism</dt>
+      <dd>Lumpy money is transient money.<small>It arrives as growth and leaves as a drawdown.</small></dd>
+      <dt>holds everywhere</dt>
+      <dd>All five size bands.<small>The right arm flattens for the largest banks.</small></dd>
+      <dt>what it costs you</dt>
+      <dd>Ranking by last quarter's fall.<small>Half the signal is on the other side.</small></dd>
+    </dl>
+  </div>
+</section>
+
+<section class="gut">
+  <div class="eyebrow">Figure 2</div>
+  <h2>Does the ranking beat the obvious answers</h2>
+  <p class="lead">
+    A ranking is only worth having if it beats what you would have done without it.
+    Every model here is scored against the same walk-forward split, alongside four
+    baselines and a control where the labels were shuffled before training.
+  </p>
+
+  <div class="figure">
+    <div class="figcap">
+      <span id="cap-split">walk-forward backtest</span>
+      <span id="cap-n"></span>
+    </div>
+    <div class="toolbar">
+      <span class="picklabel">Evaluated on</span>
+      <div class="pick" id="splits" role="group" aria-label="Split"></div>
+    </div>
+    <canvas class="plot" id="plot-m" width="1200" height="440"></canvas>
+    <dl class="readout">
+      <div><dt>model</dt><dd id="m-name" class="small">-</dd></div>
+      <div><dt>alerts that were real</dt><dd id="m-prec">-</dd></div>
+      <div><dt>against base rate</dt><dd id="m-lift">-</dd></div>
+      <div><dt>ranking within a quarter</dt><dd id="m-auc">-</dd></div>
+    </dl>
+    <div class="banner" id="m-banner">Loading.</div>
+  </div>
+
+  <div class="split">
+    <div>
+      <p>
+        <strong>The shuffled control is the number to read first.</strong> Train the same
+        model on labels that have been shuffled and the top 1% comes back at 0.97x, with
+        a within-quarter AUC of 0.503. The pipeline finds nothing when there is nothing
+        to find, which is the claim every other number on this page depends on.
+      </p>
+      <p>
+        <strong>Ranking by last quarter's decline is worse than random, and still useful.</strong>
+        Its within-quarter AUC is 0.406, below a coin flip, while its top 1% carries 3.49x
+        lift. Both are correct: the U inverts the relationship across the middle of the
+        distribution, so a rule that orders the whole list badly can still be right about
+        the extreme.
+      </p>
+    </div>
+    <dl class="takeaway">
+      <dt>the control</dt>
+      <dd>0.97x on shuffled labels.<small>AUC 0.503. Nothing found where nothing is.</small></dd>
+      <dt>best in backtest</dt>
+      <dd>Gradient boosting, 9.37x.<small>45.6% of the top 1% were real drawdowns.</small></dd>
+      <dt>the one that broke</dt>
+      <dd>The linear model, out of time.<small>5.82x to 1.59x, under naive persistence.</small></dd>
+    </dl>
+  </div>
+</section>
+
+<section class="gut">
+  <div class="eyebrow">Figure 3</div>
+  <h2>What a quarter of output looks like</h2>
+  <p class="lead">
+    The ranking is only useful if someone can act on it, so each alert carries the
+    signals that put it there. Fifty a quarter is roughly one analyst's week.
+  </p>
+  <div class="figure">
+    <div class="figcap">
+      <span>2026Q1, top of the list</span>
+      <span id="alert-cap"></span>
+    </div>
+    <div class="grid-wrap"><table class="data" id="alerts"></table></div>
+    <div class="banner">
+      Banks are anonymised here. The scores and the reasons are the model's own, but a public
+      ranking of named banks by deposit-flight risk reads as a claim about those banks rather
+      than a demonstration of a method.
+    </div>
+  </div>
+</section>
+
+<section class="gut">
+  <div class="eyebrow">Figure 4</div>
+  <h2>Where it loses</h2>
+  <p class="lead">
+    Published because a model that only reports where its author wins is an
+    advertisement.
+  </p>
+  <ul class="map">
+    <li>
+      <b>The linear model did not survive the holdout.</b> It scored 5.82x in the
+      walk-forward backtest and 1.59x out of time, below naive persistence. Gradient
+      boosting held at 5.76x. One of these numbers would have been the headline if the
+      holdout had not been run.
+      <span class="where">reports/out_of_time.csv</span>
+    </li>
+    <li>
+      <b>The macro features add nothing.</b> Adding regime variables moves lift from
+      9.37x to 9.41x, inside the fold-to-fold spread. A macro-only baseline cannot rank
+      inside a quarter at all, because it is constant within one.
+      <span class="where">reports/backtest_models.csv</span>
+    </li>
+    <li>
+      <b>Pooled AUC is inflated and is not shown.</b> The backtest writes those columns
+      with INFLATED in the name. A model that only knows which quarter it is scores well
+      pooled while being unable to rank inside any single quarter, which is the only
+      ranking an alert list needs.
+      <span class="where">reports/backtest_models.csv</span>
+    </li>
+    <li>
+      <b>Bank level is not account level.</b> The question worth answering is which
+      customer pulls their balance. This is the public analog of it: quarterly, not
+      daily, and one row per bank rather than per depositor.
+      <span class="where">README.md</span>
+    </li>
+    <li>
+      <b>The largest banks are the thinnest slice.</b> Above $100B there are 1,198
+      bank-quarters against 104,675 under $300M, so the flattening right arm in that
+      band rests on the least data.
+      <span class="where">reports/base_rate_by_size.csv</span>
+    </li>
+    <li>
+      <b>The alert list here is anonymised.</b> The scores and the model's own reasons
+      are real, but a public ranking of named banks by deposit-flight risk reads as a
+      claim about those banks rather than a demonstration of a method.
+      <span class="where">reports/alerts_2026Q1.csv</span>
+    </li>
+  </ul>
+</section>
+
+<footer class="gut">
+  <span>
+    <a href="https://github.com/lgoyal6/flightrisk">github.com/lgoyal6/flightrisk</a>
+    &middot; MIT
+    &middot; not investment advice
+  </span>
+  <span>
+    also: <a href="https://lgoyal6.github.io/strata/">strata</a>
+    &middot; <a href="https://lgoyal6.github.io/tickvault/">tickvault</a>
+    &middot; <a href="https://lgoyal6.github.io/noisy-rag-bench/">noisy-rag-bench</a>
+  </span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
