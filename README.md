@@ -14,6 +14,9 @@ FDIC Call Report data for every US bank, 2015Q1–2026Q1.
 
 ---
 
+**[See it: lgoyal6.github.io/flightrisk](https://lgoyal6.github.io/flightrisk/)** - the U-shape by
+size band, and every model scored against the baselines and a shuffled-label control.
+
 ## The headline finding: deposit-flow risk is U-shaped
 
 **Banks that just took in a large inflow are almost as likely to have a drawdown next quarter as
