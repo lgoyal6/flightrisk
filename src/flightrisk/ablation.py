@@ -1,14 +1,14 @@
-"""Single-feature and leave-one-out ablations — the evidence behind every graduation verdict.
+"""Single-feature and leave-one-out ablations - the evidence behind every graduation verdict.
 
 Two numbers per candidate:
 
-* **standalone lift** — how well the signal ranks banks on its own, as a HistGB on that one
+* **standalone lift** - how well the signal ranks banks on its own, as a HistGB on that one
   column. Gradient boosting rather than logistic on purpose: several candidates are
   non-monotone (the persistence baseline ranks *worse than random* overall while its top
   percentile is strongly predictive), and a linear standalone fit would score those as
   worthless when they are not.
 
-* **incremental lift** — the drop in the full model when this one signal is removed
+* **incremental lift** - the drop in the full model when this one signal is removed
   (leave-one-out). Positive delta means the signal carries information the other 24 do not.
   This is the number that matters: a candidate can look strong standalone and be redundant.
 

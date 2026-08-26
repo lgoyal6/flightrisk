@@ -1,4 +1,4 @@
-"""The signal registry — the single source of truth for candidates and their verdicts.
+"""The signal registry - the single source of truth for candidates and their verdicts.
 
 Every candidate is a self-contained unit declaring a name, a one-line economic rationale, a
 compute function that is strictly as-of quarter T, a status, and the evidence attached from
