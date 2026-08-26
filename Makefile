@@ -34,6 +34,9 @@ scorecards:  ## regenerate signal graduation scorecards
 score:  ## ranked alert list for QUARTER=2026Q1
 	$(CLI) score --quarter $(or $(QUARTER),2026Q1)
 
+page-data:  ## regenerate the JSON behind docs/ (needs `build` and `backtest` first)
+	$(PY) scripts/make_page_data.py
+
 test:  ## run the test suite
 	$(PY) -m pytest -q
 
