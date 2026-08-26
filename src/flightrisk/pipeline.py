@@ -277,7 +277,7 @@ def apply_text_verdicts(verbose: bool = True) -> pd.DataFrame:
     """Record the text signals' verdict and *why*, then persist it to the registry.
 
     The verdict is **PARK, not KILL**. KILL is reserved for "measured and found wanting"; 472 rows
-    containing 6 events is *structurally unmeasurable on this panel* — insufficient evidence, not
+    containing 6 events is *structurally unmeasurable on this panel* - insufficient evidence, not
     negative evidence. That is the same standard applied to the 72-row first-appearance cohort in
     the unseen-entity experiment, and applying it inconsistently would be the more interesting
     result dressed up as the cleaner one.
@@ -322,7 +322,7 @@ def apply_text_verdicts(verbose: bool = True) -> pd.DataFrame:
             "incremental_auc_full_set": d_auc,
             "n_events_in_test": n_events,
             "verdict_reason": (
-                "PARKED — untestable on public data. The extraction pipeline works (836 filings, "
+                "PARKED - untestable on public data. The extraction pipeline works (836 filings, "
                 "0 errors), but coverage inverts the thesis: public filings exist only for the "
                 "~50 largest banks, precisely where structured data is richest and events are "
                 "rarest (base rate 1.27% vs 5.62% panel-wide). Incremental AUC "

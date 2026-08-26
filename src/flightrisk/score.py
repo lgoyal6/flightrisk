@@ -1,8 +1,8 @@
-"""The alert list — the artifact a GTM/risk team actually consumes.
+"""The alert list - the artifact a GTM/risk team actually consumes.
 
 Ranked **within size stratum**, not globally. An unstratified top-50 on this panel is a
-small-bank list: 3,287 of 4,352 banks are under $1B, so the >$10B names — the M&T /
-Silvergate-class events anyone actually cares about — never surface. Each stratum gets its own
+small-bank list: 3,287 of 4,352 banks are under $1B, so the >$10B names - the M&T /
+Silvergate-class events anyone actually cares about - never surface. Each stratum gets its own
 quota and its own percentile.
 
 Every row carries the three signals that pushed it up and a plain-English reason, so a human
@@ -124,7 +124,7 @@ def robust_z(target: pd.DataFrame, train: pd.DataFrame, feats: list[str]) -> pd.
 
     Baselines come from the TRAINING window only, so nothing about the scored quarter informs
     its own explanation. This is an attribution aid for a human reader, not a causal
-    decomposition of the model — the README says so plainly.
+    decomposition of the model - the README says so plainly.
     """
     med = train[feats].median()
     mad = (train[feats] - med).abs().median().replace(0, pd.NA)

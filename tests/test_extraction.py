@@ -1,7 +1,7 @@
 """Tests for the unstructured leg: timing guard, prompt versioning, response parsing.
 
 The timing guard is the highest-stakes piece. A text feature is dated differently from a
-structured one — the 8-K discussing Q1 is *filed* in Q2 — so "as-of T" has to be re-derived
+structured one - the 8-K discussing Q1 is *filed* in Q2 - so "as-of T" has to be re-derived
 rather than assumed, and getting it wrong leaks the outcome into the predictor.
 """
 
@@ -39,7 +39,7 @@ def test_april_filing_informs_the_q2_prediction_from_the_q1_feature_row():
 
 
 def test_late_quarter_filing_is_dropped_because_it_contains_the_outcome():
-    """A late-June filing already spans most of Q2 — using it to predict Q2 is leakage."""
+    """A late-June filing already spans most of Q2 - using it to predict Q2 is leakage."""
     df = timing.assign_feature_quarter(_filings([{"filing_date": "2023-06-28", "accession": "b"}]))
     assert not df.iloc[0]["eligible"]
 
