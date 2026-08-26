@@ -11,7 +11,22 @@
 </head>
 <body>
 
-<header class="gut">
+<nav class="topbar">
+  <a class="brand" href="https://lakshgoyal.com">Laksh Goyal<span>.</span></a>
+  <div class="navlinks">
+    <a href="https://github.com/lgoyal6/flightrisk">GitHub</a>
+    <a href="https://www.linkedin.com/in/lakshgoyal">LinkedIn</a>
+  </div>
+</nav>
+<nav class="tabs" aria-label="Sections">
+    <a href="#sec-home">Home</a>
+    <a href="#sec-ushape">The U</a>
+    <a href="#sec-models">Models</a>
+    <a href="#sec-output">Output</a>
+    <a href="#sec-limits">Limits</a>
+</nav>
+
+<header id="sec-home" class="gut">
   <div>
     <div class="eyebrow">lgoyal6 / flightrisk</div>
     <h1>flightrisk<span class="dot">.</span></h1>
@@ -34,7 +49,7 @@
   </dl>
 </header>
 
-<section class="gut">
+<section class="gut" id="sec-ushape">
   <div class="eyebrow">Figure 1</div>
   <h2>The shape nobody expects</h2>
   <p class="lead">
@@ -93,7 +108,7 @@
   </div>
 </section>
 
-<section class="gut">
+<section class="gut" id="sec-models">
   <div class="eyebrow">Figure 2</div>
   <h2>Does the ranking beat the obvious answers</h2>
   <p class="lead">
@@ -148,7 +163,7 @@
   </div>
 </section>
 
-<section class="gut">
+<section class="gut" id="sec-output">
   <div class="eyebrow">Figure 3</div>
   <h2>What a quarter of output looks like</h2>
   <p class="lead">
@@ -169,7 +184,7 @@
   </div>
 </section>
 
-<section class="gut">
+<section class="gut" id="sec-limits">
   <div class="eyebrow">Figure 4</div>
   <h2>Where it loses</h2>
   <p class="lead">
@@ -232,5 +247,6 @@
 </footer>
 
 <script src="app.js"></script>
+<script src="nav.js"></script>
 </body>
 </html>
