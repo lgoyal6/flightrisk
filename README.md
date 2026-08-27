@@ -1,3 +1,10 @@
+<a href="https://lgoyal6.github.io/flightrisk/">
+  <img alt="flightrisk - open the live demo" src="docs/og.png">
+</a>
+
+**[Open the live demo](https://lgoyal6.github.io/flightrisk/)** - The U-shape by
+size band, and every model scored against the baselines and a shuffled-label control.
+
 # flightrisk
 
 **Which banks will lose a meaningful chunk of their deposits next quarter - and how much to trust the answer.**
@@ -13,9 +20,6 @@ Public analog for "which customers will pull their treasury balance next quarter
 FDIC Call Report data for every US bank, 2015Q1–2026Q1.
 
 ---
-
-**[See it: lgoyal6.github.io/flightrisk](https://lgoyal6.github.io/flightrisk/)** - the U-shape by
-size band, and every model scored against the baselines and a shuffled-label control.
 
 ## The headline finding: deposit-flow risk is U-shaped
 
