@@ -62,7 +62,7 @@ function drawU() {
   for (let v = 0; v <= top; v += stepY) {
     ctx.fillText(pct(v, 0), pad.l - 8, Y(v) + 3);
     if (v > 0) {
-      ctx.strokeStyle = '#e8e3d6';
+      ctx.strokeStyle = css('--grid');
       ctx.beginPath(); ctx.moveTo(pad.l, Y(v)); ctx.lineTo(pad.l + iw, Y(v)); ctx.stroke();
     }
   }
@@ -180,7 +180,7 @@ function drawModels() {
   // From 2 up: a gridline at 0 is the axis, and its label would sit under the
   // break-even marker.
   for (let v = 2; v <= top; v += 2) {
-    ctx.strokeStyle = '#e8e3d6';
+    ctx.strokeStyle = css('--grid');
     ctx.beginPath(); ctx.moveTo(X(v), pad.t); ctx.lineTo(X(v), pad.t + rows.length * rowH); ctx.stroke();
     ctx.fillStyle = css('--faint');
     ctx.font = "11px 'Courier New', monospace";

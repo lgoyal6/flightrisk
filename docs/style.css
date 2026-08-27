@@ -1,18 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
 :root {
-  --paper: #fbfaf7;
-  --panel: #f5f3ec;
-  --ink: #17150f;
-  --sub: #57513f;
-  --faint: #8f8977;
-  --rule: #17150f;
-  --hair: #d9d3c4;
-  --ox: #4d5223;      /* dark olive: this project's ink */
+  --paper: #fdfcfa;
+  --panel: #f4f1ec;
+  --ink: #1a1815;
+  --sub: #544e46;
+  --faint: #8b847a;
+  --rule: #1a1815;
+  --hair: #ddd6cb;
+  --grid: #e9e3d8;
+  --ox: #4d5223;
   --ox-dim: #8d9269;
   --ok: #2f5d3a;
   --warn: #8a6d1f;
   --bad: #a33d2e;
-  --serif: 'Times New Roman', Times, Georgia, serif;
-  --mono: 'Courier New', Courier, monospace;
+  --serif: 'Newsreader', Georgia, serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
