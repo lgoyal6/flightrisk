@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
-  --paper: #fdfcfa;
-  --panel: #f4f1ec;
+  --paper: #fcf8f1;
+  --panel: #f3ede1;
   --ink: #1a1815;
   --sub: #544e46;
   --faint: #8b847a;
   --rule: #1a1815;
-  --hair: #ddd6cb;
-  --grid: #e9e3d8;
+  --hair: #ddd4c4;
+  --grid: #e9e2d5;
   --ox: #4d5223;
   --ox-dim: #8d9269;
   --ok: #2f5d3a;
@@ -182,3 +182,8 @@ html { scroll-padding-top: 96px; }
   html { scroll-behavior: auto; }
   .tabs a, .navlinks a { transition: none; }
 }
+
+/* Brand marks in the nav, sized to the text and inheriting its colour. */
+.navlinks a { display: inline-flex; align-items: center; gap: 7px; }
+.navlinks svg { width: 15px; height: 15px; flex: 0 0 auto; }
+.brand { letter-spacing: .005em; }
